@@ -1,0 +1,6 @@
+# Ignore everything:
+/*
+!GranularFlow.sln
+!GranularFlow.jucer
+!Source/
+!.gitignore

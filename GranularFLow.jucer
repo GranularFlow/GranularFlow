@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="TNVEjh" name="GranularFlow" projectType="audioplug" displaySplashScreen="1"
+              jucerFormatVersion="1" pluginCharacteristicsValue="pluginWantsMidiIn">
+  <MAINGROUP id="urxBUK" name="GranularFlow">
+    <GROUP id="{DA38D263-644D-11D5-C5D3-5F32BCD6E98A}" name="Source">
+      <GROUP id="{447DA642-3DC4-1FD7-9211-53A3E92BE6A3}" name="CustomComponents">
+        <GROUP id="{93CD38A3-627D-58FD-D08E-B1F9A6C27958}" name="CustomClickableBox">
+          <FILE id="weCjQC" name="CustomClickableBox.cpp" compile="1" resource="0"
+                file="Source/CustomComponents/CustomClickableBox/CustomClickableBox.cpp"/>
+          <FILE id="Ikx6Ae" name="CustomClickableBox.h" compile="0" resource="0"
+                file="Source/CustomComponents/CustomClickableBox/CustomClickableBox.h"/>
+        </GROUP>
+        <GROUP id="{357CF201-5BF6-2E0B-625F-A7803FE29ADD}" name="CustomLfoPanel">
+          <FILE id="dADO9e" name="CustomLfoPanel.cpp" compile="1" resource="0"
+                file="Source/CustomComponents/CustomLfoPanel/CustomLfoPanel.cpp"/>
+          <FILE id="M15VMK" name="CustomLfoPanel.h" compile="0" resource="0"
+                file="Source/CustomComponents/CustomLfoPanel/CustomLfoPanel.h"/>
+        </GROUP>
+        <GROUP id="{F6B1D681-DAF2-3089-5E41-F9D936841CF7}" name="CustomWindow">
+          <FILE id="n4T4BI" name="CustomWindow.cpp" compile="1" resource="0"
+                file="Source/CustomComponents/CustomWindow/CustomWindow.cpp"/>
+          <FILE id="PxKgV0" name="CustomWindow.h" compile="0" resource="0" file="Source/CustomComponents/CustomWindow/CustomWindow.h"/>
+        </GROUP>
+        <GROUP id="{DB83F5DC-54F0-C703-4EA9-1DA6D2991FD3}" name="Images">
+          <FILE id="Sz7eup" name="logo250.png" compile="0" resource="1" file="Source/CustomComponents/Images/logo250.png"/>
+        </GROUP>
+        <FILE id="RpTlD7" name="CustomLook.cpp" compile="1" resource="0" file="Source/CustomComponents/CustomLook.cpp"/>
+        <FILE id="wjmDVo" name="CustomLook.h" compile="0" resource="0" file="Source/CustomComponents/CustomLook.h"/>
+        <FILE id="ZulYhk" name="Knob.cpp" compile="1" resource="0" file="Source/CustomComponents/Knob.cpp"/>
+        <FILE id="SioBZn" name="Knob.h" compile="0" resource="0" file="Source/CustomComponents/Knob.h"/>
+        <FILE id="Sscd5r" name="NumberSelect.cpp" compile="1" resource="0"
+              file="Source/CustomComponents/NumberSelect.cpp"/>
+        <FILE id="nS5fl5" name="NumberSelect.h" compile="0" resource="0" file="Source/CustomComponents/NumberSelect.h"/>
+        <FILE id="B1hBtT" name="RadioBox.cpp" compile="1" resource="0" file="Source/CustomComponents/RadioBox.cpp"/>
+        <FILE id="Eqwlum" name="RadioBox.h" compile="0" resource="0" file="Source/CustomComponents/RadioBox.h"/>
+        <FILE id="gi6Waz" name="Separator.h" compile="0" resource="0" file="Source/CustomComponents/Separator.h"/>
+      </GROUP>
+      <GROUP id="{213A4EF4-41AF-696D-E3D8-89870C7D13DD}" name="GranularFlowWrapper">
+        <FILE id="bfs4OP" name="GranularFlowWrapper.cpp" compile="1" resource="0"
+              file="Source/GranularFlowWrapper/GranularFlowWrapper.cpp"/>
+        <FILE id="fGUPp7" name="GranularFlowWrapper.h" compile="0" resource="0"
+              file="Source/GranularFlowWrapper/GranularFlowWrapper.h"/>
+      </GROUP>
+      <GROUP id="{26AA5BA8-9381-B694-3617-DEA43CE933D4}" name="Utils">
+        <FILE id="veqyas" name="Constants.h" compile="0" resource="0" file="Source/Utils/Constants.h"/>
+        <FILE id="J6az6X" name="Utils.cpp" compile="1" resource="0" file="Source/Utils/Utils.cpp"/>
+        <FILE id="JZTydo" name="Utils.h" compile="0" resource="0" file="Source/Utils/Utils.h"/>
+      </GROUP>
+      <FILE id="fpKscB" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="ZHvxEI" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="QgqDtZ" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="znsYTo" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <EXPORTFORMATS>
+    <VS2022 targetFolder="./">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="GranularFlow"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="GranularFlow"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../../../../../../JUCE/modules"/>
+      </MODULEPATHS>
+    </VS2022>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+</JUCERPROJECT>
