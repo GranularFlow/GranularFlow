@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    Separator.h
-    Created: 22 Nov 2022 11:46:37pm
+    AdditiveVisualiser.h
+    Created: 1 Feb 2023 11:15:23pm
     Author:  honza
 
   ==============================================================================
@@ -10,12 +10,13 @@
 
 #pragma once
 #include <JuceHeader.h>
-#include "../Utils/Constants.h"
+#include "../../../Utils/Constants.h"
 
-class Separator : public Component
+class AdditiveVisualiser : public AudioVisualiserComponent
 {
 public:
-    void paint(Graphics& g) override {
-        g.fillAll(M_T_LIGHT);
-    };
+    // Class
+	AdditiveVisualiser();
+	~AdditiveVisualiser();
+private:
 };

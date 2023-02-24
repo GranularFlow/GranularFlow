@@ -14,6 +14,7 @@ GranularFLowAudioProcessorEditor::~GranularFLowAudioProcessorEditor()
 
 void GranularFLowAudioProcessorEditor::paint (juce::Graphics& g)
 {
+    Utils::paintLogo(g);
 }
 
 void GranularFLowAudioProcessorEditor::resized()

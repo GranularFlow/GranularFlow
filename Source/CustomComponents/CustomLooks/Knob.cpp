@@ -15,22 +15,21 @@ Knob::Knob(String nameIn, Colour guiColorIn, float startRangIn, float endRangeIn
     guiColor = guiColorIn;
     name = nameIn;
     value = defaultValue;
+
     setLookAndFeel(&customLook);
-    slider.addListener(this);
+
     slider.setRange(startRangIn, endRangeIn, stepIn);
     slider.setValue(defaultValue);
     slider.setColour(Slider::ColourIds::rotarySliderFillColourId, guiColorIn);
     slider.setColour(Slider::ColourIds::thumbColourId, guiColorIn);
     slider.setColour(Slider::ColourIds::textBoxBackgroundColourId, C_TRANSPARENT);
     slider.setColour(Slider::ColourIds::textBoxOutlineColourId, C_TRANSPARENT);
-    //slider.addListener(this);
 
     addAndMakeVisible(slider);
 }
 
 Knob::~Knob()
 {
-    //slider.removeListener(this);
     setLookAndFeel(nullptr);
 }
 
@@ -48,19 +47,18 @@ void Knob::resized()
     slider.setBounds(getLocalBounds().withTrimmedTop(30));
 }
 
-void Knob::sliderValueChanged(Slider* changedSlider)
-{
-    //DBG("Knob::sliderValueChanged");
 
-    if (changedSlider == &slider)
-    {
-        //DBG("changedSlider " << name);
-        value = changedSlider->getValue();
-        //DBG("value" << value);
-    }    
+void Knob::addListener(Slider::Listener* listener)
+{
+    slider.addListener(listener);
+}
+
+void Knob::removeListener(Slider::Listener* listener)
+{
+    slider.removeListener(listener);
 }
 
 float Knob::getValue()
 {
-    return value;
+    return slider.getValue();
 }

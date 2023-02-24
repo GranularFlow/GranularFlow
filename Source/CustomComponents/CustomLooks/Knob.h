@@ -10,10 +10,10 @@
 
 #pragma once
 #include <JuceHeader.h>
-#include "../Utils/Constants.h"
+#include "../../Utils/Constants.h"
 #include "CustomLook.h"
 
-class Knob : public Component, public Slider::Listener
+class Knob : public Component
 {
 public:
     // Class
@@ -22,10 +22,14 @@ public:
     // GUI
     void paint(Graphics&) override;
     void resized() override;
-    void sliderValueChanged(Slider*) override;
+    // Listeners
+    void addListener(Slider::Listener*);
+    void removeListener(Slider::Listener*);
+
     // Getters
     float getValue();
-    // Public vars
+
+    // Slider TODO: wrap it to private
     Slider slider { Slider::SliderStyle::RotaryHorizontalDrag, Slider::TextEntryBoxPosition::NoTextBox };
 private:
     CustomLook customLook;

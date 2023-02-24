@@ -19,7 +19,8 @@ public:
     // Class
     CustomWindow(String, Component::SafePointer<Component>);
 	~CustomWindow();
-    void close();
+    void showWindow();
+    void hideWindow();
     void closeButtonPressed()override;
 private:
 

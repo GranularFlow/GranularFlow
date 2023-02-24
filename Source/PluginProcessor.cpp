@@ -31,12 +31,12 @@ GranularFLowAudioProcessor::~GranularFLowAudioProcessor()
 //==============================================================================
 void GranularFLowAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-    
+    granularFlowWrapper.prepareToPlay(sampleRate);
 }
 
 void GranularFLowAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
-
+    granularFlowWrapper.processBlock(buffer, midiMessages);
 }
 
 //==============================================================================

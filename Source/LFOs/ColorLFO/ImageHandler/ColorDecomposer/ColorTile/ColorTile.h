@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    CustomClickableBox.h
-    Created: 22 Feb 2023 8:25:22pm
+    ColorTile.h
+    Created: 15 Feb 2023 7:11:16pm
     Author:  honza
 
   ==============================================================================
@@ -10,19 +10,19 @@
 
 #pragma once
 #include <JuceHeader.h>
-#include "../../Utils/Constants.h"
-
-class CustomClickableBox : public Component
+#include "../../../../../Utils/Constants.h"
+class ColorTile : public Component
 {
 public:
     // Class
-	CustomClickableBox(Colour, String);
-	~CustomClickableBox();
+    ColorTile();
+	~ColorTile();
     // GUI
     void paint(Graphics&)override;
-    
+    void setColor(int, Colour);
 
 private:
-    Colour color;
-    String text;
+    Colour color = Colours::black;
+    int colorInt = 255;
+
 };

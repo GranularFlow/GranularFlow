@@ -19,6 +19,12 @@ Utils::~Utils()
 {
 }
 
+void Utils::paintLogo(Graphics& g)
+{
+    const Image logo = ImageFileFormat::loadFrom(BinaryData::logo250_png, BinaryData::logo250_pngSize);
+    g.drawImageAt(logo, (50 - 36) / 2, 7, false);
+}
+
 int Utils::msToSamples(float timeInMs, int sampleRate) {
 
     return Utils::secToSamples((timeInMs /(float) 1000), sampleRate);
@@ -46,5 +52,9 @@ float Utils::samplesToPercent(int samplePosition, int totalSamples)
 }
 
 void Utils::addToFb(FlexBox* fb, Component& c, int8 order, int minWidth,int minHeight) {
+    fb->items.add(FlexItem(c).withMinWidth(minWidth).withMinHeight(minHeight).withMargin(0).withOrder(order));
+}
+
+void Utils::addToFb(FlexBox* fb, FlexBox c, int8 order, int minWidth, int minHeight) {
     fb->items.add(FlexItem(c).withMinWidth(minWidth).withMinHeight(minHeight).withMargin(0).withOrder(order));
 }

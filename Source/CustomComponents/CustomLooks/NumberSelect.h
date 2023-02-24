@@ -10,7 +10,7 @@
 
 #pragma once
 #include <JuceHeader.h>
-#include "../Utils/Constants.h"
+#include "../../Utils/Constants.h"
 #include "CustomLook.h"
 
 class NumberSelect : public Component

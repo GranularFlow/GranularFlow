@@ -50,9 +50,3 @@ void CustomClickableBox::paint(Graphics& g)
     g.setFont(Font("Oswald", boxSize.getHeight() * 0.5, 0));
     g.drawFittedText(text, boxSize, Justification::centred, 1);
 }
-
-void CustomClickableBox::mouseDown(const MouseEvent&)
-{
-    color = C_GRASS;
-    repaint();
-}

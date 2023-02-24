@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    CustomClickableBox.h
-    Created: 22 Feb 2023 8:25:22pm
+    Visualiser.h
+    Created: 5 Feb 2023 2:53:14pm
     Author:  honza
 
   ==============================================================================
@@ -10,19 +10,19 @@
 
 #pragma once
 #include <JuceHeader.h>
-#include "../../Utils/Constants.h"
+#include "../../../Utils/Constants.h"
 
-class CustomClickableBox : public Component
+class Visualiser : public Component
 {
 public:
     // Class
-	CustomClickableBox(Colour, String);
-	~CustomClickableBox();
+	Visualiser();
+	~Visualiser();
+
     // GUI
-    void paint(Graphics&)override;
-    
+    void paint(Graphics&) override;
+    void setWaveForm(Array<float>);
 
 private:
-    Colour color;
-    String text;
+    Array<float> waveForm;
 };

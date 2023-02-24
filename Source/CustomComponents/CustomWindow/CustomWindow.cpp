@@ -12,24 +12,27 @@
 
 CustomWindow::CustomWindow(String windowName, Component::SafePointer<Component> c) : DocumentWindow(windowName,
     juce::Colours::lightgrey,
-    DocumentWindow::closeButton)
+    DocumentWindow::minimiseButton)
 {
     setContentOwned(c, false);
-    centreWithSize(W_WIDTH, W_HEIGHT);
-    setVisible(true);
+    //centreWithSize(W_WIDTH, W_HEIGHT);
 }
 
 CustomWindow::~CustomWindow()
 {
 }
 
-void CustomWindow::close()
-{
-    setContentOwned(nullptr, false);
-    delete this;
-}
-
 void CustomWindow::closeButtonPressed()
 {
-    delete this;
+    hideWindow();
+}
+
+void CustomWindow::showWindow()
+{
+    setVisible(true);
+}
+
+void CustomWindow::hideWindow()
+{
+    setVisible(false);
 }
