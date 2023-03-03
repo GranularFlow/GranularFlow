@@ -16,13 +16,15 @@
 #include "Canvas/Canvas.h"
 #include "Visualiser/Visualiser.h"
 
-class WavetableSynth : public Component, public Button::Listener, public Slider::Listener
+#include "../../LFOs/LFO.h"
+#include "../Synth.h"
+
+class WavetableSynth : public Component, public Button::Listener, public Slider::Listener, public Synth
 {
 public:
     // Class
-	WavetableSynth();
+	WavetableSynth(LFO*);
 	~WavetableSynth();
-
 
     // Listeners
     void addListeners();
@@ -34,16 +36,20 @@ public:
     void paint(Graphics&) override;
     void resized()override;
     
+    // --------
+    void prepareToPlay(float, int)override;
+    void processBlock(AudioBuffer<float>&, MidiBuffer&)override;
+    // --------
+   
     // Tools
     void initSamples();
-    void prepareToPlay(double);
-    void getNextBlock(AudioBuffer<float>& ,MidiBuffer& midiMessages);
     float interpolate(float x, float x1, float x2, float y1, float y2);
     float cubicInterpolate(float);
     double interpolateHermite(double);
-
     void handleMidi(MidiBuffer&);
+
 private:
+    LFO* colorLfoPntr = nullptr;
     TextButton combineButton{ "SYNTHESIZE" };
     Canvas canvas1 { "FIRST WAVE" };
     Canvas canvas2 { "SECOND WAVE" };
@@ -61,4 +67,7 @@ private:
     int midiNoteFrequency = 0;
     int currentPosition = 0;
     float increment = 1.0;
+
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WavetableSynth);
 };

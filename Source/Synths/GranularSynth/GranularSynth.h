@@ -16,17 +16,17 @@
 #include "GranularVisualiser/GranularVisualiser.h"
 #include "GranularSettings/GranularSettings.h"
 #include "RingBuffer/RingBuffer.h"
+#include "../Synth.h"
 
-class GranularSynth : public Component, public Slider::Listener, public Button::Listener
+class GranularSynth : public Component, public Slider::Listener, public Button::Listener, public Synth
 {
 public:
     // Class
 	GranularSynth();
 	~GranularSynth()override;
     // GUI
-    void initGui();
     void paint(Graphics&) override;
-	void resized() override;
+	void resized();
     // Listeners
     void sliderValueChanged(Slider*) override;
     void buttonClicked(Button*) override;
@@ -39,12 +39,16 @@ public:
     int getNumTotalSamples();
     void initAudioSamples(int);
     void clearAudioSamples();
-    void prepareToPlay(double, int);
     void addNewPlayer();
     void removePlayer();
     void selectPlayer(int8 playerNumber);
-    // Getters
-    void getNextBlock(AudioBuffer<float>&, MidiBuffer&);
+
+    // --------
+    void prepareToPlay(float, int)override;
+    void processBlock(AudioBuffer<float>&, MidiBuffer&)override;
+    // --------
+   
+    // Getters    
     int8 getPlayerCount();
 
 private:
@@ -64,7 +68,7 @@ private:
     float increment = 1.0f;
     int lastMidiNote = -1;
     int bufferSize = 256;
-    int sampleRate = 48000;
+    float sampleRate = 48000;
     float maxPlayTime = 3.0; // 3s   
     // Buffer check
     bool waveFormWasSet = false;

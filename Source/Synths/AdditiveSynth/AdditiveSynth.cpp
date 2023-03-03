@@ -20,6 +20,7 @@ AdditiveSynth::AdditiveSynth()
 AdditiveSynth::~AdditiveSynth()
 {
     removeListeners();
+    additiveHarmonics.clear();
 }
 
 void AdditiveSynth::initGui()
@@ -120,10 +121,9 @@ void AdditiveSynth::selectHarmonic(int harmonicNumber)
     additiveHarmonics[harmonicNumber - 1]->toFront(true);
 }
 
-void AdditiveSynth::getNextBlock(AudioBuffer<float>& bufferToFill, juce::MidiBuffer& midiMessages)
+void AdditiveSynth::processBlock(AudioBuffer<float>& bufferToFill, juce::MidiBuffer& midiMessages)
 {
-   
-    bufferToFill.clear();
+  
     for (AdditiveHarmonic* harmonic : additiveHarmonics)
     {
         harmonic->fillNextBuffer(bufferToFill, midiMessages);
@@ -131,11 +131,11 @@ void AdditiveSynth::getNextBlock(AudioBuffer<float>& bufferToFill, juce::MidiBuf
     additiveVisualiser.pushBuffer(bufferToFill);
 }
 
-void AdditiveSynth::prepareToPlay(double sampleRateIn, int bufferSize)
+void AdditiveSynth::prepareToPlay(float sampleRateIn, int bufferSizeIn)
 {
     additiveVisualiser.clear();
     sampleRate = (int)sampleRateIn;
-    bufferSize = bufferSize;
+    bufferSize = bufferSizeIn;
     for (AdditiveHarmonic* harmonic: additiveHarmonics)
     {
         harmonic->setSampleRate(sampleRate);

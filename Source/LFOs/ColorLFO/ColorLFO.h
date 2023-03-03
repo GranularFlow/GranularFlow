@@ -14,8 +14,9 @@
 #include "../../Utils/Constants.h"
 #include "LfoSettings/LfoSettings.h"
 #include "ImageHandler/ImageHandler.h"
+#include "../LFO.h"
 
-class ColorLFO : public Component, public Button::Listener
+class ColorLFO : public Component, public Button::Listener, public LFO
 {
 public:
     // Class
@@ -36,5 +37,7 @@ private:
     //  -- Settings
     Component::SafePointer<LfoSettings> settings = new LfoSettings();
     //  -- handler
-    std::unique_ptr<ImageHandler> imageHandler = std::make_unique<ImageHandler>(settings);
+    Component::SafePointer<ImageHandler> imageHandler = new ImageHandler(settings);
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ColorLFO);
 };

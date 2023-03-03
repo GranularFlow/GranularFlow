@@ -11,13 +11,15 @@
 #pragma once
 #include <JuceHeader.h>
 #include "../../Utils/Constants.h"
-#include "../CustomLfoPanel/CustomLfoPanel.h"
+#include "../../Synths/Synth.h"
+#include "../../LFOs/LFO.h"
 
 class CustomWindow : public DocumentWindow
 {
 public:
     // Class
-    CustomWindow(String, Component::SafePointer<Component>);
+    CustomWindow(String, Component*);
+
 	~CustomWindow();
     void showWindow();
     void hideWindow();

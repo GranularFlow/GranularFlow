@@ -51,9 +51,8 @@ public:
 	PlayerSettings();
 	~PlayerSettings();
     // GUI
-    void initGui();
-	void paint(Graphics& graphics) override;
-	void resized() override;
+	void paint(Graphics&) override;
+	void resized();
     // Tools
     bool isGranularMode(GranularMode);
     bool isRunningMode(RunningMode);

@@ -10,42 +10,60 @@
 
 #include "GranularFlowWrapper.h"
 
-
 GranularFlowWrapper::GranularFlowWrapper()
 {
     // GUI
     addAndMakeVisible(wavetableSynthBox);
     addAndMakeVisible(granularSynthBox);
     addAndMakeVisible(additiveSynthBox);
-    addAndMakeVisible(lfoPanel);
+    
+    addAndMakeVisible(colorLfoBox);
+    addAndMakeVisible(bounceLfoBox);
+    addAndMakeVisible(wavetableLfoBox);
+    addAndMakeVisible(mathLfoBox);
 
     // Synths
-    addChildComponent(wavetableSynth);
-    addChildComponent(granularSynth);
-    addChildComponent(additiveSynth);
+    addChildComponent(wavetableSynth.get());
+    addChildComponent(granularSynth.get());
+    addChildComponent(additiveSynth.get());
 
     // Child ignores clicks and lets Wrapper take mouse events instead
     wavetableSynthBox->setInterceptsMouseClicks(false, false);
     granularSynthBox->setInterceptsMouseClicks(false, false);
     additiveSynthBox->setInterceptsMouseClicks(false, false);
 
+    colorLfoBox->setInterceptsMouseClicks(false, false);
+    bounceLfoBox->setInterceptsMouseClicks(false, false);
+    wavetableLfoBox->setInterceptsMouseClicks(false, false);
+    mathLfoBox->setInterceptsMouseClicks(false, false);
+
     // add all components to separate windows
-    windows.add(new CustomWindow("Wavetable synth", wavetableSynth));
-    windows.add(new CustomWindow("Granular synth", granularSynth));
-    windows.add(new CustomWindow("Additive synth", additiveSynth));
+    windows.add(new CustomWindow("Wavetable synth", wavetableSynth.get()));
+    windows.add(new CustomWindow("Granular synth", granularSynth.get()));
+    windows.add(new CustomWindow("Additive synth", additiveSynth.get()));
 }
 
 GranularFlowWrapper::~GranularFlowWrapper()
 {
-    // GUI
+    // delete lfos that are inside synths
+    
+    // delete synths that are inside boxes
+    wavetableSynth.release();
+    additiveSynth.release();
+    granularSynth.release();
+
+    // clean array of boxes
+    closeWindows();
+
+    // clean boxes
     delete wavetableSynthBox;
     delete granularSynthBox;
     delete additiveSynthBox;
 
-    // Synth
-    delete wavetableSynth;
-
-    closeWindows();
+    delete colorLfoBox;
+    delete bounceLfoBox;
+    delete wavetableLfoBox;
+    delete mathLfoBox;   
 }
 
 void GranularFlowWrapper::paint(Graphics&g)
@@ -122,8 +140,8 @@ void GranularFlowWrapper::paint(Graphics&g)
 
     // LFOS
     g.setColour(L_GRAY);
-    Rectangle<float> lfoRect = getLocalBounds().withSize(820, 90).withCentre(Point<int>(getWidth() / 2,(getHeight() * (2 / 3)) + 163)).toFloat();
-    g.fillRoundedRectangle(lfoRect, getHeight() * 0.01);
+    Rectangle<float> lfoRect = getLocalBounds().withSize(820, 90).withCentre(Point<int>(getWidth() / 2,(getHeight() * (2 /(float) 3)) + 163)).toFloat();
+    g.drawRoundedRectangle(lfoRect, getHeight() * 0.01, 5);
 }
 
 void GranularFlowWrapper::resized()
@@ -144,16 +162,37 @@ void GranularFlowWrapper::resized()
             FlexBox::JustifyContent::spaceAround
     };
 
-    Utils::addToFb(&fb, harmonicCount, 0, 800 / 4, getHeight());
-    fb.performLayout(getLocalBounds().withSize(820, 90).withCentre(Point<int>(getWidth() / 2, (getHeight() * (2 / 3)) + 163)).toFloat());
+    Utils::addToFb(&fb, *colorLfoBox, 0, 200, 80);
+    Utils::addToFb(&fb, *bounceLfoBox, 0, 200, 80);
+    Utils::addToFb(&fb, *wavetableLfoBox, 0, 200, 80);
+    Utils::addToFb(&fb, *mathLfoBox, 0, 200, 80);
+    fb.performLayout(getLocalBounds().withSize(820, 90).withCentre(Point<int>(getWidth() / 2, (getHeight() * (2 / (float)3)) + 163)).toFloat());
 }
 
-void GranularFlowWrapper::prepareToPlay(float sampleRate)
+void GranularFlowWrapper::prepareToPlay(float sampleRate, int bufferSize)
 {
+    wavetableSynth->prepareToPlay(sampleRate, bufferSize);
+    granularSynth->prepareToPlay(sampleRate, bufferSize);
+    additiveSynth->prepareToPlay(sampleRate, bufferSize);
 }
 
-void GranularFlowWrapper::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void GranularFlowWrapper::processBlock(AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
+    // as granularSynth can take buffer IN, it needs to process first
+    if (processGranular)
+    {
+        granularSynth->processBlock(buffer, midiMessages);
+    }
+
+    if (processWavetable)
+    {
+        wavetableSynth->processBlock(buffer, midiMessages);
+    }
+
+    if (processAdditive)
+    {
+        additiveSynth->processBlock(buffer, midiMessages);
+    }
 }
 
 void GranularFlowWrapper::closeWindows()

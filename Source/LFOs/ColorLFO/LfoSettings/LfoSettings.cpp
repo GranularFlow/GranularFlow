@@ -17,10 +17,17 @@ LfoSettings::LfoSettings()
     addAndMakeVisible(depthKnob);
     addAndMakeVisible(rateKnob);
     addAndMakeVisible(uploadButton);
+
+    for (int8 i = 0; i < 5; i++)
+    {
+        separators.add(new Separator());
+        addAndMakeVisible(separators.getLast());
+    }
 }
 
 LfoSettings::~LfoSettings()
 {
+    separators.clear();
 }
 
 void LfoSettings::paint(Graphics& g)
@@ -49,14 +56,10 @@ void LfoSettings::resized()
     Utils::addToFb(&fb, uploadButton, 9, tmpWidth, tmpHeight/2);
 
 
-    for (int8 i = 0; i < 5; i++)
-    {
-        separators.add(new Separator());
-        addAndMakeVisible(separators.getLast());
-    }
+
 
     // White lines
-    for (int8 i = 0; i < 5; i++)
+    for (int8 i = 0; i < separators.size(); i++)
     {
         fb.items.add(FlexItem(*separators[i]).withMinWidth(1).withHeight(tmpHeight).withOrder((i + 1) * 2));
     }

@@ -8,6 +8,7 @@
   ==============================================================================
 */
 
+
 #pragma once
 #include <JuceHeader.h>
 #include "../../../Utils/Constants.h"
@@ -15,7 +16,6 @@
 #include "../../../CustomComponents/CustomLooks/RadioBox.h"
 #include "../../../CustomComponents/CustomLooks/Knob.h"
 #include "../../../CustomComponents/CustomLooks/Separator.h"
-
 class WavetableSynthSettings : public Component
 {
 public:

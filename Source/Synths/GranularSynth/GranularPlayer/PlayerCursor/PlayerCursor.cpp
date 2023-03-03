@@ -12,12 +12,10 @@
 
 PlayerCursor::PlayerCursor()
 {
-    //startTimer(30);
 }
 
 PlayerCursor::~PlayerCursor()
 {
-    //stopTimer();
 }
 
 void PlayerCursor::init(float positionPercentIn, Colour guiColourIn) {
@@ -27,8 +25,6 @@ void PlayerCursor::init(float positionPercentIn, Colour guiColourIn) {
 
 void PlayerCursor::paint(Graphics& g) {
     paintCursor(g);
-    //paintGrainLength(g);
-    //paintGrainPosition(g);
 }
 
 void PlayerCursor::paintCursor(Graphics& g) {
@@ -42,32 +38,10 @@ void PlayerCursor::paintCursor(Graphics& g) {
                   (float)CURSOR_BALL_RADIUS * 2);
 }
 
-void PlayerCursor::paintGrainLength(Graphics& g) {
-    g.setColour(Colour::fromRGBA(255,255,255,100));
-
-    if (false) {
-        // Ordered forward
-    }
-    else
-    {
-        // Ordered reversed
-
-    }
-    
-}
-
-void PlayerCursor::paintGrainPosition(Graphics& g) {
-    g.fillAll(Colours::white);
-}
-
 void PlayerCursor::setOpacity(int8 opacityIn)
 {
     opacity = opacityIn;
     repaint();
-}
-
-void PlayerCursor::timerCallback()
-{
 }
 
 float PlayerCursor::getCursorPositionInPixels(float cursorPositionPercent) {
@@ -103,10 +77,8 @@ void PlayerCursor::setCursorPositionPx(float cursorPositionIn)
     {
         if (!listenerPntr->isCurrentRunningMode(PlayerSettings::RUNNING))
         {
-            //DBG("cursorPosition" << cursorPosition);
             listenerPntr->onCursorPositionChange(getCursorPositionInPercent(cursorPosition));
-        }
-        
+        }        
     }
     repaint();   
 }
@@ -132,10 +104,3 @@ void PlayerCursor::mouseDown(const MouseEvent& event)
         setCursorPositionPx(event.x);
     }
 }
-
-void PlayerCursor::mouseUp(const MouseEvent&)
-{
-   
-}
-
-

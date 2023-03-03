@@ -16,13 +16,14 @@ class CustomClickableBox : public Component
 {
 public:
     // Class
-	CustomClickableBox(Colour, String);
+    CustomClickableBox(Colour, String, bool);
 	~CustomClickableBox();
     // GUI
     void paint(Graphics&)override;
     
 
 private:
+    bool fullSize = false;
     Colour color;
     String text;
 };

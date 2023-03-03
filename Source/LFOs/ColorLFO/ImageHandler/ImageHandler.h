@@ -51,8 +51,10 @@ private:
     float phase = 0;
 
     std::unique_ptr<juce::FileChooser> fileChooser;
-    LfoSettings* settings;
+    Component::SafePointer<LfoSettings> settings;
 
     Image image;
     ColorDecomposer decomposer;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ImageHandler);
 };

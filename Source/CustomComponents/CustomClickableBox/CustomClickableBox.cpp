@@ -10,8 +10,9 @@
 
 #include "CustomClickableBox.h"
 
-CustomClickableBox::CustomClickableBox(Colour colorIn, String textIn)
+CustomClickableBox::CustomClickableBox(Colour colorIn, String textIn, bool fullSizeIn)
 {
+    fullSize = fullSizeIn;
     color = colorIn;
     text = textIn;
 }
@@ -28,10 +29,17 @@ void CustomClickableBox::paint(Graphics& g)
 
     Rectangle<int> boxSize = getLocalBounds().withSize(width * 0.8, height * 0.3).withCentre(Point<int>(width / 2, (height * 0.75)));
 
-    g.setColour(L_GRAY);
+    if (fullSize)
+    {
+        g.setColour(color);
+    }
+    else
+    {
+        g.setColour(L_GRAY);
+    }
+    
     g.fillRoundedRectangle(getLocalBounds().withSizeKeepingCentre(width * 0.8, height * 0.8).toFloat(), cornerSize);
     g.setColour(color);
-    //g.fillRoundedRectangle(boxSize.toFloat(), getHeight() * 0.1);
 
     Path path;
     path.startNewSubPath(boxSize.getTopLeft().x, boxSize.getTopLeft().y);
@@ -44,9 +52,19 @@ void CustomClickableBox::paint(Graphics& g)
     path.lineTo(boxSize.getTopLeft().x, boxSize.getTopLeft().y);
 
     g.fillPath(path);
-    //g.strokePath(path, PathStrokeType(2.f, PathStrokeType::curved), AffineTransform::identity);
 
     g.setColour(C_WHITE);
-    g.setFont(Font("Oswald", boxSize.getHeight() * 0.5, 0));
-    g.drawFittedText(text, boxSize, Justification::centred, 1);
+
+   
+    // TODO TEXT DRAW
+    if (fullSize)
+    {
+        g.setFont(Font("Oswald", getHeight() * 0.4, 0));
+        g.drawFittedText(text, getLocalBounds(), Justification::centred, 1);
+    }
+    else
+    {
+        g.setFont(Font("Oswald", boxSize.getHeight() * 0.65, 0));
+        g.drawFittedText(text, boxSize, Justification::centred, 1);
+    }    
 }

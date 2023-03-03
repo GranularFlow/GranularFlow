@@ -13,9 +13,17 @@
 #include "../../Utils/Constants.h"
 #include "CustomLook.h"
 
-class Knob : public Component
+class Knob : public Component, private ComboBox::Listener
 {
 public:
+    struct KnobListener
+    {
+        virtual void setLfoPointer(int) = 0;
+    };
+
+    void setListener(KnobListener* listenerPntrIn) { knobListenerPntr = listenerPntrIn; }
+    void removeListener() { knobListenerPntr = nullptr; }
+
     // Class
     Knob(String, Colour, float, float, float, float);
     ~Knob();
@@ -25,6 +33,7 @@ public:
     // Listeners
     void addListener(Slider::Listener*);
     void removeListener(Slider::Listener*);
+    void comboBoxChanged(ComboBox*) override;
 
     // Getters
     float getValue();
@@ -32,6 +41,9 @@ public:
     // Slider TODO: wrap it to private
     Slider slider { Slider::SliderStyle::RotaryHorizontalDrag, Slider::TextEntryBoxPosition::NoTextBox };
 private:
+    std::unique_ptr<ComboBox> comboBox;
+    KnobListener* knobListenerPntr = nullptr;
+
     CustomLook customLook;
     String name;
     Colour guiColor;

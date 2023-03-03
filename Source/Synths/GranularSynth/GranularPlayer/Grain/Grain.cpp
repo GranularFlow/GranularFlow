@@ -96,10 +96,8 @@ void Grain::fillNextSamples(AudioBuffer<float>& sourceBuffer, AudioBuffer<float>
                 if (totalPosition < 0)
                 {
                     totalPosition = fmod(sourceBuffer.getNumSamples() + totalPosition, sourceBuffer.getNumSamples());
-                    //DBG("totalPosition" << totalPosition);
                 }
 
-                //DBG("totalPosition" << totalPosition);
                 float mirroredSample = interpolate(totalPosition, (int)std::floor(totalPosition) % sourceBuffer.getNumSamples(), (int)std::ceil(totalPosition + 1) % sourceBuffer.getNumSamples(), src[(int)std::floor(totalPosition) % sourceBuffer.getNumSamples()], src[(int)std::ceil(totalPosition + 1) % sourceBuffer.getNumSamples()]);
                 
                 if (mirroredSample != 0.0f)

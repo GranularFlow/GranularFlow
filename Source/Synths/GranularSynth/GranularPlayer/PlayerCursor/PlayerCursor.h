@@ -13,7 +13,7 @@
 #include "../../../../Utils/Constants.h"
 #include "../PlayerSettings/PlayerSettings.h"
 
-class PlayerCursor: public Component, public Timer
+class PlayerCursor: public Component
 {
 public:
 
@@ -35,15 +35,10 @@ public:
     // GUI
 	void paint(Graphics& g) override;
 	void paintCursor(Graphics& g);
-	void paintGrainLength(Graphics& g);
-	void paintGrainPosition(Graphics& g);
     void setOpacity(int8 opacityIn);
     // Listeners
-    void timerCallback() override;
-    //void onValueChange(float) override;
     void mouseDrag(const MouseEvent&) override;
     void mouseDown(const MouseEvent&) override;
-    void mouseUp(const MouseEvent&) override;
     // Getters
     float getCursorPositionInPixels(float);
     float getCursorPositionInPixels();

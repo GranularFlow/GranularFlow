@@ -20,7 +20,7 @@ ImageHandler::ImageHandler(Component::SafePointer<LfoSettings> settingsIn)
 
 ImageHandler::~ImageHandler()
 {
-    
+    fileChooser.release();
     settings->rateKnob.removeListener(this);
     settings->depthKnob.removeListener(this);
     delete settings;

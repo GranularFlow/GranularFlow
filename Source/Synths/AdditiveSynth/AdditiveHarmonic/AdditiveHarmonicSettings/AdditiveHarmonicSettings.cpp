@@ -18,6 +18,7 @@ AdditiveHarmonicSettings::AdditiveHarmonicSettings()
 
 AdditiveHarmonicSettings::~AdditiveHarmonicSettings()
 {
+    separators.clear();
 }
 
 void AdditiveHarmonicSettings::initGui()

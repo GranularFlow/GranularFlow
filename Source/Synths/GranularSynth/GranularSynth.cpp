@@ -12,7 +12,9 @@
 
 GranularSynth::GranularSynth()
 {
-    initGui();
+    addAndMakeVisible(granularSettings);
+    addAndMakeVisible(granularVisualiser);
+
     addListeners();
     initAudioSamples(getNumTotalSamples());        
 }
@@ -20,6 +22,7 @@ GranularSynth::GranularSynth()
 GranularSynth::~GranularSynth()
 {
     removeListeners();
+    granularPlayers.clear();
     audioSamples.clear();
     if (fileChooser != nullptr)
     {
@@ -32,13 +35,7 @@ GranularSynth::~GranularSynth()
     }
 }
 
-void GranularSynth::initGui()
-{
-    addAndMakeVisible(granularSettings, 0);
-    addAndMakeVisible(granularVisualiser, 1);    
-}
-
-inline void GranularSynth::paint(Graphics& g)
+void GranularSynth::paint(Graphics& g)
 {
     // Background
     g.fillAll(C_DARK);
@@ -46,8 +43,7 @@ inline void GranularSynth::paint(Graphics& g)
 }
 
 void GranularSynth::resized()
-{
-   
+{   
     // Top GranularSynthSettings
     int8 topSettingsHeight = 50;
 
@@ -72,8 +68,9 @@ void GranularSynth::addListeners() {
 }
 
 void GranularSynth::removeListeners(){
-    granularSettings.timeLengthNum.slider.removeListener(this);
     granularSettings.openAudioButton.removeListener(this);
+    granularSettings.openBufferButton.removeListener(this);
+    granularSettings.timeLengthNum.slider.removeListener(this);
     granularSettings.playerSelectNum.slider.removeListener(this);
     granularSettings.playerCountNum.slider.removeListener(this);
 }
@@ -100,8 +97,6 @@ void GranularSynth::handleMidi(MidiBuffer& midiMessages)
 
 void GranularSynth::loadAudioFromFile(File file)
 {   
-    DBG("loadAudioFromFile " << file.getFullPathName());
-
     AudioLoad audioLoad;
 
     audioSamples.setSize(2, getNumTotalSamples());
@@ -154,7 +149,6 @@ void GranularSynth::initAudioSamples(int numberToInit) {
         //int destChannel, int destStartSample, const AudioBuffer &source, int sourceChannel, int sourceStartSample, int numSample
         audioSamples.copyFrom(0, 0, tmpBuffer, 0, 0, minSamples);
         audioSamples.copyFrom(1, 0, tmpBuffer, 1, 0, minSamples);
-        DBG("pause");
     }
 
 }
@@ -250,7 +244,7 @@ void GranularSynth::buttonClicked(Button* buttonClicked)
     }
 }
 
-void GranularSynth::prepareToPlay(double sampleRateIn, int bufferSizeIn) {
+void GranularSynth::prepareToPlay(float sampleRateIn, int bufferSizeIn) {
     if (sampleRate != sampleRateIn) {
         sampleRate = sampleRateIn;
         for (GranularPlayer* player: granularPlayers)
@@ -279,18 +273,15 @@ void GranularSynth::selectPlayer(int8 playerNumber) {
     granularPlayers[playerNumber - 1]->toFront(true);
 }
 
-void GranularSynth::getNextBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& midiMessages)
+void GranularSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& midiMessages)
 {
     if (!waveFormWasSet)
     {
-        bufferToFill.clear();
         return;
     }
 
     if (inputFromFile)
     {
-        bufferToFill.clear();
-
         for (GranularPlayer* player : granularPlayers)
         {
             if (player->isCurrentMidiMode(PlayerSettings::MidiMode::ON))

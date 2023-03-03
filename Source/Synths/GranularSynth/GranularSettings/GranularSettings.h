@@ -28,13 +28,11 @@ public:
 
     // Class
     GranularSettings();
-    ~GranularSettings() override;
-    // Utils
-    void addComponents();
+    ~GranularSettings();
     // GUI
     void enablePlayers();
-    void paint (Graphics&) override;
-    void resized() override;
+    void paint(Graphics&) override;
+    void resized();
 
     // Buffer length - number of buffers to play from
     NumberSelect timeLengthNum{ "Length", C_ANDROID ,1.0, 3.0, 0.1, 3.0 };

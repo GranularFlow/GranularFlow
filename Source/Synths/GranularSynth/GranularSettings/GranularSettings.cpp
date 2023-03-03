@@ -14,16 +14,6 @@
 //==============================================================================
 GranularSettings::GranularSettings()
 {
-    addComponents();
-}
-
-GranularSettings::~GranularSettings()
-{
-   
-}
-
-void GranularSettings::addComponents()
-{
     addAndMakeVisible(openBufferButton);
     addAndMakeVisible(timeLengthNum);
     addAndMakeVisible(openAudioButton);
@@ -35,6 +25,11 @@ void GranularSettings::addComponents()
     playerCountNum.clearTop();
 }
 
+GranularSettings::~GranularSettings()
+{
+   
+}
+
 void GranularSettings::enablePlayers()
 {
     // This prevents from creating players before file Load
@@ -43,6 +38,7 @@ void GranularSettings::enablePlayers()
 
     playerSelectNum.slider.setValue(1, dontSendNotification);
     playerSelectNum.slider.setRange(1, playerCountNum.slider.getMaximum(), playerCountNum.slider.getInterval());
+
     playerSelectNum.setVisible(true);
     playerCountNum.setVisible(true);
 }

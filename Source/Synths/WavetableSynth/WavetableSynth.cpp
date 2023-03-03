@@ -11,8 +11,9 @@
 #include "WavetableSynth.h"
 
 
-WavetableSynth::WavetableSynth()
+WavetableSynth::WavetableSynth(LFO* colorLfoPntrIn)
 {
+    colorLfoPntr = colorLfoPntrIn;
     addAndMakeVisible(canvas1);
     addAndMakeVisible(canvas2);
     addAndMakeVisible(canvas3);
@@ -26,22 +27,26 @@ WavetableSynth::WavetableSynth()
 WavetableSynth::~WavetableSynth()
 {
     removeListeners();
+    colorLfoPntr = nullptr;
 }
 
 void WavetableSynth::addListeners()
 {
-    wavetableSettings.freqKnob.slider.addListener(this);
+    wavetableSettings.waveCountKnob.slider.addListener(this);
 }
 
 void WavetableSynth::removeListeners()
 {
-    wavetableSettings.freqKnob.slider.removeListener(this);
+    wavetableSettings.waveCountKnob.slider.removeListener(this);
 
 }
 
 void WavetableSynth::sliderValueChanged(Slider* slider)
 {
-
+    if (slider == &wavetableSettings.waveCountKnob.slider)
+    {
+        combineButton.triggerClick();
+    }
 }
 
 void WavetableSynth::paint(Graphics& g)
@@ -164,13 +169,13 @@ void WavetableSynth::initSamples()
     }
 }
 
-void WavetableSynth::prepareToPlay(double sampleRateIn)
+void WavetableSynth::prepareToPlay(float sampleRateIn, int bufferSizeIn)
 {
-    sampleRate = (float)sampleRateIn;
+    sampleRate = sampleRateIn;
 
 }
 
-void WavetableSynth::getNextBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& midiMessages)
+void WavetableSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& midiMessages)
 {
     float* leftChannel = bufferToFill.getWritePointer(0);
     float* rightChannel = bufferToFill.getWritePointer(1);

@@ -14,7 +14,9 @@
 #include "AdditiveSynthSettings/AdditiveSynthSettings.h"
 #include "AdditiveHarmonic/AdditiveHarmonic.h"
 #include "AdditiveVisualiser/AdditiveVisualiser.h"
-class AdditiveSynth : public Component, public Slider::Listener, public Button::Listener
+#include "../Synth.h"
+
+class AdditiveSynth : public Component, public Slider::Listener, public Button::Listener, public Synth
 {
 public:
     // Class
@@ -35,12 +37,16 @@ public:
     void removeHarmonic();
     void selectHarmonic(int);
 
+    // --------
+    void prepareToPlay(float, int)override;
+    void processBlock(AudioBuffer<float>&, juce::MidiBuffer&)override;
+    // --------
+    
     // Getters
-    void getNextBlock(AudioBuffer<float>&, juce::MidiBuffer&);
     // Setters
-    void prepareToPlay(double, int);
+    
 private:
-    int sampleRate = 48000;
+    float sampleRate = 48000;
     int bufferSize = 256;
     AdditiveSynthSettings additiveSynthSettings;
     AdditiveVisualiser additiveVisualiser;

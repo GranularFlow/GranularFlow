@@ -12,7 +12,7 @@
 
 #include "Utils/Constants.h"
 #include "Utils/Utils.h"
-#include "CustomComponents/GranularFlowWrapper/GranularFlowWrapper.h"
+#include "GranularFlowWrapper/GranularFlowWrapper.h"
 
 
 //==============================================================================

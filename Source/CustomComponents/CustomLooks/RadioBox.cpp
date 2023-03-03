@@ -30,6 +30,7 @@ RadioBox::~RadioBox() {
     }
 
     setLookAndFeel(nullptr);
+    toggleButtons.clear();
 }
 
 void RadioBox::paint(Graphics& g) {
@@ -63,8 +64,7 @@ int8 RadioBox::getValue(){
 
 void RadioBox::resized()
 {
-    //DBG("RESIZED");
-    juce::FlexBox fb {
+    FlexBox fb {
         FlexBox::Direction::column,
         FlexBox::Wrap::wrap,
         FlexBox::AlignContent::center,

@@ -19,7 +19,6 @@ GranularVisualiser::~GranularVisualiser()
 {
     stopTimer();
     ringBufferPointer = nullptr;
-    DBG("~GranularVisualiser");
 }
 
 void GranularVisualiser::paint(Graphics& g) {

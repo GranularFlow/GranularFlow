@@ -29,6 +29,7 @@ WavetableSynthSettings::WavetableSynthSettings()
 
 WavetableSynthSettings::~WavetableSynthSettings()
 {
+    separators.clear();
 }
 
 void WavetableSynthSettings::paint(Graphics& g)

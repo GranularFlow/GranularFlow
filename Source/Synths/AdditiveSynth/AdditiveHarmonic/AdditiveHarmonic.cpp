@@ -21,12 +21,11 @@ AdditiveHarmonic::AdditiveHarmonic(int sampleRateIn)
 AdditiveHarmonic::~AdditiveHarmonic()
 {
     stopTimer();
-
+    removeListeners();
 }
 
 void AdditiveHarmonic::paint(Graphics& g)
 {
-    //g.fillAll(C_GRASS);
 }
 
 void AdditiveHarmonic::resized()
@@ -128,14 +127,12 @@ void AdditiveHarmonic::handleMidi(MidiBuffer& midiMessages)
     iter.getNextEvent(midiMsg, midiPos);
     if (midiMsg.isNoteOn() && midiMsg.getNoteNumber() != lastMidiNote)
     {
-        DBG("on");
         midiNoteOn = true;
         lastMidiNote = midiMsg.getNoteNumber();
-        midiNoteFrequency = midiMsg.getMidiNoteInHertz(lastMidiNote, frequency); // freq maybe?
+        midiNoteFrequency = midiMsg.getMidiNoteInHertz(lastMidiNote, frequency);
     }
     else if (midiMsg.isNoteOff() && midiMsg.getNoteNumber() == lastMidiNote)
     {
-        DBG("off");
         midiNoteOn = false;
         lastMidiNote = -1;
         midiNoteFrequency = 0.f;

@@ -31,7 +31,7 @@ GranularFLowAudioProcessor::~GranularFLowAudioProcessor()
 //==============================================================================
 void GranularFLowAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-    granularFlowWrapper.prepareToPlay(sampleRate);
+    granularFlowWrapper.prepareToPlay((float)sampleRate, samplesPerBlock);
 }
 
 void GranularFLowAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)

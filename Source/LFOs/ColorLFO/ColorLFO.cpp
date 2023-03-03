@@ -16,12 +16,14 @@ ColorLFO::ColorLFO()
     addAndMakeVisible(settings);
     settings->uploadButton.addListener(this);
     addAndMakeVisible(*imageHandler);
-
 }
 
 ColorLFO::~ColorLFO()
 {
+   
     settings->uploadButton.removeListener(this);
+    delete imageHandler;
+    delete settings;
 }
 
 void ColorLFO::paint(Graphics& g)

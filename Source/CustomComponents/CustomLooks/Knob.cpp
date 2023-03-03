@@ -26,11 +26,24 @@ Knob::Knob(String nameIn, Colour guiColorIn, float startRangIn, float endRangeIn
     slider.setColour(Slider::ColourIds::textBoxOutlineColourId, C_TRANSPARENT);
 
     addAndMakeVisible(slider);
+
+    comboBox.reset(new ComboBox());
+    addAndMakeVisible(comboBox.get());
+    comboBox->setLookAndFeel(&customLook);
+    comboBox->addItem("--", 1);
+    comboBox->addItem("Color", 2);
+    comboBox->addItem("Bounce", 3);
+    comboBox->addItem("Wavetable", 4);
+    comboBox->addItem("Math", 5);
+
+    comboBox->addListener(this);
+    comboBox->setSelectedItemIndex(0);
 }
 
 Knob::~Knob()
 {
     setLookAndFeel(nullptr);
+    comboBox->setLookAndFeel(nullptr);
 }
 
 void Knob::paint(Graphics& g)
@@ -44,7 +57,21 @@ void Knob::paint(Graphics& g)
 
 void Knob::resized()
 {
-    slider.setBounds(getLocalBounds().withTrimmedTop(30));
+    slider.setBounds(
+        getLocalBounds()
+        .withTrimmedTop(25)
+        .withTrimmedBottom(50)
+        .withTrimmedLeft(getWidth()* 0.15)
+        .withTrimmedRight(getWidth() * 0.15)
+    );
+
+    comboBox->setBounds(
+        getLocalBounds()
+        .withTrimmedTop(getHeight()-50)
+        .withTrimmedBottom(25)
+        .withTrimmedLeft(getWidth() * 0.15)
+        .withTrimmedRight(getWidth() * 0.15)
+    );
 }
 
 
@@ -56,6 +83,14 @@ void Knob::addListener(Slider::Listener* listener)
 void Knob::removeListener(Slider::Listener* listener)
 {
     slider.removeListener(listener);
+}
+
+void Knob::comboBoxChanged(ComboBox* comboBox)
+{
+    if (knobListenerPntr!=nullptr)
+    {
+        knobListenerPntr->setLfoPointer(comboBox->getSelectedId());
+    }
 }
 
 float Knob::getValue()

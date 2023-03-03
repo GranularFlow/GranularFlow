@@ -28,6 +28,7 @@ public:
     static int secToSamples(float, int);
     static void addToFb(FlexBox*, Component&, int8, int, int);
     static void addToFb(FlexBox*, FlexBox, int8, int, int);
+    static void addToFb(FlexBox*, FlexItem, int8, int, int);
 
 private:
 

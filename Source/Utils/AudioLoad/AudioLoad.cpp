@@ -28,14 +28,12 @@ void AudioLoad::fillBuffer(AudioBuffer<float>& bufferToFill, int numSamplesToFil
     formatManager.registerBasicFormats();
 
     if (audioFile != juce::File{}) {
-        DBG("isnt file empty");
         std::unique_ptr<AudioFormatReader> reader(formatManager.createReaderFor(audioFile));
 
         int minFill = 0;
 
         if (reader != nullptr)
         {
-            DBG("reader can read");
             minFill = (numSamplesToFill == -1) ? reader->lengthInSamples : numSamplesToFill;
             reader->read(&bufferToFill, 0, minFill, 0, true, true);
             samplePosition += minFill;

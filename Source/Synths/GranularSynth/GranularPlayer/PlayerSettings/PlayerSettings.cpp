@@ -13,21 +13,13 @@
 
 PlayerSettings::PlayerSettings()
 {
-   initGui();
-}
-
-PlayerSettings::~PlayerSettings()
-{
-}
-
-void PlayerSettings::initGui() {
     // GUI
     for (int8 i = 0; i < 2; i++)
     {
         separators.add(new Separator());
         addAndMakeVisible(separators.getLast());
     }
-   
+
     // Play style
     addAndMakeVisible(granularModeRadioBox);
     addAndMakeVisible(runningModeRadioBox);
@@ -42,6 +34,11 @@ void PlayerSettings::initGui() {
     // Master
     addAndMakeVisible(volumeKnob);
     addAndMakeVisible(panKnob);
+}
+
+PlayerSettings::~PlayerSettings()
+{
+    separators.clear();
 }
 
 void PlayerSettings::paint(Graphics& g) {
@@ -95,7 +92,7 @@ void PlayerSettings::resized() {
     Utils::addToFb(&tmpFB, midiModeRadioBox, 3, tmpWidth, tmpHeight);
     Utils::addToFb(&tmpFB, windowTypeRadioBox, 4, tmpWidth, tmpHeight);
     // Add column to final flex box    
-    Utils::addToFb(&fb, tmpFB, 1, sectionWidth, sectionHeight);
+    Utils::addToFb(&fb, FlexItem(tmpFB), 1, sectionWidth, sectionHeight);
 
 
     tmpHeight = sectionHeight;
@@ -111,8 +108,8 @@ void PlayerSettings::resized() {
     Utils::addToFb(&tmpFB3, panKnob, 2, tmpWidth, tmpHeight);
 
     
-    Utils::addToFb(&fb, tmpFB2, 3, sectionWidth * 4, sectionHeight);
-    Utils::addToFb(&fb, tmpFB3, 5, sectionWidth * 2, sectionHeight);
+    Utils::addToFb(&fb, FlexItem(tmpFB2), 3, sectionWidth * 4, sectionHeight);
+    Utils::addToFb(&fb, FlexItem(tmpFB3), 5, sectionWidth * 2, sectionHeight);
 
 
     // White lines
@@ -120,6 +117,7 @@ void PlayerSettings::resized() {
     {
         Utils::addToFb(&fb, *separators[i], (i + 1) * 2, 1, sectionHeight);
     }
+
     fb.performLayout(getLocalBounds());
 }
 
@@ -157,11 +155,6 @@ float PlayerSettings::getGrainOffset()
 {
     return (float)grainOffsetKnob.getValue();
 }
-
-/*int PlayerSettings::getOffset()
-{
-    return cursorPositionKnob.getValue();
-}*/
 
 float PlayerSettings::getVolume()
 {

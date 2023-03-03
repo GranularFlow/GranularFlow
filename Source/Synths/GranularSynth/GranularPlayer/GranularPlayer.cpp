@@ -39,6 +39,7 @@ GranularPlayer::GranularPlayer(int totalSamplesIn, int sampleRateIn) {
 
 GranularPlayer::~GranularPlayer() {
     stopTimer();
+    grains.clear();
 }
 
 void GranularPlayer::paint(Graphics& g) {
@@ -58,7 +59,6 @@ void GranularPlayer::resized()
 void GranularPlayer::onCursorPositionChange(int cursorPositionIn)
 {    
     cursorPosition = (int)(cursorPositionIn * totalSamples/100);
-    //DBG("position" << cursorPosition);
 }
 
 bool GranularPlayer::isCurrentGranularMode(PlayerSettings::GranularMode mode)
@@ -82,7 +82,6 @@ int GranularPlayer::getMaxSamples() {
 
 void GranularPlayer::addGrain(int startPosition, int length) {    
     auto tmp_grain = new Grain(startPosition, Utils::msToSamples(length, sampleRate), 0, settings.getGrainPitch(), settings.getVolume() * settings.getPan(0), settings.getVolume() * settings.getPan(1));
-    //DBG("adding grain " << Utils::msToSamples(length, sampleRate));
     grains.add(tmp_grain);
 }
 

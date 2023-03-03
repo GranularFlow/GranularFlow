@@ -57,28 +57,22 @@ float Canvas::snapToClosestXPoint(float xValue)
 
     float absMin = fabs(xValue - (sampleDistance * 0));
     int closestPointIndex = 0;
-    //DBG("sampleDistance" << sampleDistance);
-    //DBG("Hledame min k " << xValue);
 
     for (int i = 1; i < waveTableSampleCount; i++)
     {
         float tmpAbs = fabs(xValue - (sampleDistance * i));
-        //DBG(tmpAbs << " < " << absMin);
-
         if (tmpAbs < absMin) {
             absMin = fabs(xValue - (sampleDistance * i));
             closestPointIndex = i;
         }
     }
 
-    //DBG("Snap nalezena" << sampleDistance * closestPointIndex);
     return sampleDistance * closestPointIndex;
 }
 
 void Canvas::addPoint(float newX, float newY)
 {
 
-    //DBG("AddPoint newX: " << newX << " , newY:" << newY);
     // Filter out
     if (newX > getWidth() ||
         newX < 0 ||
@@ -92,26 +86,21 @@ void Canvas::addPoint(float newX, float newY)
     // First value only
     if (xPos.size() == 0)
     {
-        //DBG("First value");
         xPos.add(0);
         yPos.add(newY);
         return;
     }
 
     newX = snapToClosestXPoint(newX);
-    //newY = snapToClosestYPoint(newX);
 
     // Check for X duplicate
     // Check mouse is moving forward only
     if (xPos.indexOf(newX) != -1) {
-        //DBG("Existing");
-        //DBG("newX: " << newX << " xPos.getLast(): " << xPos.getLast());
 
         return;
     }
     if (xPos.getLast() >= newX)
     {
-        //DBG("old one is bigger than new one");
         return;
     }
 
@@ -119,9 +108,7 @@ void Canvas::addPoint(float newX, float newY)
     // This prevents mouse skipping pixels 
     if (xPos.size() * sampleDistance != newX)
     {
-        //DBG("SKIPPED X: " << (xPos.size() * sampleDistance) << " we want to add: " << newX);
         // create skipped value average from last one and current one => their position is counted from left top corner
-
 
         int lastIndex = xPos.indexOf(xPos.getLast());
 
@@ -134,7 +121,6 @@ void Canvas::addPoint(float newX, float newY)
     }
 
     // Finally add values after filtering
-    //DBG("ADDED x: " << newX << " y: " << newY);
     xPos.add(newX);
     yPos.add(newY);   
 
