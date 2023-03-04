@@ -241,6 +241,9 @@ void WavetableSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& 
 
 float WavetableSynth::interpolate(float x, float x1, float x2, float y1, float y2)
 {
+    if ((x2 - x1) == 0) {
+        DBG("x2 " << x2 << " x1" << x1);
+    }
     return y1 + ((x - x1) * ((y2 - y1) / (x2 - x1)));
 }
 

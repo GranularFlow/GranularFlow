@@ -33,7 +33,7 @@ ResetButton::ResetButton()
     Colour overlayColourWhenDown,
     const float hitTestAlphaThreshold)
     */
-    buttonImage = buttonImage.rescaled(40, 40, Graphics::highResamplingQuality);
+    
 }
 
 ResetButton::~ResetButton()
@@ -43,8 +43,11 @@ ResetButton::~ResetButton()
 void ResetButton::paint(Graphics& g)
 {
     g.setColour(bgColor);
-    g.fillRoundedRectangle(getLocalBounds().reduced(getHeight() * 0.1f).toFloat(), getHeight() * 0.1f);    
-    g.drawImageAt(buttonImage, 10, 10);
+    int x = getLocalBounds().reduced(getHeight() * 0.1f).getHeight();
+    g.fillRoundedRectangle(getLocalBounds().reduced(getHeight() * 0.1f).toFloat(), getHeight() * 0.1f);  
+
+    buttonImage = buttonImage.rescaled(x, x, Graphics::highResamplingQuality);
+    g.drawImageAt(buttonImage, getHeight() * 0.1f, getHeight() * 0.1f);
 }
 
 void ResetButton::resized()

@@ -19,6 +19,8 @@
 #include "../Synths/AdditiveSynth/AdditiveSynth.h"
 #include "../LFOs/LFO.h"
 #include "../LFOs/ColorLFO/ColorLFO.h"
+#include "../LFOs/BounceLFO/BounceLFO.h"
+#include "../LFOs/WavetableLFO/WavetableLFO.h"
 
 class GranularFlowWrapper : public Component, public ResetButton::ResetListener
 {
@@ -28,6 +30,8 @@ public:
 	~GranularFlowWrapper();
 
     // GUI
+    void paintJacks(Graphics&, int, int, int);
+    void paintCables(Graphics&, int, int, int, int, int, int);
     void paint(Graphics&)override;
     void resized();
 
@@ -56,31 +60,40 @@ private:
 
     // LFOS
     std::unique_ptr<ColorLFO> colorLfo = std::make_unique<ColorLFO>();
+    std::unique_ptr<ColorLFO> bounceLfo = std::make_unique<ColorLFO>();
+    std::unique_ptr<ColorLFO> mathLfo = std::make_unique<ColorLFO>();
+    std::unique_ptr<ColorLFO> wavetableLfo = std::make_unique<ColorLFO>();
 
     // Synths
     std::unique_ptr<WavetableSynth> wavetableSynth = std::make_unique<WavetableSynth>();
     std::unique_ptr<GranularSynth> granularSynth = std::make_unique<GranularSynth>();
     std::unique_ptr<AdditiveSynth> additiveSynth = std::make_unique<AdditiveSynth>();
 
-
+   
+    // -------------------------------------
     // GUI ONLY
+    Separator topLine;
     // Synth
     ResetButton wavetableSynthReset;
     ResetButton granularSynthReset;
     ResetButton additiveSynthReset;
-
     Component::SafePointer<Component> wavetableSynthBox = new CustomClickableBox(C_MARINE, "WAVETABLE SYNTH", false);
     Component::SafePointer<Component> granularSynthBox = new CustomClickableBox(C_BILLS, "GRANULAR SYNTH", false);
     Component::SafePointer<Component> additiveSynthBox = new CustomClickableBox(C_ANDROID, "ADDITIVE SYNTH", false);
     // LFO
+    ResetButton colorLfoReset;
+    ResetButton bounceLfoReset;
+    ResetButton mathLfoReset;
+    ResetButton wavetableLfoReset;
     Component::SafePointer<Component> colorLfoBox = new CustomClickableBox(C_MARINE, "COLOR LFO", true);
     Component::SafePointer<Component> bounceLfoBox = new CustomClickableBox(C_BILLS, "BOUNCE LFO", true);
     Component::SafePointer<Component> mathLfoBox = new CustomClickableBox(C_ANDROID, "MATH LFO", true);
     Component::SafePointer<Component> wavetableLfoBox = new CustomClickableBox(C_ANDROID, "WAVETABLE LFO", true);
-
+    // -------------------------------------
 
     // Abstract non-visible windows that open synths
-    Array<Component::SafePointer<CustomWindow>> windows;
+    Array<Component::SafePointer<CustomWindow>> synthWindows;
+    Array<Component::SafePointer<CustomWindow>> lfoWindows;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GranularFlowWrapper);    
 };
