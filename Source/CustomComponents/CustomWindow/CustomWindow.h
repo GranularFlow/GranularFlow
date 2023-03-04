@@ -25,5 +25,4 @@ public:
     void hideWindow();
     void closeButtonPressed()override;
 private:
-
 };

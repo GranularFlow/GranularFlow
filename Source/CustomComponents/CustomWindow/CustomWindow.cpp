@@ -10,12 +10,11 @@
 
 #include "CustomWindow.h"
 
-CustomWindow::CustomWindow(String windowName, Component* component) : DocumentWindow(windowName,
+CustomWindow::CustomWindow(String windowName, Component* componentIn) : DocumentWindow(windowName,
     juce::Colours::lightgrey,
-    DocumentWindow::minimiseButton)
-{
-    setContentOwned(component, false);
-    //centreWithSize(W_WIDTH, W_HEIGHT);
+    DocumentWindow::minimiseButton){
+    setContentOwned(componentIn, false);
+    centreWithSize(W_WIDTH, W_HEIGHT);
 }
 
 CustomWindow::~CustomWindow()

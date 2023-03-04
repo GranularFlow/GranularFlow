@@ -11,48 +11,75 @@
 #include "GranularFlowWrapper.h"
 
 GranularFlowWrapper::GranularFlowWrapper()
-{
+{    
+    // -----
     // GUI
+    // -----
+    // Reset Buttons
+    addAndMakeVisible(wavetableSynthReset);
+    addAndMakeVisible(granularSynthReset);
+    addAndMakeVisible(additiveSynthReset);
+    // Synth squares
     addAndMakeVisible(wavetableSynthBox);
     addAndMakeVisible(granularSynthBox);
     addAndMakeVisible(additiveSynthBox);
-    
+    // Lfo squares
     addAndMakeVisible(colorLfoBox);
     addAndMakeVisible(bounceLfoBox);
     addAndMakeVisible(wavetableLfoBox);
     addAndMakeVisible(mathLfoBox);
 
-    // Synths
+    // Non visible process Synths    
     addChildComponent(wavetableSynth.get());
     addChildComponent(granularSynth.get());
     addChildComponent(additiveSynth.get());
 
+    // -----
+    // GUI WINDOWS
+    // -----
+    // add all components to separate windows
+    windows.add(new CustomWindow("Wavetable synth", wavetableSynth.get()));
+    windows.add(new CustomWindow("Granular synth", granularSynth.get()));
+    windows.add(new CustomWindow("Additive synth", additiveSynth.get()));
+
+    // -----------------
+    // IGNORE CLICKS
+    // -----------------
     // Child ignores clicks and lets Wrapper take mouse events instead
+    // Synth
     wavetableSynthBox->setInterceptsMouseClicks(false, false);
     granularSynthBox->setInterceptsMouseClicks(false, false);
     additiveSynthBox->setInterceptsMouseClicks(false, false);
-
+    // Lfo
     colorLfoBox->setInterceptsMouseClicks(false, false);
     bounceLfoBox->setInterceptsMouseClicks(false, false);
     wavetableLfoBox->setInterceptsMouseClicks(false, false);
     mathLfoBox->setInterceptsMouseClicks(false, false);
 
-    // add all components to separate windows
-    windows.add(new CustomWindow("Wavetable synth", wavetableSynth.get()));
-    windows.add(new CustomWindow("Granular synth", granularSynth.get()));
-    windows.add(new CustomWindow("Additive synth", additiveSynth.get()));
+    // -----------------
+    // Listeners
+    // -----------------
+    // Reset buttons
+    wavetableSynthReset.setListener(this);
+    granularSynthReset.setListener(this);
+    additiveSynthReset.setListener(this);
 }
 
 GranularFlowWrapper::~GranularFlowWrapper()
 {
-    // delete lfos that are inside synths
+    // -----------------
+    // Listeners
+    // -----------------
+    wavetableSynthReset.removeListener();
+    granularSynthReset.removeListener();
+    additiveSynthReset.removeListener();
     
-    // delete synths that are inside boxes
+    // Delete synths that are inside boxes
     wavetableSynth.release();
     additiveSynth.release();
     granularSynth.release();
 
-    // clean array of boxes
+    // Clean non-visible synths
     closeWindows();
 
     // clean boxes
@@ -146,14 +173,24 @@ void GranularFlowWrapper::paint(Graphics&g)
 
 void GranularFlowWrapper::resized()
 {
+    // Synth non visible windows set bounds
     for (auto& window : windows)
     {
         window->setBounds(getLocalBounds().withSizeKeepingCentre(W_WIDTH,W_HEIGHT));
     }
+
+    // RESET
+    wavetableSynthReset.setBounds(getLocalBounds().withSize(60, 60).withCentre(Point<int>(190, 80)));
+    granularSynthReset.setBounds(getLocalBounds().withSize(60, 60).withCentre(Point<int>(600, 80)));
+    additiveSynthReset.setBounds(getLocalBounds().withSize(60, 60).withCentre(Point<int>(1010, 80)));
+
+    // GUI visible synth boxes
     wavetableSynthBox->setBounds(getLocalBounds().withSize(320, 210).withCentre(Point<int>(190, 212)));
     granularSynthBox->setBounds(getLocalBounds().withSize(320, 210).withCentre(Point<int>(600, 212)));
     additiveSynthBox->setBounds(getLocalBounds().withSize(320, 210).withCentre(Point<int>(1010, 212)));
     
+
+    // GUI visible Lfo boxes
     FlexBox fb{
             FlexBox::Direction::row,
             FlexBox::Wrap::noWrap,
@@ -195,12 +232,41 @@ void GranularFlowWrapper::processBlock(AudioBuffer<float>& buffer, MidiBuffer& m
     }
 }
 
+void GranularFlowWrapper::reseted(ResetButton* button)
+{
+    if (button == &wavetableSynthReset && !processWavetable)
+    {
+        windows[0].deleteAndZero();
+        wavetableSynth.release();
+        wavetableSynth = std::make_unique<WavetableSynth>();
+        windows.set(0, new CustomWindow("Wavetable synth", wavetableSynth.get()));
+        repaint();
+    }
+    else if (button == &granularSynthReset && !processGranular)
+    {
+        windows[1].deleteAndZero();
+        granularSynth.release();
+        granularSynth = std::make_unique<GranularSynth>();
+        windows.set(1, new CustomWindow("Granular synth", granularSynth.get()));
+        repaint();
+    }
+    else if (button == &additiveSynthReset && !processAdditive)
+    {
+        windows[2].deleteAndZero();
+        additiveSynth.release();
+        additiveSynth = std::make_unique<AdditiveSynth>();
+        windows.set(2, new CustomWindow("Additive synth", additiveSynth.get()));
+        repaint();
+    }
+}
+
 void GranularFlowWrapper::closeWindows()
 {
     for (auto& window : windows)
     {
         window.deleteAndZero();
     }
+
     windows.clear();
 }
 

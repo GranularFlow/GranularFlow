@@ -11,9 +11,8 @@
 #include "WavetableSynth.h"
 
 
-WavetableSynth::WavetableSynth(LFO* colorLfoPntrIn)
+WavetableSynth::WavetableSynth()
 {
-    colorLfoPntr = colorLfoPntrIn;
     addAndMakeVisible(canvas1);
     addAndMakeVisible(canvas2);
     addAndMakeVisible(canvas3);
@@ -26,8 +25,12 @@ WavetableSynth::WavetableSynth(LFO* colorLfoPntrIn)
 
 WavetableSynth::~WavetableSynth()
 {
+    destroy();
+}
+
+void WavetableSynth::destroy()
+{
     removeListeners();
-    colorLfoPntr = nullptr;
 }
 
 void WavetableSynth::addListeners()

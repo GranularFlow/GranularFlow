@@ -26,4 +26,6 @@ private:
     bool fullSize = false;
     Colour color;
     String text;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CustomClickableBox);
 };

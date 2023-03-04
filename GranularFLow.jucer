@@ -21,6 +21,8 @@
           <FILE id="cYG6uf" name="NumberSelect.h" compile="0" resource="0" file="Source/CustomComponents/CustomLooks/NumberSelect.h"/>
           <FILE id="qDBQcH" name="RadioBox.cpp" compile="1" resource="0" file="Source/CustomComponents/CustomLooks/RadioBox.cpp"/>
           <FILE id="k7ks56" name="RadioBox.h" compile="0" resource="0" file="Source/CustomComponents/CustomLooks/RadioBox.h"/>
+          <FILE id="u4r5uN" name="ResetButton.cpp" compile="1" resource="0" file="Source/CustomComponents/CustomLooks/ResetButton.cpp"/>
+          <FILE id="n3b6Tk" name="ResetButton.h" compile="0" resource="0" file="Source/CustomComponents/CustomLooks/ResetButton.h"/>
           <FILE id="qWKx5h" name="Separator.h" compile="0" resource="0" file="Source/CustomComponents/CustomLooks/Separator.h"/>
         </GROUP>
         <GROUP id="{01624925-A93A-351D-869B-C1CE9D27BE35}" name="CustomWindow">
@@ -30,6 +32,7 @@
         </GROUP>
         <GROUP id="{5515478B-6641-21C1-82E2-09D3E84EDF58}" name="Images">
           <FILE id="F7v2Aj" name="logo250.png" compile="0" resource="1" file="Source/CustomComponents/Images/logo250.png"/>
+          <FILE id="aMlHAC" name="reload.png" compile="0" resource="1" file="Source/CustomComponents/Images/reload.png"/>
         </GROUP>
       </GROUP>
       <GROUP id="{8B1E364F-F129-5066-2214-6EBCF7C77EFB}" name="GranularFlowWrapper">

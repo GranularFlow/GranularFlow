@@ -23,8 +23,9 @@ class WavetableSynth : public Component, public Button::Listener, public Slider:
 {
 public:
     // Class
-	WavetableSynth(LFO*);
+	WavetableSynth();
 	~WavetableSynth();
+    void destroy();
 
     // Listeners
     void addListeners();
@@ -49,7 +50,6 @@ public:
     void handleMidi(MidiBuffer&);
 
 private:
-    LFO* colorLfoPntr = nullptr;
     TextButton combineButton{ "SYNTHESIZE" };
     Canvas canvas1 { "FIRST WAVE" };
     Canvas canvas2 { "SECOND WAVE" };
