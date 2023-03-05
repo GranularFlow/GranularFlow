@@ -12,42 +12,43 @@
 #include <JuceHeader.h>
 #include "../../Utils/Constants.h"
 #include "../../Utils/Utils.h"
+#include "../../CustomComponents/CustomLooks/Knob.h"
 #include "WavetableSynthSettings/WavetableSynthSettings.h"
 #include "Canvas/Canvas.h"
 #include "Visualiser/Visualiser.h"
 
-#include "../../LFOs/LFO.h"
-#include "../Synth.h"
-
-class WavetableSynth : public Component, public Button::Listener, public Slider::Listener, public Synth
+class WavetableSynth : public Component, public Button::Listener, public Slider::Listener
 {
 public:
     // Class
 	WavetableSynth();
 	~WavetableSynth();
-    void destroy();
 
     // Listeners
-    void addListeners();
-    void removeListeners();
+    // Slider Listener ------------------------------
     void sliderValueChanged(Slider*) override;
+    // ----------------------------------------------
+    // Button Listener ------------------------------
     void buttonClicked(Button*) override;
+    // ----------------------------------------------
 
-    // GUI
+    // GUI - Component ------------------------------
     void paint(Graphics&) override;
     void resized()override;
+    // ----------------------------------------------
     
-    // --------
-    void prepareToPlay(float, int)override;
-    void processBlock(AudioBuffer<float>&, MidiBuffer&)override;
-    // --------
+    // Synth ----------------------------------------
+    void prepareToPlay(float, int);
+    void processBlock(AudioBuffer<float>&, MidiBuffer&);
+    // ----------------------------------------------
    
     // Tools
     void initSamples();
-    float interpolate(float x, float x1, float x2, float y1, float y2);
-    float cubicInterpolate(float);
-    double interpolateHermite(double);
     void handleMidi(MidiBuffer&);
+
+
+    void setKnobsListener(Knob::KnobListener*);
+
 
 private:
     TextButton combineButton{ "SYNTHESIZE" };
@@ -57,7 +58,6 @@ private:
     Visualiser canvas4;
     WavetableSynthSettings wavetableSettings;
     Array<float> sampleY;
-    Array<float> sampleX;
 
     float frequency = 440;
     float sampleRate = 48000;

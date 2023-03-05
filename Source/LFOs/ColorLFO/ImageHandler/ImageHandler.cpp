@@ -20,31 +20,17 @@ ImageHandler::ImageHandler(Component::SafePointer<LfoSettings> settingsIn)
 
 ImageHandler::~ImageHandler()
 {
-    fileChooser.release();
+    imageHandlerListener = nullptr;
     settings->rateKnob.removeListener(this);
     settings->depthKnob.removeListener(this);
-    delete settings;
 }
 
 void ImageHandler::paint(Graphics& g)
 {
-    
     if (isImageSet())
     {
         g.drawImageWithin(image, 0, 10, (getWidth()/2) - 20, getHeight() - 20, juce::RectanglePlacement::centred);
-    }
-
-    g.setColour(M_T_LIGHT);
-
-    Path p1;
-    p1.startNewSubPath(Point<float>(currentX, 0));
-    p1.lineTo(currentX, getHeight());
-    g.strokePath(p1, PathStrokeType(1.f));
-
-    Path p2;
-    p2.startNewSubPath(Point<float>(0, currentY));
-    p2.lineTo(getWidth(), currentY);
-    g.strokePath(p2, PathStrokeType(1.f));    
+    }    
 }
 
 void ImageHandler::resized()
@@ -63,6 +49,12 @@ void ImageHandler::loadImage()
 
     fileChooser->launchAsync({}, [this](const FileChooser& fc) {
         setImage(fc.getResult());
+        repaint();
+
+        if (imageHandlerListener != nullptr)
+        {
+            imageHandlerListener->imageLoaded();
+        }
     });
 
 }
@@ -72,7 +64,7 @@ bool ImageHandler::isImageSet()
     return !image.isNull();
 }
 
-void ImageHandler::prepareToPlay(float sampleRateIn)
+void ImageHandler::prepareToPlay(double sampleRateIn)
 {
     sampleRate = sampleRateIn;
 }
@@ -85,33 +77,31 @@ void ImageHandler::sliderValueChanged(Slider* slider)
     }
 }
 
-int ImageHandler::getRed(int x, int y)
+float ImageHandler::getRed(int x, int y)
 {
-    return image.getPixelAt(x, y).getRed();
+    return image.getPixelAt(x, y).getFloatRed();
+}
+    
+
+float ImageHandler::getGreen(int x, int y)
+{
+    return image.getPixelAt(x, y).getFloatGreen();
 }
 
-int ImageHandler::getGreen(int x, int y)
+float ImageHandler::getBlue(int x, int y)
 {
-    return image.getPixelAt(x, y).getGreen();
+    return image.getPixelAt(x, y).getFloatBlue();
 }
 
-int ImageHandler::getBlue(int x, int y)
-{
-    return image.getPixelAt(x, y).getBlue();
-}
-
-void ImageHandler::getNext()
-{
-    if (!isImageSet()) {
-        return ;
-    }   
+double ImageHandler::getNext()
+{     
 
     // What direction to go for a pixel
     if (settings->isCurrentDirection(LfoSettings::RANDOM))
     {
         Random random;
-        currentX = random.nextInt(getImageWidth());
-        currentY = random.nextInt(getImageHeight());
+        currentX = random.nextInt((getWidth() / 2) - 20);
+        currentY = random.nextInt(getHeight() - 20);
     }
     else if (settings->isCurrentDirection(LfoSettings::FORWARD)) {
         phase = abs(fmod(phase + increment, 1.f));
@@ -134,10 +124,12 @@ void ImageHandler::getNext()
         }
     }
 
-    decomposer.setRGB(getRed(currentX, currentY), getGreen(currentX, currentY), getBlue(currentX, currentY));
+    decomposer.setRGB(
+        image.getPixelAt(currentX, currentY).getRed(),
+        image.getPixelAt(currentX, currentY).getGreen(),
+        image.getPixelAt(currentX, currentY).getBlue());
 
-    
-
+    double outputValue = 0;
     // What color to get
     if (settings->isCurrentSelectedColor(LfoSettings::RED))
     {
@@ -152,7 +144,7 @@ void ImageHandler::getNext()
         outputValue = getBlue(currentX, currentY);
     }
 
-    outputValue = (outputValue /(float)255) * (settings->getDepth() / (float)100);
+    return outputValue * settings->getDepth();
 }
 
 int ImageHandler::getImageHeight()

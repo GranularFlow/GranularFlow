@@ -19,31 +19,16 @@ WavetableSynth::WavetableSynth()
     addAndMakeVisible(canvas4);
     addAndMakeVisible(combineButton);
     combineButton.addListener(this);
-    addListeners();
+    wavetableSettings.waveCountKnob.slider.addListener(this);
+
     addAndMakeVisible(wavetableSettings);
 }
 
 WavetableSynth::~WavetableSynth()
 {
-    destroy();
-}
-
-void WavetableSynth::destroy()
-{
-    removeListeners();
-}
-
-void WavetableSynth::addListeners()
-{
-    wavetableSettings.waveCountKnob.slider.addListener(this);
-}
-
-void WavetableSynth::removeListeners()
-{
     wavetableSettings.waveCountKnob.slider.removeListener(this);
-
+    combineButton.removeListener(this);
 }
-
 void WavetableSynth::sliderValueChanged(Slider* slider)
 {
     if (slider == &wavetableSettings.waveCountKnob.slider)
@@ -85,7 +70,7 @@ void WavetableSynth::buttonClicked(Button* button)
             canvas2.waveTableSamples.size() > 0 &&
             canvas3.waveTableSamples.size() > 0)
         {
-            initSamples();
+            initSamples(); 
             canvas4.setWaveForm(sampleY);
         }
     }
@@ -149,7 +134,7 @@ void WavetableSynth::initSamples()
             int x2 = semiWaves + 1;
             
             //float (float x, float x1, float x2, float y1, float y2
-            float y = interpolate(x1 + 1, x1, x2, y1, y2);
+            float y = Utils::interpolateLinear(x1 + 1, x1, x2, y1, y2);
 
             onePointEachWave.add(y);
         }
@@ -214,16 +199,16 @@ void WavetableSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& 
         float finalSample = 0;
         if (wavetableSettings.isCurrentInterpolationType(WavetableSynthSettings::LINEAR))
         {
-           finalSample = interpolate(totalPosition, (int)std::floor(totalPosition) % sampleY.size(), (int)std::ceil(totalPosition + 1) % sampleY.size(), sampleY[(int)std::floor(totalPosition) % sampleY.size()], sampleY[(int)std::ceil(totalPosition + 1) % sampleY.size()]);
+           finalSample = Utils::interpolateLinear(totalPosition, (int)std::floor(totalPosition) % sampleY.size(), (int)std::ceil(totalPosition + 1) % sampleY.size(), sampleY[(int)std::floor(totalPosition) % sampleY.size()], sampleY[(int)std::ceil(totalPosition + 1) % sampleY.size()]);
 
         }
         else if (wavetableSettings.isCurrentInterpolationType(WavetableSynthSettings::CUBIC))
         {
-            finalSample = cubicInterpolate(totalPosition);
+            finalSample = Utils::interpolateCubic(totalPosition, sampleY);
         }
         else if (wavetableSettings.isCurrentInterpolationType(WavetableSynthSettings::HERMITE))
         {
-            finalSample = interpolateHermite(totalPosition);
+            finalSample = Utils::interpolateHermite(totalPosition, sampleY);
         }
          
 
@@ -237,97 +222,6 @@ void WavetableSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& 
         rightChannel[i] += (finalSample * wavetableSettings.getVolume() * wavetableSettings.getPan(1));
         currentPosition++;
     }   
-}
-
-float WavetableSynth::interpolate(float x, float x1, float x2, float y1, float y2)
-{
-    if ((x2 - x1) == 0) {
-        DBG("x2 " << x2 << " x1" << x1);
-    }
-    return y1 + ((x - x1) * ((y2 - y1) / (x2 - x1)));
-}
-
-float WavetableSynth::cubicInterpolate(float x)
-{
-    int n = sampleY.size() - 1;
-    int i = 0;
-
-    // find the segment containing x
-    while (i < n && x > i + 1)
-        i++;
-    
-    // calculate the coefficients of the cubic polynomial for the segment
-    double h = i + 1 - i;
-    double t = (x - i) / h;
-    double t2 = t * t;
-    double t3 = t2 * t;
-    double c0 = sampleY[i];
-    double c1 = h * sampleY[i + 1] - h * sampleY[i];
-    double c2 = -2 * h * sampleY[i + 1] + 2 * h * sampleY[i] + 3 * (sampleY[i + 1] - sampleY[i]);
-    double c3 = 1 * h * sampleY[i + 1] - 1 * h * sampleY[i] - 2 * (sampleY[i + 1] - sampleY[i]);
-
-    // evaluate the cubic polynomial at x
-    double y = c0 + c1 * t + c2 * t2 + c3 * t3;
-    /*
-    DBG("x " << x);
-    DBG("n " << n);
-    DBG("h " << h);
-    DBG("t " << t);
-    DBG("t2 " << t2);
-    DBG("t3 " << t3);
-    DBG("c0 " << c0);
-    DBG("c1 " << c1);
-    DBG("c2 " << c2);
-    DBG("c3 " << c3);
-
-    DBG("i " << i);
-    DBG("y " << y);*/
-    return y;
-}
-
-double WavetableSynth::interpolateHermite(double wantedX)
-{
-    int n = sampleY.size();
-
-    // Find the interval containing the wanted x
-    int i = 0;
-    while (i < n - 1 && wantedX > i + 1)
-        i++;
-
-    // Compute the tangents at the interval endpoints
-    double m0, m1;
-    if (i == 0) {
-        m0 = (sampleY[1] - sampleY[0]) / (1);
-        m1 = (sampleY[2] - sampleY[1]) / (1);
-    }
-    else if (i == n - 2) {
-        m0 = (sampleY[n - 2] - sampleY[n - 3]) / ((n - 2) - (n - 3));
-        m1 = (sampleY[n - 1] - sampleY[n - 2]) / ((n - 1) - (n - 2));
-    }
-    else {
-        double t = (wantedX - i) / (i + 1 - i);
-        double t2 = t * t;
-
-        double h00 = 2 * t2 * t - 3 * t2 + 1;
-        double h10 = t2 * t - 2 * t2 + t;
-        double h01 = -2 * t2 * t + 3 * t2;
-        double h11 = t2 * t - t2;
-
-        m0 = (h00 * sampleY[i] + h10 * (i + 1 - i) * m0 + h01 * sampleY[i + 1] + h11 * (i + 1 - i) * m1) / (i + 1 - i);
-        m1 = (h00 * sampleY[i + 1] + h10 * (i + 1 - i) * m0 + h01 * sampleY[i + 2] + h11 * (i + 2 - i + 1) * m1) / (i + 1 - i);
-    }
-
-    // Interpolate using the Hermite formula
-    double t = (wantedX - i) / (i + 1 - i);
-    double t2 = t * t;
-    double t3 = t2 * t;
-
-    double h00 = 2 * t3 - 3 * t2 + 1;
-    double h10 = t3 - 2 * t2 + t;
-    double h01 = -2 * t3 + 3 * t2;
-    double h11 = t3 - t2;
-
-    return h00 * sampleY[i] + h10 * (i + 1 - i) * m0 + h01 * sampleY[i + 1] + h11 * (i + 1 - i) * m1;
 }
 
 void WavetableSynth::handleMidi(MidiBuffer& midiMessages)
@@ -349,3 +243,11 @@ void WavetableSynth::handleMidi(MidiBuffer& midiMessages)
         increment = 1.0f;
     }
 }
+
+void WavetableSynth::setKnobsListener(Knob::KnobListener* knobListenerPntr)
+{
+    wavetableSettings.freqKnob.setListener(knobListenerPntr);
+    wavetableSettings.waveCountKnob.setListener(knobListenerPntr);
+    wavetableSettings.volumeKnob.setListener(knobListenerPntr);
+    wavetableSettings.panKnob.setListener(knobListenerPntr);
+};

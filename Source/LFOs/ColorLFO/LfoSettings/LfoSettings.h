@@ -42,16 +42,16 @@ public:
     bool isCurrentDirection(Direction);
     bool isCurrentSelectedColor(SelectedColor);
 
-    int getRate();
-    int getDepth();
+    float getRate();
+    float getDepth();
 
     //  -- Button
-    TextButton uploadButton{ "LOAD" };
+    TextButton uploadButton { "LOAD" };
     // Settings
-    RadioBox directionRadioBox{ "DIRECTION", C_BARARED, DIRECTION_MODE };
-    Knob rateKnob{ "RATE", C_BILLS, 1000, 20000, 1000, 1000 };
-    Knob depthKnob{ "DEPTH", C_BILLS, 1, 100, 1, 50 };
-    RadioBox colorSelectRadioBox{ "SELECTED COLOR", C_BARARED, SELECTED_COLOR };
+    RadioBox directionRadioBox { "DIRECTION", C_BARARED, DIRECTION_MODE };
+    Knob rateKnob { "RATE", C_BILLS, 1, 20, 1, 2, false };
+    Knob depthKnob { "DEPTH", C_BILLS, 0, 1, 0.1, 0.5, false };
+    RadioBox colorSelectRadioBox { "SELECTED COLOR", C_BARARED, SELECTED_COLOR };
 private:
     // GUI
     OwnedArray<Separator> separators;

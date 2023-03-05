@@ -78,12 +78,12 @@ bool LfoSettings::isCurrentSelectedColor(SelectedColor selectedColor)
     return (colorSelectRadioBox.getValue() == selectedColor);
 }
 
-int LfoSettings::getRate()
+float LfoSettings::getRate()
 {
     return rateKnob.getValue();
 }
 
-int LfoSettings::getDepth()
+float LfoSettings::getDepth()
 {
     return depthKnob.getValue();
 }

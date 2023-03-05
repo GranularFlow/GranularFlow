@@ -58,7 +58,8 @@ void RadioBox::buttonStateChanged(Button* button)
 
 void RadioBox::buttonClicked(Button* button){}
 
-int8 RadioBox::getValue(){
+
+float RadioBox::getValue(){
     return value;
 }
 

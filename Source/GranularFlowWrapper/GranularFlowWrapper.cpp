@@ -44,7 +44,7 @@ GranularFlowWrapper::GranularFlowWrapper()
     //LFO
     addChildComponent(colorLfo.get());
     addChildComponent(bounceLfo.get());
-    addChildComponent(mathLfo.get());
+    //TODOaddChildComponent(mathLfo.get());
     addChildComponent(wavetableLfo.get());
 
     // -----
@@ -58,7 +58,7 @@ GranularFlowWrapper::GranularFlowWrapper()
     // LFO
     lfoWindows.add(new CustomWindow("Color LFO", colorLfo.get()));
     lfoWindows.add(new CustomWindow("Bounce LFO", bounceLfo.get()));
-    lfoWindows.add(new CustomWindow("Math LFO", mathLfo.get()));
+    //TODOlfoWindows.add(new CustomWindow("Math LFO", mathLfo.get()));
     lfoWindows.add(new CustomWindow("Wavetable LFO", wavetableLfo.get()));
 
     // -----------------
@@ -87,6 +87,8 @@ GranularFlowWrapper::GranularFlowWrapper()
     bounceLfoReset.setListener(this);
     mathLfoReset.setListener(this);
     wavetableLfoReset.setListener(this);
+
+    setAllKnobs();
 }
 
 GranularFlowWrapper::~GranularFlowWrapper()
@@ -113,7 +115,7 @@ GranularFlowWrapper::~GranularFlowWrapper()
     //LFO
     colorLfo.release();
     bounceLfo.release();
-    mathLfo.release();
+    //TODOmathLfo.release();
     wavetableLfo.release();
 
     // Clean non-visible synths and lfos
@@ -262,7 +264,7 @@ void GranularFlowWrapper::resized()
 
 void GranularFlowWrapper::prepareToPlay(float sampleRate, int bufferSize)
 {
-    wavetableSynth->prepareToPlay(sampleRate, bufferSize);
+    //TODOwavetableSynth->prepareToPlay(sampleRate, bufferSize);
     granularSynth->prepareToPlay(sampleRate, bufferSize);
     additiveSynth->prepareToPlay(sampleRate, bufferSize);
 }
@@ -332,9 +334,9 @@ void GranularFlowWrapper::reseted(ResetButton* button)
     else if (button == &mathLfoReset)
     {
         lfoWindows[2].deleteAndZero();
-        mathLfo.release();
-        mathLfo = std::make_unique<MathLFO>();
-        lfoWindows.set(2, new CustomWindow("Math LFO", mathLfo.get()));
+        //TODOmathLfo.release();
+        //TODOmathLfo = std::make_unique<MathLFO>();
+        //TODOlfoWindows.set(2, new CustomWindow("Math LFO", mathLfo.get()));
         repaint();
     }
     else if (button == &wavetableLfoReset)
@@ -346,6 +348,52 @@ void GranularFlowWrapper::reseted(ResetButton* button)
         repaint();
     }
 
+}
+
+void GranularFlowWrapper::setLfoPointer(Knob* knobPntr, int lfoId)
+{
+    DBG("add pointerLFO" << lfoId);
+
+    switch (lfoId)
+    {
+    case 2:
+        colorLfo.get()->addKnobToListeners(knobPntr);
+        break;
+    case 3:
+        //bounceLfo.get()->addKnobToListeners(knobPntr);
+        break;
+    case 4:
+        //TODOmathLfo.get()->addKnobToListeners(knobPntr);
+        break;
+    case 5:
+        //wavetableLfo.get()->addKnobToListeners(knobPntr);
+        break;
+    default:
+        break;
+    }
+}
+
+void GranularFlowWrapper::removeLfoPointer(Knob* knobPntr, int lfoId)
+{
+    DBG("remove pointerLFO" << lfoId);
+
+    switch (lfoId)
+    {
+    case 2:
+        colorLfo->removeKnobFromListeners(knobPntr);
+        break;
+    case 3:
+        //bounceLfo.get()->addKnobToListeners(knobPntr);
+        break;
+    case 4:
+        //TODOmathLfo.get()->addKnobToListeners(knobPntr);
+        break;
+    case 5:
+        //wavetableLfo.get()->addKnobToListeners(knobPntr);
+        break;
+    default:
+        break;
+    }
 }
 
 void GranularFlowWrapper::closeWindows()
@@ -434,4 +482,9 @@ void GranularFlowWrapper::mouseDown(const MouseEvent& e)
         lfoWindows[3]->showWindow();
         lfoWindows[3]->toFront(true);
     }
+}
+
+void GranularFlowWrapper::setAllKnobs()
+{
+    additiveSynth->setKnobsListener(this);
 }

@@ -12,33 +12,25 @@
 #include <JuceHeader.h>
 #include "../../Utils/Constants.h"
 #include "../../Utils/Utils.h"
+#include "../LFO.h"
 #include "WavetableLfoSettings/WavetableLfoSettings.h"
 #include "WavetableLfoCanvas/WavetableLfoCanvas.h"
 #include "WavetableLfoVisualiser/WavetableLfoVisualiser.h"
 
-class WavetableLFO : public Component, public Button::Listener, public Slider::Listener
+class WavetableLFO : public Component, public Button::Listener, public Slider::Listener, public LFO
 {
 public:
     // Class
 	WavetableLFO();
 	~WavetableLFO();
-
-
     // Listeners
-    void addListeners();
-    void removeListeners();
     void sliderValueChanged(Slider*) override;
     void buttonClicked(Button*) override;
-
     // GUI
     void paint(Graphics&) override;
-    void paintLogoOnce(Graphics&);
-    void resized()override;
-    
+    void resized()override;    
     // Tools
     void initSamples();
-    float interpolate(float x, float x1, float x2, float y1, float y2);
-
     float getNext();
 private:
     TextButton combineButton{ "COMBINE" };
@@ -48,7 +40,6 @@ private:
     WavetableLfoVisualiser canvas4;
     WavetableLfoSettings wavetableSettings;
     Array<float> sampleY;
-    Array<float> sampleX;
 
     float frequency = 440;
     float sampleRate = 48000;

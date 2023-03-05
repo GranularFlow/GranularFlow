@@ -30,6 +30,10 @@ public:
     static void addToFb(FlexBox*, FlexBox, int8, int, int);
     static void addToFb(FlexBox*, FlexItem, int8, int, int);
 
+    //Interpolations
+    static double interpolateLinear(double x, double x1, double x2, double y1, double y2);
+    static double interpolateCubic(double x, Array<float>sampleY);
+    static double interpolateHermite(double x, Array<float>sampleY);
 private:
 
 };

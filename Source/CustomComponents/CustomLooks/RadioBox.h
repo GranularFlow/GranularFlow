@@ -26,7 +26,7 @@ public:
     void buttonStateChanged(Button*) override;
     void buttonClicked(Button*) override;
     // Getters
-    int8 getValue();
+    float getValue();
 
 private:
     CustomLook customLook;

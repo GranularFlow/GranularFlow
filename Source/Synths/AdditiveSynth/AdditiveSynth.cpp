@@ -12,21 +12,18 @@
 
 AdditiveSynth::AdditiveSynth()
 {
-    initGui();
-    addListeners();
-    addNewHarmonic();
+    addAndMakeVisible(additiveSynthSettings);
+    addAndMakeVisible(additiveVisualiser);
+    additiveSynthSettings.harmonicCount.slider.addListener(this);
+    additiveSynthSettings.harmonicSelect.slider.addListener(this);
 }
 
 AdditiveSynth::~AdditiveSynth()
 {
-    removeListeners();
+    additiveSynthSettings.harmonicCount.slider.removeListener(this);
+    additiveSynthSettings.harmonicSelect.slider.removeListener(this);
     additiveHarmonics.clear();
-}
-
-void AdditiveSynth::initGui()
-{
-    addAndMakeVisible(additiveSynthSettings, 0);
-    addAndMakeVisible(additiveVisualiser, 1);
+    knobListener = nullptr;
 }
 
 void AdditiveSynth::paint(Graphics& g)
@@ -67,6 +64,11 @@ void AdditiveSynth::sliderValueChanged(Slider* slider)
             removeHarmonic();
         }
 
+        for (AdditiveHarmonic* harmonic : additiveHarmonics)
+        {
+            harmonic->setKnobsListener(knobListener);
+        }
+
         // After adding, select this new player
         additiveSynthSettings.harmonicSelect.slider.setValue(val);
     }
@@ -86,22 +88,6 @@ void AdditiveSynth::sliderValueChanged(Slider* slider)
     }
 }
 
-void AdditiveSynth::buttonClicked(Button*)
-{
-}
-
-void AdditiveSynth::addListeners()
-{
-    additiveSynthSettings.harmonicCount.slider.addListener(this);
-    additiveSynthSettings.harmonicSelect.slider.addListener(this);
-}
-
-void AdditiveSynth::removeListeners()
-{
-    additiveSynthSettings.harmonicCount.slider.removeListener(this);
-    additiveSynthSettings.harmonicSelect.slider.removeListener(this);
-}
-
 void AdditiveSynth::addNewHarmonic()
 {
     const MessageManagerLock mmLock;
@@ -112,6 +98,7 @@ void AdditiveSynth::addNewHarmonic()
 
 void AdditiveSynth::removeHarmonic()
 {
+    additiveHarmonics.getLast()->removeKnobsListener();
     additiveHarmonics.removeLast();
     resized();
 }
@@ -140,4 +127,9 @@ void AdditiveSynth::prepareToPlay(float sampleRateIn, int bufferSizeIn)
     {
         harmonic->setSampleRate(sampleRate);
     }
+}
+
+void AdditiveSynth::setKnobsListener(Knob::KnobListener* knobListenerPntr)
+{
+    knobListener = knobListenerPntr;
 }

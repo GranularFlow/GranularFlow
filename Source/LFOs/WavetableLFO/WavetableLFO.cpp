@@ -18,25 +18,15 @@ WavetableLFO::WavetableLFO()
     addAndMakeVisible(canvas3);
     addAndMakeVisible(canvas4);
     addAndMakeVisible(combineButton);
-    combineButton.addListener(this);
-    addListeners();
     addAndMakeVisible(wavetableSettings);
+
+    combineButton.addListener(this);
+    wavetableSettings.waveCountKnob.slider.addListener(this);
 }
 
 WavetableLFO::~WavetableLFO()
 {
-    removeListeners();
-}
-
-void WavetableLFO::addListeners()
-{
-    wavetableSettings.waveCountKnob.slider.addListener(this);
-}
-
-void WavetableLFO::removeListeners()
-{
     wavetableSettings.waveCountKnob.slider.removeListener(this);
-
 }
 
 void WavetableLFO::sliderValueChanged(Slider* slider)
@@ -50,16 +40,7 @@ void WavetableLFO::sliderValueChanged(Slider* slider)
 void WavetableLFO::paint(Graphics& g)
 {
     g.fillAll(C_DARK);
-    paintLogoOnce(g);
-
-}
-
-
-void WavetableLFO::paintLogoOnce(Graphics& g)
-{
-    const Image logo = ImageFileFormat::loadFrom(BinaryData::logo250_png, BinaryData::logo250_pngSize);
-    g.drawImageAt(logo, (50 - 36) / 2, 7, false);
-
+    Utils::paintLogo(g);
 }
 
 void WavetableLFO::resized()
@@ -199,15 +180,9 @@ float WavetableLFO::getNext()
         totalPosition = fmod(totalPosition, sampleY.size());
     }
 
-    float finalSample = interpolate(totalPosition, (int)std::floor(totalPosition) % sampleY.size(), (int)std::ceil(totalPosition + 1) % sampleY.size(), sampleY[(int)std::floor(totalPosition) % sampleY.size()], sampleY[(int)std::ceil(totalPosition + 1) % sampleY.size()]);
+    float finalSample = Utils::interpolateLinear(totalPosition, (int)std::floor(totalPosition) % sampleY.size(), (int)std::ceil(totalPosition + 1) % sampleY.size(), sampleY[(int)std::floor(totalPosition) % sampleY.size()], sampleY[(int)std::ceil(totalPosition + 1) % sampleY.size()]);
 
     currentPosition++;
 
     return finalSample * wavetableSettings.getDepth();
 }
-
-float WavetableLFO::interpolate(float x, float x1, float x2, float y1, float y2)
-{
-    return y1 + ((x - x1) * ((y2 - y1) / (x2 - x1)));
-}
-

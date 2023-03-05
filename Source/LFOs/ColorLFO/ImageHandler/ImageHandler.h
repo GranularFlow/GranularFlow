@@ -17,6 +17,13 @@
 class ImageHandler : public Component, public Slider::Listener
 {
 public:
+    struct ImageHandlerListener
+    {
+        virtual void imageLoaded() = 0;
+    };
+    void setListener(ImageHandlerListener* imageHandlerListenerIn) { imageHandlerListener = imageHandlerListenerIn; }
+    void removeListener() { imageHandlerListener = nullptr; }
+
     // Class
 	ImageHandler(Component::SafePointer<LfoSettings>);
 	~ImageHandler();
@@ -29,21 +36,21 @@ public:
     bool isImageSet();
 
     // Listeners
-    void prepareToPlay(float);
+    void prepareToPlay(double);
     void sliderValueChanged(Slider*);
 
     // Getters
-    int getRed(int, int);
-    int getGreen(int, int);
-    int getBlue(int, int);
-    void getNext();
+    float getRed(int, int);
+    float getGreen(int, int);
+    float getBlue(int, int);
+    double getNext();
 
     // image
     int getImageHeight();
     int getImageWidth();
 
 private:
-    float outputValue = 0;
+    ImageHandlerListener* imageHandlerListener = nullptr;
     int currentX = 1;
     int currentY = 1;
     float sampleRate = 48000;

@@ -14,16 +14,17 @@
 #include "../CustomComponents/CustomWindow/CustomWindow.h"
 #include "../CustomComponents/CustomClickableBox/CustomClickableBox.h"
 #include "../CustomComponents/CustomLooks/ResetButton.h"
+#include "../CustomComponents/CustomLooks/Knob.h"
 #include "../Synths/WavetableSynth/WavetableSynth.h"
 #include "../Synths/GranularSynth/GranularSynth.h"
 #include "../Synths/AdditiveSynth/AdditiveSynth.h"
 #include "../LFOs/LFO.h"
 #include "../LFOs/ColorLFO/ColorLFO.h"
 #include "../LFOs/BounceLFO/BounceLFO.h"
-#include "../LFOs/MathLFO/MathLFO.h"
+//#include "../LFOs/MathLFO/MathLFO.h"
 #include "../LFOs/WavetableLFO/WavetableLFO.h"
 
-class GranularFlowWrapper : public Component, public ResetButton::ResetListener
+class GranularFlowWrapper : public Component, public ResetButton::ResetListener, public Knob::KnobListener
 {
 public:
     // Class
@@ -42,11 +43,16 @@ public:
 
     // Listeners
     void reseted(ResetButton*)override;
+    void setLfoPointer(Knob*, int)override;
+    void removeLfoPointer(Knob*, int)override;
 
     // Tools
     void closeWindows();
     void minimizeWindows();
     void mouseDown(const MouseEvent&);
+
+    /*ADDD ALL KNOBS*/
+    void setAllKnobs();
 
 
 private:
@@ -62,7 +68,7 @@ private:
     // LFOS
     std::unique_ptr<ColorLFO> colorLfo = std::make_unique<ColorLFO>();
     std::unique_ptr<BounceLFO> bounceLfo = std::make_unique<BounceLFO>();
-    std::unique_ptr<MathLFO> mathLfo = std::make_unique<MathLFO>();
+    //std::unique_ptr<MathLFO> mathLfo = std::make_unique<MathLFO>();
     std::unique_ptr<WavetableLFO> wavetableLfo = std::make_unique<WavetableLFO>();
 
     // Synths

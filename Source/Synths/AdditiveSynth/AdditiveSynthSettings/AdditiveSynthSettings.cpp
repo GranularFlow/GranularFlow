@@ -12,17 +12,18 @@
 
 AdditiveSynthSettings::AdditiveSynthSettings()
 {
-    addComponents();
+    addAndMakeVisible(harmonicCount);
+    addAndMakeVisible(harmonicSelect);
+
+    harmonicCount.slider.setValue(1, sendNotification);
+    harmonicCount.slider.setRange(1, harmonicCount.slider.getMaximum(), harmonicCount.slider.getInterval());
+
+    harmonicSelect.slider.setValue(1, dontSendNotification);
+    harmonicSelect.slider.setRange(1, harmonicCount.slider.getMaximum(), harmonicCount.slider.getInterval());
 }
 
 AdditiveSynthSettings::~AdditiveSynthSettings()
 {
-}
-
-void AdditiveSynthSettings::addComponents()
-{
-    addAndMakeVisible(harmonicCount);
-    addAndMakeVisible(harmonicSelect);
 }
 
 void AdditiveSynthSettings::paint(Graphics& g)

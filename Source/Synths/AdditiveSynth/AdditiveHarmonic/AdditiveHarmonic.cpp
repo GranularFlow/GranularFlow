@@ -13,15 +13,16 @@
 AdditiveHarmonic::AdditiveHarmonic(int sampleRateIn)
 {
     sampleRate = sampleRateIn;
-    addListeners();
+    harmonicSettings.phaseKnob.slider.addListener(this);
+    harmonicSettings.freqKnob.slider.addListener(this);
     addAndMakeVisible(harmonicSettings);
-    startTimer(1);
 }
 
 AdditiveHarmonic::~AdditiveHarmonic()
 {
-    stopTimer();
-    removeListeners();
+    harmonicSettings.phaseKnob.slider.removeListener(this);
+    harmonicSettings.freqKnob.slider.removeListener(this);
+    removeKnobsListener();
 }
 
 void AdditiveHarmonic::paint(Graphics& g)
@@ -39,21 +40,6 @@ void AdditiveHarmonic::resized()
 
 }
 
-void AdditiveHarmonic::addListeners()
-{
-    harmonicSettings.phaseKnob.slider.addListener(this);
-    harmonicSettings.freqKnob.slider.addListener(this);
-}
-
-void AdditiveHarmonic::removeListeners()
-{
-    harmonicSettings.phaseKnob.slider.removeListener(this);
-    harmonicSettings.freqKnob.slider.removeListener(this);
-}
-
-void AdditiveHarmonic::timerCallback()
-{
-}
 
 void AdditiveHarmonic::sliderValueChanged(Slider* slider)
 {
@@ -104,10 +90,6 @@ void AdditiveHarmonic::fillNextBuffer(AudioBuffer<float>& bufferToFill, juce::Mi
     
 }
 
-void AdditiveHarmonic::changeTimer(float)
-{
-}
-
 void AdditiveHarmonic::setSampleRate(int sampleRateIn)
 {
     sampleRate = sampleRateIn;
@@ -147,5 +129,21 @@ double AdditiveHarmonic::getPhaseRads()
 double AdditiveHarmonic::getPi()
 {
     return juce::MathConstants<double>::pi;
+}
+
+void AdditiveHarmonic::setKnobsListener(Knob::KnobListener* knobListenerPntr)
+{
+    harmonicSettings.phaseKnob.setListener(knobListenerPntr);
+    harmonicSettings.freqKnob.setListener(knobListenerPntr);
+    harmonicSettings.volumeKnob.setListener(knobListenerPntr);
+    harmonicSettings.panKnob.setListener(knobListenerPntr);
+}
+
+void AdditiveHarmonic::removeKnobsListener()
+{
+    harmonicSettings.phaseKnob.removeListener();
+    harmonicSettings.freqKnob.removeListener();
+    harmonicSettings.volumeKnob.removeListener();
+    harmonicSettings.panKnob.removeListener();
 }
 

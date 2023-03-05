@@ -18,7 +18,7 @@
 #include "RingBuffer/RingBuffer.h"
 #include "../Synth.h"
 
-class GranularSynth : public Component, public Slider::Listener, public Button::Listener, public Synth
+class GranularSynth : public Component, public Slider::Listener, public Button::Listener
 {
 public:
     // Class
@@ -44,8 +44,8 @@ public:
     void selectPlayer(int8 playerNumber);
 
     // --------
-    void prepareToPlay(float, int)override;
-    void processBlock(AudioBuffer<float>&, MidiBuffer&)override;
+    void prepareToPlay(float, int);
+    void processBlock(AudioBuffer<float>&, MidiBuffer&);
     // --------
    
     // Getters    

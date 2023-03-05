@@ -16,7 +16,7 @@
 #include "ImageHandler/ImageHandler.h"
 #include "../LFO.h"
 
-class ColorLFO : public Component, public Button::Listener, public LFO
+class ColorLFO : public Component, public Button::Listener, public Slider::Listener, public LFO, public Timer, public ImageHandler::ImageHandlerListener
 {
 public:
     // Class
@@ -29,10 +29,12 @@ public:
 
     // Listener
     void buttonClicked(Button*);
+    void timerCallback() override;
+    void sliderValueChanged(Slider*) override;
 
-    // Tools
-    void prepareToPlay(float);
-    void getNext();
+    void prepareToPlay(double, int);
+
+    void imageLoaded() override;
 private:
     //  -- Settings
     Component::SafePointer<LfoSettings> settings = new LfoSettings();

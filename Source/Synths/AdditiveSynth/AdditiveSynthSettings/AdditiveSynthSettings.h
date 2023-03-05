@@ -22,13 +22,12 @@ public:
 	AdditiveSynthSettings();
 	~AdditiveSynthSettings();
     // GUI
-    void addComponents();
     void paint(Graphics&) override;
     void resized() override;
     // Harmonic settings    
     //(String nameIn, Colour guiColorIn, int startRangeIn, int endRangeIn, int stepIn, int initialValue
-    NumberSelect harmonicCount {"Count", L_GREEN, 1, 5, 1, 1};
-    NumberSelect harmonicSelect { "Selected", L_ORANGE, 1, 5, 1, 1 };
+    NumberSelect harmonicCount {"Count", L_GREEN, 0, 5, 1, 0};
+    NumberSelect harmonicSelect { "Selected", L_ORANGE, 0, 5, 1, 0 };
 
 private:
 

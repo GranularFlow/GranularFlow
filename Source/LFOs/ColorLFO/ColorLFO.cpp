@@ -15,13 +15,17 @@ ColorLFO::ColorLFO()
 {
     addAndMakeVisible(settings);
     settings->uploadButton.addListener(this);
+    settings->rateKnob.slider.addListener(this);
     addAndMakeVisible(*imageHandler);
+    imageHandler->setListener(this);
 }
 
 ColorLFO::~ColorLFO()
 {
-   
+    imageHandler->removeListener();
+    stopTimer();
     settings->uploadButton.removeListener(this);
+    settings->rateKnob.slider.removeListener(this);
     delete imageHandler;
     delete settings;
 }
@@ -43,15 +47,33 @@ void ColorLFO::buttonClicked(Button* button)
 {
     if (button == &settings->uploadButton)
     {
-        imageHandler->loadImage();
+        imageHandler->loadImage();        
     }
 }
 
-void ColorLFO::prepareToPlay(float sampleRate) {
+void ColorLFO::timerCallback()
+{
+    updateKnobs(imageHandler->getNext());
+}
+
+void ColorLFO::sliderValueChanged(Slider* slider)
+{
+    if (slider == &settings->rateKnob.slider)
+    {
+        if (imageHandler->isImageSet()) {
+            stopTimer();
+            startTimerHz(settings->rateKnob.getValue());
+        }
+    }
+}
+
+void ColorLFO::prepareToPlay(double sampleRate, int samplesPerBlock)
+{
     imageHandler->prepareToPlay(sampleRate);
 }
 
-void ColorLFO::getNext()
+void ColorLFO::imageLoaded()
 {
-    return imageHandler->getNext();
+    stopTimer();
+    startTimerHz(settings->rateKnob.getValue());
 }

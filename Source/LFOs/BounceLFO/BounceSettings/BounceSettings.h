@@ -38,9 +38,9 @@ public:
     int getRate();
     int getDepth();
 
-    Knob ballSpeedKnob{ "BALL SPEED", C_BILLS, 10, 100, 1, 10 };
-    Knob rateKnob{ "RATE", C_BILLS, 1, 20, 1, 2 };
-    Knob depthKnob{ "DEPTH", C_BILLS, 1, 100, 1, 50 };
+    Knob ballSpeedKnob{ "BALL SPEED", C_BILLS, 10, 100, 1, 10, false };
+    Knob rateKnob{ "RATE", C_BILLS, 1, 20, 1, 2, false };
+    Knob depthKnob{ "DEPTH", C_BILLS, 1, 100, 1, 50, false };
     RadioBox coordinateRadioBox{ "DIRECTION", C_BARARED, COORDINATE };
     TextButton clearButton { "Clear" };
 

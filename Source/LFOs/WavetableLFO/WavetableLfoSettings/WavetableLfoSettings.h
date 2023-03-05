@@ -43,9 +43,9 @@ public:
 
     // Settings
     // (String nameIn, Colour guiColorIn, float startRangIn, float endRangeIn, float stepIn, float defaultValue)
-    Knob rateKnob{ "RATE", C_SUNFLOWER, 100, 1000, 1, 400 }; // %
-    Knob depthKnob{ "DEPTH", C_SUNFLOWER, 0, 100, 1, 50 }; // %
-    Knob waveCountKnob{ "WAVE COUNT", C_SUNFLOWER, 2, 10, 2, 6 }; // %
+    Knob rateKnob{ "RATE", C_SUNFLOWER, 100, 1000, 1, 400, false}; // %
+    Knob depthKnob{ "DEPTH", C_SUNFLOWER, 0, 100, 1, 50, false }; // %
+    Knob waveCountKnob{ "WAVE COUNT", C_SUNFLOWER, 2, 10, 2, 6, false }; // %
     RadioBox interpolationRadioBox{ "ITERPOLATION", C_SUNFLOWER, INTERPOLATION_TYPE };
 
 private:

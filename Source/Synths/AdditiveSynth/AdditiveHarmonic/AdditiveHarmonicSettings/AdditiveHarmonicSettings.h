@@ -43,13 +43,11 @@ public:
 
     // Harmonics
     RadioBox midiModeRadioBox{ "MIDI", C_SUNFLOWER, MIDI_MODE };
-    Knob phaseKnob{ "PHASE", L_AQUA, 0, 360, 1, 0 }; // %
-    Knob freqKnob{ "FREQUENCY", L_ORANGE, 10, 1000, 1, 440 }; // %
+    Knob phaseKnob { "PHASE", L_AQUA, 0, 360, 1, 0, true }; // %
+    Knob freqKnob { "FREQUENCY", L_ORANGE, 10, 1000, 1, 440, true }; // %
     // Master
-    Knob volumeKnob{ "VOLUME", C_SUNFLOWER, 0, 100, 1, 50 }; // %
-    Knob panKnob{ "PAN", C_BILLS, 0, 100, 1, 50 }; // %
-
-
+    Knob volumeKnob { "VOLUME", C_SUNFLOWER, 0, 100, 1, 50, true }; // %
+    Knob panKnob { "PAN", C_BILLS, 0, 100, 1, 50 , true }; // %
 private:
     // GUI
     Colour guiColour;

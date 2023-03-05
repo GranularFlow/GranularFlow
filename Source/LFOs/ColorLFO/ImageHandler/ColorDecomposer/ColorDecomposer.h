@@ -29,4 +29,7 @@ private:
     ColorTile redTile;
     ColorTile greenTile;
     ColorTile blueTile;
+
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ColorDecomposer);
 };

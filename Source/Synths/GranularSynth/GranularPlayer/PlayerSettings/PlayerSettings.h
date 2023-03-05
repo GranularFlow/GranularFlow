@@ -79,14 +79,13 @@ private:
     RadioBox midiModeRadioBox { "MIDI", C_SUNFLOWER, MIDI_MODE};
     RadioBox windowTypeRadioBox{ "WINDOW", C_MEDITERRANEAN, WINDOW_TYPE };
     // Grains
-    Knob grainLengthKnob{ "LENGTH", C_MARTINA, 1, 1000, 1, 50 }; // ms
-    Knob grainPitchKnob{ "PITCH", C_RADIANTYELLOW, 0.1, 1.9, 0.001, 1 }; // - 1 ; 1 x 
-    Knob grainNumKnob{ "GRAINS", C_ENERGOS, 1, 25, 1, 5 }; // ms
-    Knob grainOffsetKnob { "OFFSET", C_BARARED, 1, 100, 1, 10 }; // ms how fast to generate new sample after creating last one
-    //Knob cursorPositionKnob{ "POSITION", C_MEDITERRANEAN, 0, 50000, 10, 0 }; // cursor position
+    Knob grainLengthKnob { "LENGTH", C_MARTINA, 1, 1000, 1, 50, true }; // ms
+    Knob grainPitchKnob { "PITCH", C_RADIANTYELLOW, 0.1, 1.9, 0.001, 1, true }; // - 1 ; 1 x 
+    Knob grainNumKnob { "GRAINS", C_ENERGOS, 1, 25, 1, 5, true }; // ms
+    Knob grainOffsetKnob { "OFFSET", C_BARARED, 1, 100, 1, 10, true }; // ms how fast to generate new sample after creating last one
 
     // Master
-    Knob volumeKnob {"VOLUME", C_SUNFLOWER, 0, 100, 1, 50 }; // %
-    Knob panKnob { "PAN", C_BILLS, 0, 100, 1, 50 }; // %
+    Knob volumeKnob {"VOLUME", C_SUNFLOWER, 0, 100, 1, 50, true }; // %
+    Knob panKnob { "PAN", C_BILLS, 0, 100, 1, 50, true }; // %
     // ADSR
 };

@@ -10,8 +10,9 @@
 
 #include "Knob.h"
 
-Knob::Knob(String nameIn, Colour guiColorIn, float startRangIn, float endRangeIn, float stepIn, float defaultValue)
+Knob::Knob(String nameIn, Colour guiColorIn, float startRangIn, float endRangeIn, float stepIn, float defaultValue, bool displayLFO=true)
 {
+
     guiColor = guiColorIn;
     name = nameIn;
     value = defaultValue;
@@ -26,22 +27,27 @@ Knob::Knob(String nameIn, Colour guiColorIn, float startRangIn, float endRangeIn
     slider.setColour(Slider::ColourIds::textBoxOutlineColourId, C_TRANSPARENT);
 
     addAndMakeVisible(slider);
-
     comboBox.reset(new ComboBox());
-    addAndMakeVisible(comboBox.get());
+
+    if (displayLFO)
+    {       
+        addAndMakeVisible(comboBox.get());
+    }
+
     comboBox->setLookAndFeel(&customLook);
     comboBox->addItem("--", 1);
     comboBox->addItem("Color", 2);
     comboBox->addItem("Bounce", 3);
-    comboBox->addItem("Wavetable", 4);
-    comboBox->addItem("Math", 5);
+    comboBox->addItem("Math", 4);
+    comboBox->addItem("Wavetable", 5);
 
     comboBox->addListener(this);
-    comboBox->setSelectedItemIndex(0);
+    comboBox->setSelectedItemIndex(0, NotificationType::dontSendNotification);    
 }
 
 Knob::~Knob()
 {
+    knobListenerPntr = nullptr;
     setLookAndFeel(nullptr);
     comboBox->setLookAndFeel(nullptr);
 }
@@ -85,12 +91,27 @@ void Knob::removeListener(Slider::Listener* listener)
     slider.removeListener(listener);
 }
 
-void Knob::comboBoxChanged(ComboBox* comboBox)
+void Knob::comboBoxChanged(ComboBox* box)
 {
-    if (knobListenerPntr!=nullptr)
+    if (box == comboBox.get() && knobListenerPntr != nullptr)
     {
-        knobListenerPntr->setLfoPointer(comboBox->getSelectedId());
+        DBG("selected id: " << box->getSelectedId());
+
+        if (box->getSelectedId() == 1)
+        {
+            knobListenerPntr->removeLfoPointer(this, lastSelectedLFO);
+        }
+
+        knobListenerPntr->setLfoPointer(this, box->getSelectedId());
+        lastSelectedLFO = box->getSelectedId();
     }
+}
+
+void Knob::setLfoValue(float value)
+{
+    // Formula is out = dry + lfoOut * depth
+    slider.setValue(slider.getMaximum() * value);
+    repaint();
 }
 
 float Knob::getValue()

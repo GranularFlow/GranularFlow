@@ -18,7 +18,7 @@
 #include "BounceCanvas/BounceCanvas.h"
 
 
-class BounceLFO : public Component, public Slider::Listener, public Timer, public Button::Listener, public LFO
+class BounceLFO : public Component, public Slider::Listener, public Timer, public Button::Listener
 {
 public:
     // Class

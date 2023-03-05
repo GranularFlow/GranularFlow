@@ -16,16 +16,24 @@
 class Knob : public Component, private ComboBox::Listener
 {
 public:
+
+    // -----------------------------------
     struct KnobListener
     {
-        virtual void setLfoPointer(int) = 0;
+        virtual void setLfoPointer(Knob*, int) = 0;
+        virtual void removeLfoPointer(Knob*, int) = 0;
     };
+    void setListener(KnobListener* knobListenerPntrIn) { knobListenerPntr = knobListenerPntrIn; }
+    void removeListener() { 
+        comboBox->setSelectedId(1);
+        knobListenerPntr = nullptr;
+    }
+    KnobListener* knobListenerPntr = nullptr;
+    // -----------------------------------
 
-    void setListener(KnobListener* listenerPntrIn) { knobListenerPntr = listenerPntrIn; }
-    void removeListener() { knobListenerPntr = nullptr; }
-
+    // 
     // Class
-    Knob(String, Colour, float, float, float, float);
+    Knob(String, Colour, float, float, float, float, bool);
     ~Knob();
     // GUI
     void paint(Graphics&) override;
@@ -34,16 +42,16 @@ public:
     void addListener(Slider::Listener*);
     void removeListener(Slider::Listener*);
     void comboBoxChanged(ComboBox*) override;
-
-    // Getters
+    // methods
+    void setLfoValue(float);
     float getValue();
+
 
     // Slider TODO: wrap it to private
     Slider slider { Slider::SliderStyle::RotaryHorizontalDrag, Slider::TextEntryBoxPosition::NoTextBox };
 private:
-    std::unique_ptr<ComboBox> comboBox;
-    KnobListener* knobListenerPntr = nullptr;
-
+    std::unique_ptr<ComboBox> comboBox;   
+    int lastSelectedLFO = 0;
     CustomLook customLook;
     String name;
     Colour guiColor;

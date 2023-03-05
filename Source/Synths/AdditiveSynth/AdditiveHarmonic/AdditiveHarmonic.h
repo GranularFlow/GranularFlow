@@ -11,8 +11,9 @@
 #pragma once
 #include <JuceHeader.h>
 #include "AdditiveHarmonicSettings/AdditiveHarmonicSettings.h"
+#include "../../../CustomComponents/CustomLooks/Knob.h"
 
-class AdditiveHarmonic : public Component, public Timer, public Slider::Listener
+class AdditiveHarmonic : public Component, public Slider::Listener
 {
 public:
     // Class
@@ -22,18 +23,17 @@ public:
     void paint(Graphics& g) override;
     void resized() override;
     // Listeners
-    void addListeners();
-    void removeListeners();
-    void timerCallback() override;
     void sliderValueChanged(Slider*)override;
     // Tools
     void fillNextBuffer(AudioBuffer<float>&, juce::MidiBuffer&);
-    void changeTimer(float);
     void setSampleRate(int);
     void calculateDelta();
     void handleMidi(MidiBuffer&);
     double getPhaseRads();
     double getPi();
+
+    void setKnobsListener(Knob::KnobListener* knobListenerPntr);
+    void removeKnobsListener();
 
 
 private:

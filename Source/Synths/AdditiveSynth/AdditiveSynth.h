@@ -11,26 +11,23 @@
 #pragma once
 #include <JuceHeader.h>
 #include "../../Utils/Constants.h"
+#include "../../CustomComponents/CustomLooks/Knob.h"
 #include "AdditiveSynthSettings/AdditiveSynthSettings.h"
 #include "AdditiveHarmonic/AdditiveHarmonic.h"
 #include "AdditiveVisualiser/AdditiveVisualiser.h"
 #include "../Synth.h"
 
-class AdditiveSynth : public Component, public Slider::Listener, public Button::Listener, public Synth
+class AdditiveSynth : public Component, public Slider::Listener, public Synth
 {
 public:
     // Class
 	AdditiveSynth();
 	~AdditiveSynth();
     // GUI
-    void initGui();
     void paint(Graphics&) override;
     void resized()override;
     // Listeners
     void sliderValueChanged(Slider*) override;
-    void buttonClicked(Button*) override;
-    void addListeners();
-    void removeListeners();
 
     // Tools
     void addNewHarmonic();
@@ -41,11 +38,12 @@ public:
     void prepareToPlay(float, int)override;
     void processBlock(AudioBuffer<float>&, juce::MidiBuffer&)override;
     // --------
-    
+    void setKnobsListener(Knob::KnobListener*) override;
     // Getters
     // Setters
     
 private:
+    Knob::KnobListener* knobListener = nullptr;
     float sampleRate = 48000;
     int bufferSize = 256;
     AdditiveSynthSettings additiveSynthSettings;
