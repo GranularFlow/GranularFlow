@@ -36,10 +36,16 @@ GranularFlowWrapper::GranularFlowWrapper()
     addAndMakeVisible(wavetableLfoBox);
     addAndMakeVisible(mathLfoBox);
 
-    // Non visible process Synths    
+    // Non visible process Synths  
+    //SYNTH
     addChildComponent(wavetableSynth.get());
     addChildComponent(granularSynth.get());
     addChildComponent(additiveSynth.get());
+    //LFO
+    addChildComponent(colorLfo.get());
+    addChildComponent(bounceLfo.get());
+    addChildComponent(mathLfo.get());
+    addChildComponent(wavetableLfo.get());
 
     // -----
     // GUI WINDOWS
@@ -88,23 +94,37 @@ GranularFlowWrapper::~GranularFlowWrapper()
     // -----------------
     // Listeners
     // -----------------
+    // Reset buttons
+    //SYNTH
     wavetableSynthReset.removeListener();
     granularSynthReset.removeListener();
     additiveSynthReset.removeListener();
+    //LFO
+    colorLfoReset.removeListener();
+    bounceLfoReset.removeListener();
+    mathLfoReset.removeListener();
+    wavetableLfoReset.removeListener();
     
     // Delete synths that are inside boxes
+    //SYNTH
     wavetableSynth.release();
     additiveSynth.release();
     granularSynth.release();
+    //LFO
+    colorLfo.release();
+    bounceLfo.release();
+    mathLfo.release();
+    wavetableLfo.release();
 
-    // Clean non-visible synths
+    // Clean non-visible synths and lfos
     closeWindows();
 
     // clean boxes
+    //SYNTH
     delete wavetableSynthBox;
     delete granularSynthBox;
     delete additiveSynthBox;
-
+    //LFO
     delete colorLfoBox;
     delete bounceLfoBox;
     delete wavetableLfoBox;
@@ -117,11 +137,11 @@ void GranularFlowWrapper::paintJacks(Graphics& g, int center, int circleRadius, 
     int jackWidht = 40;
     int jackHeight = 25;
 
-    Rectangle<int> rectL(center - circleRadius - jackWidht + 7, endY - 8, jackWidht, jackHeight);
+    juce::Rectangle<int> rectL(center - circleRadius - jackWidht + 7, endY - 8, jackWidht, jackHeight);
     Path pathL;
     pathL.addRectangle(rectL.toFloat());
     pathL.applyTransform(AffineTransform::rotation(-25.0 * MathConstants<double>::pi / 180.0, rectL.getCentre().toFloat().x, rectL.getCentre().toFloat().y));
-    Rectangle<int> rectR(center + circleRadius - 7, endY - 8, jackWidht, jackHeight);
+    juce::Rectangle<int> rectR(center + circleRadius - 7, endY - 8, jackWidht, jackHeight);
     Path pathR;
     pathR.addRectangle(rectR.toFloat());
     pathR.applyTransform(AffineTransform::rotation(25.0 * MathConstants<double>::pi / 180.0, rectR.getCentre().toFloat().x, rectR.getCentre().toFloat().y));
@@ -197,7 +217,7 @@ void GranularFlowWrapper::paint(Graphics&g)
 
     // LFO Background
     g.setColour(L_GRAY);
-    Rectangle<float> lfoRect = getLocalBounds().withSize(820, 90).withCentre(Point<int>(getWidth() / 2, 640)).toFloat();
+    juce::Rectangle<float> lfoRect = getLocalBounds().withSize(820, 90).withCentre(Point<int>(getWidth() / 2, 640)).toFloat();
     g.drawRoundedRectangle(lfoRect, getHeight() * 0.01, 2);
 }
 
@@ -210,12 +230,16 @@ void GranularFlowWrapper::resized()
         window->setBounds(getLocalBounds().withSizeKeepingCentre(W_WIDTH,W_HEIGHT));
     }
 
+    for (auto& window : lfoWindows)
+    {
+        window->setBounds(getLocalBounds().withSizeKeepingCentre(W_WIDTH, W_HEIGHT));
+    }
+
     // RESET SYNTH
     wavetableSynthReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(190, 70)));
     granularSynthReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(600, 70)));
     additiveSynthReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(1010, 70)));
-
-    // GUI visible synth boxes
+    // GUI SYNTH
     wavetableSynthBox->setBounds(getLocalBounds().withSize(320, 180).withCentre(Point<int>(190, 180)));
     granularSynthBox->setBounds(getLocalBounds().withSize(320, 180).withCentre(Point<int>(600, 180)));
     additiveSynthBox->setBounds(getLocalBounds().withSize(320, 180).withCentre(Point<int>(1010, 180)));
@@ -229,7 +253,7 @@ void GranularFlowWrapper::resized()
     bounceLfoReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(marginLeft + (sectionWidth * 3/ (float)2), centerSectionY - (sectionHeight / 2) - 20)));
     mathLfoReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(marginLeft + (sectionWidth * 5/ (float)2), centerSectionY - (sectionHeight / 2) - 20)));
     wavetableLfoReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(marginLeft + (sectionWidth * 7/ (float)2), centerSectionY - (sectionHeight / 2) - 20)));
-
+    //GUI LFO
     colorLfoBox->setBounds(getLocalBounds().withSize(sectionWidth-20, 70).withCentre(Point<int>(marginLeft + (sectionWidth / (float)2), centerSectionY)));
     bounceLfoBox->setBounds(getLocalBounds().withSize(sectionWidth - 20, 70).withCentre(Point<int>(marginLeft + (sectionWidth * 3 / (float)2), centerSectionY)));
     mathLfoBox->setBounds(getLocalBounds().withSize(sectionWidth - 20, 70).withCentre(Point<int>(marginLeft + (sectionWidth * 5 / (float)2), centerSectionY)));
@@ -289,14 +313,39 @@ void GranularFlowWrapper::reseted(ResetButton* button)
         repaint();
     }
 
-    if (button == &additiveSynthReset)
+    if (button == &colorLfoReset)
     {
-        synthWindows[2].deleteAndZero();
-        additiveSynth.release();
-        additiveSynth = std::make_unique<AdditiveSynth>();
-        synthWindows.set(2, new CustomWindow("Additive synth", additiveSynth.get()));
+        lfoWindows[0].deleteAndZero();
+        colorLfo.release();
+        colorLfo = std::make_unique<ColorLFO>();
+        lfoWindows.set(0, new CustomWindow("Color LFO", colorLfo.get()));
         repaint();
     }
+    else if (button == &bounceLfoReset)
+    {
+        lfoWindows[1].deleteAndZero();
+        bounceLfo.release();
+        bounceLfo = std::make_unique<BounceLFO>();
+        lfoWindows.set(1, new CustomWindow("Bounce LFO", bounceLfo.get()));
+        repaint();
+    }
+    else if (button == &mathLfoReset)
+    {
+        lfoWindows[2].deleteAndZero();
+        mathLfo.release();
+        mathLfo = std::make_unique<MathLFO>();
+        lfoWindows.set(2, new CustomWindow("Math LFO", mathLfo.get()));
+        repaint();
+    }
+    else if (button == &wavetableLfoReset)
+    {
+        lfoWindows[3].deleteAndZero();
+        wavetableLfo.release();
+        wavetableLfo = std::make_unique<WavetableLFO>();
+        lfoWindows.set(3, new CustomWindow("Wavetable LFO", wavetableLfo.get()));
+        repaint();
+    }
+
 }
 
 void GranularFlowWrapper::closeWindows()
@@ -307,6 +356,13 @@ void GranularFlowWrapper::closeWindows()
     }
 
     synthWindows.clear();
+
+    for (auto& window : lfoWindows)
+    {
+        window.deleteAndZero();
+    }
+
+    lfoWindows.clear();
 }
 
 void GranularFlowWrapper::minimizeWindows()
@@ -315,14 +371,19 @@ void GranularFlowWrapper::minimizeWindows()
     {
         window->hideWindow();
     }
+
+    for (auto& window : lfoWindows)
+    {
+        window->hideWindow();
+    }
 }
 
 void GranularFlowWrapper::mouseDown(const MouseEvent& e)
 {
     minimizeWindows();
+    // SYNTH
     if (wavetableSynthBox->getBounds().contains(e.getPosition()))
-    {
-        
+    {        
         synthWindows[0]->showWindow();
         synthWindows[0]->toFront(true);
     }
@@ -336,7 +397,7 @@ void GranularFlowWrapper::mouseDown(const MouseEvent& e)
         synthWindows[2]->showWindow();
         synthWindows[2]->toFront(true);
     }
-
+    // Cables
     if (cableWavetable.contains(e.getPosition().toFloat(), 20.f))
     {
         processWavetable = !processWavetable;
@@ -351,5 +412,26 @@ void GranularFlowWrapper::mouseDown(const MouseEvent& e)
     {
         processAdditive = !processAdditive;
         repaint();
+    }
+    // LFO
+    if (colorLfoBox->getBounds().contains(e.getPosition()))
+    {
+        lfoWindows[0]->showWindow();
+        lfoWindows[0]->toFront(true);
+    }
+    else if (bounceLfoBox->getBounds().contains(e.getPosition()))
+    {
+        lfoWindows[1]->showWindow();
+        lfoWindows[1]->toFront(true);
+    }
+    else if (mathLfoBox->getBounds().contains(e.getPosition()))
+    {
+        lfoWindows[2]->showWindow();
+        lfoWindows[2]->toFront(true);
+    }
+    else if (wavetableLfoBox->getBounds().contains(e.getPosition()))
+    {
+        lfoWindows[3]->showWindow();
+        lfoWindows[3]->toFront(true);
     }
 }

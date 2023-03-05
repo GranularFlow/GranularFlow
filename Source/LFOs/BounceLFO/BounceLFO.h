@@ -44,4 +44,5 @@ private:
     BounceSettings settings;
     BounceCanvas canvas;
     float outputValue = 1.0f;
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BounceLFO);
 };

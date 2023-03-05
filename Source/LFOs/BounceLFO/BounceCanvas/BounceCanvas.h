@@ -49,8 +49,5 @@ private:
     Point<float> positionVector = { 2.0, 2.0 };
     Point<float> colision = { 1.0, 1.0 };
     Point<float> correctionPosition = {10.f, 10.f};
-
-
-
-
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BounceCanvas);
 };

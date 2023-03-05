@@ -52,6 +52,5 @@ private:
     // GUI
     Colour guiColour;
     OwnedArray<Separator> separators;
-
-
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WavetableLfoSettings);
 };

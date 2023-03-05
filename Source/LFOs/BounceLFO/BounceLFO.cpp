@@ -26,6 +26,7 @@ BounceLFO::~BounceLFO()
 
 void BounceLFO::paint(Graphics& g)
 {
+    g.fillAll(C_DARK);
     Utils::paintLogo(g);
 }
 

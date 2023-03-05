@@ -45,5 +45,5 @@ public:
     float sampleDistance = 2.5; // 250 / 100 samples
     String text;
 private:
-
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WavetableLfoCanvas);
 };

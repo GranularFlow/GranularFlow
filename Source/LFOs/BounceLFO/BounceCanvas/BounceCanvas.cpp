@@ -40,10 +40,9 @@ void BounceCanvas::paint(Graphics& g)
         g.strokePath(tmpPath, PathStrokeType(2.0f, PathStrokeType::JointStyle::curved, PathStrokeType::rounded));
     }
 
-    g.setColour(C_ANDROID);
-
-    g.fillRoundedRectangle(colision.x - 2.f, colision.y - 2.f, 4.f, 4.f, 2.f);
-    
+    // Green colision dot
+    /*g.setColour(C_ANDROID);
+    g.fillRoundedRectangle(colision.x - 2.f, colision.y - 2.f, 4.f, 4.f, 2.f);*/    
 }
 
 void BounceCanvas::setBallSpeed(int speed)

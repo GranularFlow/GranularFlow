@@ -20,6 +20,7 @@
 #include "../LFOs/LFO.h"
 #include "../LFOs/ColorLFO/ColorLFO.h"
 #include "../LFOs/BounceLFO/BounceLFO.h"
+#include "../LFOs/MathLFO/MathLFO.h"
 #include "../LFOs/WavetableLFO/WavetableLFO.h"
 
 class GranularFlowWrapper : public Component, public ResetButton::ResetListener
@@ -60,9 +61,9 @@ private:
 
     // LFOS
     std::unique_ptr<ColorLFO> colorLfo = std::make_unique<ColorLFO>();
-    std::unique_ptr<ColorLFO> bounceLfo = std::make_unique<ColorLFO>();
-    std::unique_ptr<ColorLFO> mathLfo = std::make_unique<ColorLFO>();
-    std::unique_ptr<ColorLFO> wavetableLfo = std::make_unique<ColorLFO>();
+    std::unique_ptr<BounceLFO> bounceLfo = std::make_unique<BounceLFO>();
+    std::unique_ptr<MathLFO> mathLfo = std::make_unique<MathLFO>();
+    std::unique_ptr<WavetableLFO> wavetableLfo = std::make_unique<WavetableLFO>();
 
     // Synths
     std::unique_ptr<WavetableSynth> wavetableSynth = std::make_unique<WavetableSynth>();
