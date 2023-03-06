@@ -15,8 +15,8 @@ BounceCanvas::BounceCanvas()
 {
     paintTiming.setListener(this);
     moveBallTiming.setListener(this);
+
     paintTiming.startTimerHz(33);
-    moveBallTiming.startTimerHz(1);
 }
 
 BounceCanvas::~BounceCanvas()
@@ -51,9 +51,15 @@ void BounceCanvas::setBallSpeed(int speed)
     moveBallTiming.startTimerHz(speed);
 }
 
-int BounceCanvas::getCoord(bool getX)
+double BounceCanvas::getOutput(bool getX)
 {
-    return getX ? 0 : 1;
+
+    if (getX)
+    {
+        return currentPosition.getX() / (double)getWidth();
+    }
+    return currentPosition.getY() / (double)getHeight();
+
 }
 
 void BounceCanvas::timeCall(Timing* timing)
@@ -66,11 +72,6 @@ void BounceCanvas::timeCall(Timing* timing)
     {
         repaint();
     }
-}
-
-void BounceCanvas::mouseDown(const MouseEvent& e)
-{
-
 }
 
 void BounceCanvas::mouseDrag(const MouseEvent& e)
@@ -98,6 +99,18 @@ void BounceCanvas::mouseUp(const MouseEvent& e)
     drawPaths.add(tmpPath);
 
     mousePositions.clear();
+}
+
+void BounceCanvas::startStop(int speed)
+{
+    if (moveBallTiming.isTimerRunning())
+    {
+        moveBallTiming.stopTimer();
+    }
+    else
+    {
+        moveBallTiming.startTimerHz(speed);
+    }      
 }
 
 void BounceCanvas::moveBall()

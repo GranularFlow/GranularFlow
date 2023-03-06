@@ -18,9 +18,8 @@ Knob::Knob(String nameIn, Colour guiColorIn, float startRangIn, float endRangeIn
     value = defaultValue;
 
     setLookAndFeel(&customLook);
-
     slider.setRange(startRangIn, endRangeIn, stepIn);
-    slider.setValue(defaultValue);
+    slider.setValue(defaultValue, NotificationType::sendNotification);
     slider.setColour(Slider::ColourIds::rotarySliderFillColourId, guiColorIn);
     slider.setColour(Slider::ColourIds::thumbColourId, guiColorIn);
     slider.setColour(Slider::ColourIds::textBoxBackgroundColourId, C_TRANSPARENT);
@@ -95,22 +94,24 @@ void Knob::comboBoxChanged(ComboBox* box)
 {
     if (box == comboBox.get() && knobListenerPntr != nullptr)
     {
-        DBG("selected id: " << box->getSelectedId());
-
         if (box->getSelectedId() == 1)
         {
             knobListenerPntr->removeLfoPointer(this, lastSelectedLFO);
+            lastSelectedLFO = 0;
         }
-
-        knobListenerPntr->setLfoPointer(this, box->getSelectedId());
-        lastSelectedLFO = box->getSelectedId();
+        else
+        {
+            knobListenerPntr->removeLfoPointer(this, lastSelectedLFO);
+            knobListenerPntr->setLfoPointer(this, box->getSelectedId());
+            lastSelectedLFO = box->getSelectedId();
+        }
     }
 }
 
 void Knob::setLfoValue(float value)
 {
     // Formula is out = dry + lfoOut * depth
-    slider.setValue(slider.getMaximum() * value);
+    slider.setValue(Utils::snapToStep(slider.getMinimum(), slider.getMaximum(), slider.getInterval(), slider.getMaximum() * value));
     repaint();
 }
 

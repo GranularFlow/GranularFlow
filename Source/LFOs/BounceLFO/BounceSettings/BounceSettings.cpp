@@ -18,6 +18,7 @@ BounceSettings::BounceSettings()
     addAndMakeVisible(depthKnob);
     addAndMakeVisible(coordinateRadioBox);
     addAndMakeVisible(clearButton);
+    addAndMakeVisible(startButton);
 
 
     for (int8 i = 0; i < 4; i++)
@@ -25,8 +26,7 @@ BounceSettings::BounceSettings()
         separators.add(new Separator());
         addAndMakeVisible(separators.getLast());
     }
-    ballSpeedKnob.slider.setValue(ballSpeedKnob.slider.getValue());
-    rateKnob.slider.setValue(rateKnob.slider.getValue());
+
 }
 
 BounceSettings::~BounceSettings()
@@ -56,7 +56,9 @@ void BounceSettings::resized()
     Utils::addToFb(&fb, rateKnob, 3, tmpWidth, tmpHeight);
     Utils::addToFb(&fb, depthKnob, 5, tmpWidth, tmpHeight);
     Utils::addToFb(&fb, coordinateRadioBox, 7, tmpWidth, tmpHeight);
-    Utils::addToFb(&fb, clearButton, 9, tmpWidth, tmpHeight);
+    Utils::addToFb(&fb, clearButton, 8, tmpWidth, 60);
+    Utils::addToFb(&fb, startButton, 9, tmpWidth, 60);
+    
 
     
 
@@ -75,12 +77,12 @@ bool BounceSettings::isCurrentSelectedCoordinate(Coordinate selectedCoord)
     return coordinateRadioBox.getValue() == selectedCoord;
 }
 
-int BounceSettings::getRate()
+double BounceSettings::getRate()
 {
     return rateKnob.getValue();
 }
 
-int BounceSettings::getDepth()
+double BounceSettings::getDepth()
 {
     return depthKnob.getValue();
 }

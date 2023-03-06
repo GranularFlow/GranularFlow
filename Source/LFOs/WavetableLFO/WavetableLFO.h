@@ -17,7 +17,7 @@
 #include "WavetableLfoCanvas/WavetableLfoCanvas.h"
 #include "WavetableLfoVisualiser/WavetableLfoVisualiser.h"
 
-class WavetableLFO : public Component, public Button::Listener, public Slider::Listener, public LFO
+class WavetableLFO : public Component, public Button::Listener, public Slider::Listener, public LFO, public Timer
 {
 public:
     // Class
@@ -26,12 +26,13 @@ public:
     // Listeners
     void sliderValueChanged(Slider*) override;
     void buttonClicked(Button*) override;
+    void timerCallback() override;
     // GUI
     void paint(Graphics&) override;
     void resized()override;    
     // Tools
     void initSamples();
-    float getNext();
+    double getNext();
 private:
     TextButton combineButton{ "COMBINE" };
     WavetableLfoCanvas canvas1 {"FIRST WAVE"};
@@ -41,11 +42,7 @@ private:
     WavetableLfoSettings wavetableSettings;
     Array<float> sampleY;
 
-    float frequency = 440;
-    float sampleRate = 48000;
-
     int currentPosition = 0;
-    float increment = 1.0;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WavetableLFO);
 };

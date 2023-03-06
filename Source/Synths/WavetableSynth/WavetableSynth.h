@@ -48,6 +48,7 @@ public:
 
 
     void setKnobsListener(Knob::KnobListener*);
+    void removeKnobsListener();
 
 
 private:

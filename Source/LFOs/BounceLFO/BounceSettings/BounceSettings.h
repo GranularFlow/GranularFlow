@@ -35,14 +35,15 @@ public:
     // Getters
     bool isCurrentSelectedCoordinate(Coordinate);
 
-    int getRate();
-    int getDepth();
+    double getRate();
+    double getDepth();
 
-    Knob ballSpeedKnob{ "BALL SPEED", C_BILLS, 10, 100, 1, 10, false };
-    Knob rateKnob{ "RATE", C_BILLS, 1, 20, 1, 2, false };
-    Knob depthKnob{ "DEPTH", C_BILLS, 1, 100, 1, 50, false };
-    RadioBox coordinateRadioBox{ "DIRECTION", C_BARARED, COORDINATE };
-    TextButton clearButton { "Clear" };
+    Knob ballSpeedKnob { "BALL SPEED", C_BILLS, 1, 100, 1, 10, false };
+    Knob rateKnob { "RATE", C_BILLS, 1, 20, 1, 2, false };
+    Knob depthKnob { "DEPTH", C_BILLS, 0, 1, 0.1, 0.5, false };
+    RadioBox coordinateRadioBox { "DIRECTION", C_BARARED, COORDINATE };
+    TextButton clearButton { "CLEAR" };
+    TextButton startButton{ "START" };
 
 private:
     OwnedArray<Separator> separators;

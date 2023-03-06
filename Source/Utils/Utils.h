@@ -34,6 +34,7 @@ public:
     static double interpolateLinear(double x, double x1, double x2, double y1, double y2);
     static double interpolateCubic(double x, Array<float>sampleY);
     static double interpolateHermite(double x, Array<float>sampleY);
+    static double snapToStep(double, double, double, double);
 private:
 
 };

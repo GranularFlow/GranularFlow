@@ -44,13 +44,7 @@ void RadioBox::paint(Graphics& g) {
 
 void RadioBox::buttonStateChanged(Button* button)
 {
-    if (button->getToggleState()) {
-        for (int8 i = 0; i < toggleButtons.size(); ++i){
-            if(button == toggleButtons[i]){
-                value = i;
-            }
-        }
-    }
+
     const MessageManagerLock mmLock;
     repaint();
 
@@ -59,8 +53,13 @@ void RadioBox::buttonStateChanged(Button* button)
 void RadioBox::buttonClicked(Button* button){}
 
 
-float RadioBox::getValue(){
-    return value;
+int RadioBox::getValue(){
+    for (int i = 0; i < toggleButtons.size(); ++i) {
+        if (toggleButtons[i]->getToggleState()) {
+            return i;
+        }
+    }
+    return -666;    
 }
 
 void RadioBox::resized()

@@ -89,23 +89,7 @@ double Utils::interpolateCubic(double x, Array<float>sampleY)
     double c2 = -2 * h * sampleY[i + 1] + 2 * h * sampleY[i] + 3 * (sampleY[i + 1] - sampleY[i]);
     double c3 = 1 * h * sampleY[i + 1] - 1 * h * sampleY[i] - 2 * (sampleY[i + 1] - sampleY[i]);
 
-    // evaluate the cubic polynomial at x
-    double y = c0 + c1 * t + c2 * t2 + c3 * t3;
-    /*
-    DBG("x " << x);
-    DBG("n " << n);
-    DBG("h " << h);
-    DBG("t " << t);
-    DBG("t2 " << t2);
-    DBG("t3 " << t3);
-    DBG("c0 " << c0);
-    DBG("c1 " << c1);
-    DBG("c2 " << c2);
-    DBG("c3 " << c3);
-
-    DBG("i " << i);
-    DBG("y " << y);*/
-    return y;
+    return c0 + c1 * t + c2 * t2 + c3 * t3;
 }
 
 double Utils::interpolateHermite(double wantedX, Array<float>sampleY)
@@ -151,4 +135,12 @@ double Utils::interpolateHermite(double wantedX, Array<float>sampleY)
     double h11 = t3 - t2;
 
     return h00 * sampleY[i] + h10 * (i + 1 - i) * m0 + h01 * sampleY[i + 1] + h11 * (i + 1 - i) * m1;
+}
+
+double Utils::snapToStep(double min, double max, double step, double value)
+{
+    double diff = value - min;
+    double steps = round(diff / step);
+    double snappedValue = min + steps * step;
+    return std::min(max, std::max(min, snappedValue));
 }

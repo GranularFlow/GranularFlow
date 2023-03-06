@@ -62,21 +62,20 @@ void WavetableLfoSettings::resized()
 }
 
 
-float WavetableLfoSettings::getRate()
+double WavetableLfoSettings::getRate()
 {
     return rateKnob.getValue();
 }
 
-float WavetableLfoSettings::getDepth()
+double WavetableLfoSettings::getDepth()
 {
     return depthKnob.getValue();
 }
 
-float WavetableLfoSettings::getWaveCount()
+int WavetableLfoSettings::getWaveCount()
 {
     return waveCountKnob.getValue();
 }
-
 
 bool WavetableLfoSettings::isCurrentInterpolationType(WavetableLfoSettings::InterpolationType type)
 {

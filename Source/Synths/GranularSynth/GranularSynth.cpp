@@ -33,6 +33,8 @@ GranularSynth::~GranularSynth()
         delete ringBufferPntr;
         ringBufferPntr = nullptr;
     }
+
+    knobListener = nullptr;
 }
 
 void GranularSynth::paint(Graphics& g)
@@ -261,6 +263,7 @@ void GranularSynth::addNewPlayer() {
     const MessageManagerLock mmLock;
     granularPlayers.add(new GranularPlayer(getNumTotalSamples(), sampleRate));
     addAndMakeVisible(granularPlayers.getLast(), 5);
+    granularPlayers.getLast()->setKnobsListener(knobListener);
     resized();
 }
 
@@ -324,4 +327,9 @@ void GranularSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& m
 int8 GranularSynth::getPlayerCount()
 {
     return static_cast<int8>(granularPlayers.size());
+}
+
+void GranularSynth::setKnobsListener(Knob::KnobListener* listenerPntr)
+{
+    knobListener = listenerPntr;
 }

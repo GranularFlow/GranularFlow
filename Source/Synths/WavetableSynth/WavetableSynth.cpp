@@ -20,7 +20,6 @@ WavetableSynth::WavetableSynth()
     addAndMakeVisible(combineButton);
     combineButton.addListener(this);
     wavetableSettings.waveCountKnob.slider.addListener(this);
-
     addAndMakeVisible(wavetableSettings);
 }
 
@@ -28,6 +27,7 @@ WavetableSynth::~WavetableSynth()
 {
     wavetableSettings.waveCountKnob.slider.removeListener(this);
     combineButton.removeListener(this);
+    removeKnobsListener();
 }
 void WavetableSynth::sliderValueChanged(Slider* slider)
 {
@@ -250,4 +250,12 @@ void WavetableSynth::setKnobsListener(Knob::KnobListener* knobListenerPntr)
     wavetableSettings.waveCountKnob.setListener(knobListenerPntr);
     wavetableSettings.volumeKnob.setListener(knobListenerPntr);
     wavetableSettings.panKnob.setListener(knobListenerPntr);
+};
+
+void WavetableSynth::removeKnobsListener()
+{
+    wavetableSettings.freqKnob.removeListener();
+    wavetableSettings.waveCountKnob.removeListener();
+    wavetableSettings.volumeKnob.removeListener();
+    wavetableSettings.panKnob.removeListener();
 };

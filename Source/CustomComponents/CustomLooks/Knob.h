@@ -11,6 +11,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include "../../Utils/Constants.h"
+#include "../../Utils/Utils.h"
 #include "CustomLook.h"
 
 class Knob : public Component, private ComboBox::Listener

@@ -51,7 +51,10 @@ public:
     // Getters    
     int8 getPlayerCount();
 
+    void setKnobsListener(Knob::KnobListener*);
+
 private:
+    Knob::KnobListener* knobListener = nullptr;
 
     std::unique_ptr<juce::FileChooser> fileChooser = nullptr;
     // Players    

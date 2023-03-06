@@ -24,14 +24,14 @@ public:
     // Setters
     void setBallSpeed(int);
     // Getters
-    int getCoord(bool);    
+    double getOutput(bool);    
     // Listeners
     void timeCall(Timing*)override;
 
-    void mouseDown(const MouseEvent& e) override;
     void mouseDrag(const MouseEvent& e) override;
     void mouseUp(const MouseEvent&) override;
     // Tools
+    void startStop(int);
     void moveBall();
     void clearLines();
 

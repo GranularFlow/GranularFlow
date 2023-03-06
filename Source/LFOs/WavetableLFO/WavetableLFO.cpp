@@ -22,11 +22,14 @@ WavetableLFO::WavetableLFO()
 
     combineButton.addListener(this);
     wavetableSettings.waveCountKnob.slider.addListener(this);
+    wavetableSettings.rateKnob.slider.addListener(this);
 }
 
 WavetableLFO::~WavetableLFO()
 {
     wavetableSettings.waveCountKnob.slider.removeListener(this);
+    wavetableSettings.rateKnob.slider.removeListener(this);
+
 }
 
 void WavetableLFO::sliderValueChanged(Slider* slider)
@@ -34,6 +37,11 @@ void WavetableLFO::sliderValueChanged(Slider* slider)
     if (slider == &wavetableSettings.waveCountKnob.slider)
     {
         combineButton.triggerClick();
+    }
+    else if (slider == &wavetableSettings.rateKnob.slider)
+    {
+        stopTimer();
+        startTimerHz(slider->getValue());
     }
 }
 
@@ -73,8 +81,18 @@ void WavetableLFO::buttonClicked(Button* button)
         {
             initSamples();
             canvas4.setWaveForm(sampleY);
+            stopTimer();
+            startTimerHz(wavetableSettings.getRate());
         }
     }
+}
+
+void WavetableLFO::timerCallback()
+{
+    if (sampleY.size() == (wavetableSettings.getWaveCount() + 3) * 100)
+    {
+        updateKnobs(getNext());
+    }    
 }
 
 void WavetableLFO::initSamples()
@@ -157,18 +175,10 @@ void WavetableLFO::initSamples()
     }
 }
 
-float WavetableLFO::getNext()
+double WavetableLFO::getNext()
 {
 
-    frequency = wavetableSettings.rateKnob.getValue();
-    increment = frequency / (float)440.f;
-
-    if (sampleY.size() != (wavetableSettings.getWaveCount() + 3) * 100)
-    {
-        return 0;
-    }
-
-    float totalPosition = fmod((currentPosition * increment), sampleY.size());
+    float totalPosition = fmod((currentPosition), sampleY.size());
 
     if (totalPosition < 0)
     {
@@ -183,6 +193,7 @@ float WavetableLFO::getNext()
     float finalSample = Utils::interpolateLinear(totalPosition, (int)std::floor(totalPosition) % sampleY.size(), (int)std::ceil(totalPosition + 1) % sampleY.size(), sampleY[(int)std::floor(totalPosition) % sampleY.size()], sampleY[(int)std::ceil(totalPosition + 1) % sampleY.size()]);
 
     currentPosition++;
-
-    return finalSample * wavetableSettings.getDepth();
+    finalSample = std::abs(finalSample * wavetableSettings.getDepth());
+    DBG("finalSample " << finalSample);
+    return finalSample;
 }

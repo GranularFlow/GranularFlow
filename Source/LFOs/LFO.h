@@ -31,7 +31,6 @@ public:
     }
     void addKnobToListeners(Knob* knobPntrIn) { knobPntrs.add(knobPntrIn); }
     void removeKnobFromListeners(Knob* knobPntrIn) {
-        DBG("knobPntrs.size() "<< knobPntrs.size());
         int index = -666;
 
         for (int i = 0; i < knobPntrs.size(); i++)
@@ -46,9 +45,6 @@ public:
         {
             knobPntrs.remove(index, false);
         }
-
-        DBG("removed? ");
-        DBG("knobPntrs.size() " << knobPntrs.size());
     }
     OwnedArray<Knob> knobPntrs;
     

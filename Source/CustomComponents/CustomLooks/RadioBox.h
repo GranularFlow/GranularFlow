@@ -26,12 +26,11 @@ public:
     void buttonStateChanged(Button*) override;
     void buttonClicked(Button*) override;
     // Getters
-    float getValue();
+    int getValue();
 
 private:
     CustomLook customLook;
     String name;
     Colour guiColor;
     OwnedArray<ToggleButton> toggleButtons;
-    int8 value = 0;
 };

@@ -14,13 +14,20 @@ BounceLFO::BounceLFO()
 {
    addAndMakeVisible(settings);
    addAndMakeVisible(canvas);
-   addListeners();
-   settings.ballSpeedKnob.slider.setValue(1);
+
+   settings.rateKnob.slider.addListener(this);
+   settings.ballSpeedKnob.slider.addListener(this);
+   settings.clearButton.addListener(this);
+   settings.startButton.addListener(this);
 }
 
 BounceLFO::~BounceLFO()
 {
     stopTimer();
+    settings.rateKnob.slider.removeListener(this);
+    settings.ballSpeedKnob.slider.removeListener(this);
+    settings.clearButton.removeListener(this);
+    settings.startButton.removeListener(this);
 }
 
 
@@ -38,26 +45,9 @@ void BounceLFO::resized()
     canvas.setBounds(getLocalBounds().withTrimmedTop(90).withTrimmedBottom(settingsBounds.getHeight() + 40).withTrimmedLeft(200).withTrimmedRight(200));
 }
 
-void BounceLFO::addListeners()
-{
-    //settings.depthKnob.slider.addListener(this);
-    settings.rateKnob.slider.addListener(this);
-    settings.ballSpeedKnob.slider.addListener(this);
-    settings.clearButton.addListener(this);
-}
-
-void BounceLFO::removeListeners()
-{
-    //settings.depthKnob.slider.removeListener(this);
-    settings.rateKnob.slider.removeListener(this);
-    settings.ballSpeedKnob.slider.removeListener(this);
-    settings.clearButton.removeListener(this);
-
-}
-
 void BounceLFO::timerCallback()
 {
-    checkNextCoordinate();
+    updateKnobs(getNext());
 }
 
 void BounceLFO::sliderValueChanged(Slider* slider)
@@ -79,14 +69,14 @@ void BounceLFO::buttonClicked(Button* button)
     {
         canvas.clearLines();
     }
+
+    if (button == &settings.startButton)
+    {
+        canvas.startStop(settings.ballSpeedKnob.getValue());
+    }
 }
 
-float BounceLFO::getOutputValue()
+double BounceLFO::getNext()
 {
-    return outputValue * (settings.getDepth() / (float)100);
-}
-
-void BounceLFO::checkNextCoordinate()
-{
-    outputValue = canvas.getCoord(settings.isCurrentSelectedCoordinate(BounceSettings::X));    
+    return canvas.getOutput(settings.isCurrentSelectedCoordinate(BounceSettings::X)) * settings.getDepth();
 }

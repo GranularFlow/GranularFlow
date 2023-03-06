@@ -38,6 +38,7 @@ GranularPlayer::GranularPlayer(int totalSamplesIn, int sampleRateIn) {
 }
 
 GranularPlayer::~GranularPlayer() {
+
     stopTimer();
     grains.clear();
 }
@@ -185,4 +186,15 @@ void GranularPlayer::changeTimer(int sampleRateIn)
     sampleRate = sampleRateIn;
     // sample rate is very high, need to reduce it to less drastic timing
     startTimerHz(std::floor(sampleRate/(float)10));
+}
+
+void GranularPlayer::setKnobsListener(Knob::KnobListener* knobListenerPntr)
+{
+    settings.grainLengthKnob.setListener(knobListenerPntr);
+    settings.grainPitchKnob.setListener(knobListenerPntr);
+    settings.grainNumKnob.setListener(knobListenerPntr);
+    settings.grainOffsetKnob.setListener(knobListenerPntr);
+
+    settings.volumeKnob.setListener(knobListenerPntr);
+    settings.panKnob.setListener(knobListenerPntr);
 }

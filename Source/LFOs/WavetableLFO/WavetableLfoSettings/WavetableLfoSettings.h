@@ -36,15 +36,15 @@ public:
 
     // Tools
     // Getters
-    float getRate();
-    float getDepth();
-    float getWaveCount();
+    double getRate();
+    double getDepth();
+    int getWaveCount();
     bool isCurrentInterpolationType(WavetableLfoSettings::InterpolationType);
 
     // Settings
     // (String nameIn, Colour guiColorIn, float startRangIn, float endRangeIn, float stepIn, float defaultValue)
-    Knob rateKnob{ "RATE", C_SUNFLOWER, 100, 1000, 1, 400, false}; // %
-    Knob depthKnob{ "DEPTH", C_SUNFLOWER, 0, 100, 1, 50, false }; // %
+    Knob rateKnob{ "RATE", C_SUNFLOWER, 1, 20, 1, 1, false}; // %
+    Knob depthKnob{ "DEPTH", C_SUNFLOWER, 0, 1, 0.1, 0.5, false }; // %
     Knob waveCountKnob{ "WAVE COUNT", C_SUNFLOWER, 2, 10, 2, 6, false }; // %
     RadioBox interpolationRadioBox{ "ITERPOLATION", C_SUNFLOWER, INTERPOLATION_TYPE };
 

@@ -18,7 +18,7 @@
 #include "BounceCanvas/BounceCanvas.h"
 
 
-class BounceLFO : public Component, public Slider::Listener, public Timer, public Button::Listener
+class BounceLFO : public Component, public Slider::Listener, public Timer, public Button::Listener, public LFO
 {
 public:
     // Class
@@ -30,19 +30,14 @@ public:
     void resized() override;
 
     // Listeners
-    void addListeners();
-    void removeListeners();
     void timerCallback();
     void sliderValueChanged(Slider*);
     void buttonClicked(Button*);
     // Getters
-    float getOutputValue();
-    // Tools
-    void checkNextCoordinate();
+    double getNext();
 
 private:
     BounceSettings settings;
     BounceCanvas canvas;
-    float outputValue = 1.0f;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BounceLFO);
 };

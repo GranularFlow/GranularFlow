@@ -50,6 +50,8 @@ public:
 	// Setters
 	void changeTimer(int);
 
+	void setKnobsListener(Knob::KnobListener*);
+
 private:
 	// Settings
 	int totalSamples;
