@@ -27,6 +27,7 @@ public:
     void buttonClicked(Button*) override;
     // Getters
     int getValue();
+    void resetDefaultValue();
 
 private:
     CustomLook customLook;

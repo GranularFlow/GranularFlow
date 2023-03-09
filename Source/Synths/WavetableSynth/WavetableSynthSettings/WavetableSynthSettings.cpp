@@ -40,7 +40,7 @@ void WavetableSynthSettings::paint(Graphics& g)
 
 void WavetableSynthSettings::resized()
 {
-    int sectionWidth = (getWidth() * 0.9) / 6;
+    int sectionWidth = (getWidth() * 0.8) / 6;
     int sectionHeight = getHeight();
 
     FlexBox fb{
@@ -73,6 +73,34 @@ void WavetableSynthSettings::resized()
 
 }
 
+void WavetableSynthSettings::addSlidersListener(Slider::Listener* listener)
+{
+    freqKnob.addSliderListener(listener);
+    waveCountKnob.addSliderListener(listener);
+}
+
+void WavetableSynthSettings::removeSlidersListener(Slider::Listener* listener)
+{
+    freqKnob.removeSliderListener(listener);
+    waveCountKnob.removeSliderListener(listener);
+}
+
+void WavetableSynthSettings::setKnobsListener(Knob::KnobListener* knobListenerPntr)
+{
+    freqKnob.setKnobListener(knobListenerPntr);
+    waveCountKnob.setKnobListener(knobListenerPntr);
+    volumeKnob.setKnobListener(knobListenerPntr);
+    panKnob.setKnobListener(knobListenerPntr);
+}
+
+void WavetableSynthSettings::removeKnobsListener()
+{
+    freqKnob.removeKnobListener();
+    waveCountKnob.removeKnobListener();
+    volumeKnob.removeKnobListener();
+    panKnob.removeKnobListener();
+}
+
 
 float WavetableSynthSettings::getFreq()
 {
@@ -102,4 +130,19 @@ bool WavetableSynthSettings::isCurrentMidiMode(WavetableSynthSettings::MidiMode 
 bool WavetableSynthSettings::isCurrentInterpolationType(WavetableSynthSettings::InterpolationType type)
 {
     return ((WavetableSynthSettings::InterpolationType)interpolationRadioBox.getValue() == type);
+}
+
+bool WavetableSynthSettings::isWaveCountKnobSlider(Slider* slider)
+{
+    return waveCountKnob.isCurrentSlider(slider);
+}
+
+bool WavetableSynthSettings::isFreqKnobSlider(Slider* slider)
+{
+    return freqKnob.isCurrentSlider(slider);
+}
+
+Knob& WavetableSynthSettings::getWaveCountKnob()
+{
+    return waveCountKnob;
 }

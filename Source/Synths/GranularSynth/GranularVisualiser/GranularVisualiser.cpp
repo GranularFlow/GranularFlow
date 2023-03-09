@@ -23,9 +23,8 @@ GranularVisualiser::~GranularVisualiser()
 
 void GranularVisualiser::paint(Graphics& g) {
     // Draw outlines
-    g.setColour(L_GRAY);
-    g.drawLine(0, 0, getWidth(), 0, 2.0);
-    g.drawLine(0, getHeight(), getWidth(), getHeight(), 2.0);
+
+    g.fillAll(G_DARK);
 
     // Draw samples
     if (waveformSet){
@@ -57,10 +56,10 @@ void GranularVisualiser::paint(Graphics& g) {
     }
 }
 
-void GranularVisualiser::setPntr(RingBuffer* ringPointer)
+void GranularVisualiser::setPntr(std::shared_ptr<RingBuffer> ringPointer)
 {
     ringBufferPointer = ringPointer;
-    startTimer(1000);
+    startTimerHz(1);
 }
 
 void GranularVisualiser::timerCallback()

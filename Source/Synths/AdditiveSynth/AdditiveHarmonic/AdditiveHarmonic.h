@@ -17,34 +17,36 @@ class AdditiveHarmonic : public Component, public Slider::Listener
 {
 public:
     // Class
-	AdditiveHarmonic(int);
+	AdditiveHarmonic();
 	~AdditiveHarmonic() override;
     //GUI
     void paint(Graphics& g) override;
     void resized() override;
     // Listeners
-    void sliderValueChanged(Slider*)override;
+    void sliderValueChanged(Slider*) override;
     // Tools
-    void fillNextBuffer(AudioBuffer<float>&, juce::MidiBuffer&);
-    void setSampleRate(int);
+    void prepareToPlay(float, int);
+    void processBlock(AudioBuffer<float>&, juce::MidiBuffer&);
+
+    
     void calculateDelta();
     void handleMidi(MidiBuffer&);
-    double getPhaseRads();
-    double getPi();
-
+    void setAngle(double);
+    double getAngle();
+    void reset();
     void setKnobsListener(Knob::KnobListener* knobListenerPntr);
     void removeKnobsListener();
-
-
 private:
-    int sampleRate = 48000;
-    float phase = 0;
+    // Wave parameters
+    int sampleRate = SAMPLE_RATE;
+    double phase = 0;
     float frequency = 440.0f;
     double angle = 0.0;
     double delta = 0.0;
-    int lastMidiNote = -1;
+    //
+    int8 lastMidiNote = -1;
     bool midiNoteOn = false;
     float midiNoteFrequency = 0.f;
     bool lastMidiMode = false;
-    AdditiveHarmonicSettings harmonicSettings;
+    AdditiveHarmonicSettings settings;
 };

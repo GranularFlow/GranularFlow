@@ -30,7 +30,6 @@ PlayerSettings::PlayerSettings()
     addAndMakeVisible(grainPitchKnob);
     addAndMakeVisible(grainNumKnob);
     addAndMakeVisible(grainOffsetKnob);
-    //addAndMakeVisible(cursorPositionKnob);
     // Master
     addAndMakeVisible(volumeKnob);
     addAndMakeVisible(panKnob);
@@ -43,6 +42,7 @@ PlayerSettings::~PlayerSettings()
 
 void PlayerSettings::paint(Graphics& g) {
     // Settings panel
+    g.fillAll(C_BARARED);
     g.setColour(L_GRAY);
     g.fillRoundedRectangle(getLocalBounds().toFloat(), 30);
 }

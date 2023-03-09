@@ -30,22 +30,35 @@ public:
     GranularSettings();
     ~GranularSettings();
     // GUI
-    void enablePlayers();
     void paint(Graphics&) override;
     void resized();
+    // Listeners
+    // ---Buttons
+    void addButtonListener(Button::Listener*);
+    void removeButtonListener(Button::Listener*);
+    // ---Sliders
+    void addSliderListener(Slider::Listener*);
+    void removeSliderListener(Slider::Listener*);
+    // Get
+    int8 getPlayerCount();
+    // Tools
+    void enablePlayers();
+    bool isPlayerCountSlider(Slider*);
+    bool isPlayerSelectSlider(Slider*);
+    bool isOpenAudioButton(Button*);
+    bool isOpenBufferButton(Button*);
 
-    // Buffer length - number of buffers to play from
-    NumberSelect timeLengthNum{ "Length", C_ANDROID ,1.0, 3.0, 0.1, 3.0 };
+    NumberSelect& getPlayerCountNum();
+    NumberSelect& getPlayerSelectNum();
+    Button& getOpenBufferButton();
+    Button& getOpenAudioButton();
+
+private:
     TextButton openBufferButton{ "BUFFER" };
-    // Open file button
     TextButton openAudioButton{ "FILE" };
     // Player settings
     NumberSelect playerCountNum{ "Count", C_BARARED, 0, 3, 1, 0 };
     NumberSelect playerSelectNum{ "Select", C_MARINE, 0, 3, 1, 0 };
-
-   
-
-private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GranularSettings)
 };

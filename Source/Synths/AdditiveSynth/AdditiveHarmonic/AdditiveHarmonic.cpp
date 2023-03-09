@@ -10,18 +10,17 @@
 
 #include "AdditiveHarmonic.h"
 
-AdditiveHarmonic::AdditiveHarmonic(int sampleRateIn)
+AdditiveHarmonic::AdditiveHarmonic()
 {
-    sampleRate = sampleRateIn;
-    harmonicSettings.phaseKnob.slider.addListener(this);
-    harmonicSettings.freqKnob.slider.addListener(this);
-    addAndMakeVisible(harmonicSettings);
+    settings.getPhaseKnob().addSliderListener(this);
+    settings.getFreqKnob().addSliderListener(this);
+    addAndMakeVisible(settings);
 }
 
 AdditiveHarmonic::~AdditiveHarmonic()
 {
-    harmonicSettings.phaseKnob.slider.removeListener(this);
-    harmonicSettings.freqKnob.slider.removeListener(this);
+    settings.getPhaseKnob().removeSliderListener(this);
+    settings.getFreqKnob().removeSliderListener(this);
     removeKnobsListener();
 }
 
@@ -31,37 +30,30 @@ void AdditiveHarmonic::paint(Graphics& g)
 
 void AdditiveHarmonic::resized()
 {
-    harmonicSettings.setBounds(getLocalBounds()
-        .withTrimmedTop(getWidth() * 0.01)
-        .withTrimmedLeft(getWidth() * 0.01)
-        .withTrimmedRight(getWidth() * 0.01)
-        .withTrimmedBottom(getWidth() * 0.01)
-    );
-
+    settings.setBounds(getLocalBounds());
 }
 
 
 void AdditiveHarmonic::sliderValueChanged(Slider* slider)
 {
-    if (slider == &harmonicSettings.phaseKnob.slider){
+    if (settings.isPhaseKnob(slider)){
         phase = slider->getValue();
     }
-    else if (slider == &harmonicSettings.freqKnob.slider) {
+    else if (settings.isFreqKnob(slider)) {
         frequency = slider->getValue();
         calculateDelta();
     }
 }
 
-void AdditiveHarmonic::fillNextBuffer(AudioBuffer<float>& bufferToFill, juce::MidiBuffer& midiMessages)
+void AdditiveHarmonic::processBlock(AudioBuffer<float>& bufferToFill, juce::MidiBuffer& midiMessages)
 {
     float* leftChannel = bufferToFill.getWritePointer(0);
     float* rightChannel = bufferToFill.getWritePointer(1);
 
-    if (harmonicSettings.isCurrentMidiMode(AdditiveHarmonicSettings::MidiMode::ON))
+    if (settings.isCurrentMidiMode(AdditiveHarmonicSettings::MidiMode::ON))
     {
         handleMidi(midiMessages);
-        if (midiNoteOn) {
-            calculateDelta();
+        if (midiNoteOn) {            
             if (!lastMidiMode)
             {
                 lastMidiMode = true;
@@ -69,28 +61,26 @@ void AdditiveHarmonic::fillNextBuffer(AudioBuffer<float>& bufferToFill, juce::Mi
             }
             for (int i = 0; i < bufferToFill.getNumSamples(); i++)
             {
-                leftChannel[i] += sin(angle + getPhaseRads()) * harmonicSettings.getVolume() * harmonicSettings.getPan(0);
-                rightChannel[i] += sin(angle + getPhaseRads()) * harmonicSettings.getVolume() * harmonicSettings.getPan(1);
+                leftChannel[i] += sin(angle + Utils::degToRad(phase)) * settings.getVolume() * settings.getPan(0);
+                rightChannel[i] += sin(angle + Utils::degToRad(phase)) * settings.getVolume() * settings.getPan(1);
                 angle += delta;
-                angle = fmod(angle, 2 * getPi());
+                angle = fmod(angle, 2 * PI);
             }
         }
     }
     else
     {
         for (int i = 0; i < bufferToFill.getNumSamples(); i++)
-        {
-            leftChannel[i] += sin(angle + getPhaseRads()) * harmonicSettings.getVolume() * harmonicSettings.getPan(0);
-            rightChannel[i] += sin(angle + getPhaseRads()) * harmonicSettings.getVolume() * harmonicSettings.getPan(1);
+        {                    
+            leftChannel[i] += sin(angle + Utils::degToRad(phase)) * settings.getVolume() * settings.getPan(0);
+            rightChannel[i] += sin(angle + Utils::degToRad(phase)) * settings.getVolume() * settings.getPan(1);
             angle += delta;
-            angle = fmod(angle, 2 * getPi());
+            angle = fmod(angle, 2 * PI);
         }
     }
-
-    
 }
 
-void AdditiveHarmonic::setSampleRate(int sampleRateIn)
+void AdditiveHarmonic::prepareToPlay(float sampleRateIn, int bufferSize)
 {
     sampleRate = sampleRateIn;
     calculateDelta();
@@ -98,7 +88,7 @@ void AdditiveHarmonic::setSampleRate(int sampleRateIn)
 
 void AdditiveHarmonic::calculateDelta()
 {
-    delta = (double)2.0 * getPi() * ((frequency + midiNoteFrequency) / (double)sampleRate);
+    delta = (double)2.0 * PI * ((frequency + midiNoteFrequency) / (double)sampleRate);
 }
 
 void AdditiveHarmonic::handleMidi(MidiBuffer& midiMessages)
@@ -119,31 +109,33 @@ void AdditiveHarmonic::handleMidi(MidiBuffer& midiMessages)
         lastMidiNote = -1;
         midiNoteFrequency = 0.f;
     }
+    calculateDelta();
 }
 
-double AdditiveHarmonic::getPhaseRads()
+void AdditiveHarmonic::setAngle(double angleIn)
 {
-    return (phase * getPi() / (double)180.f);
+    angle = angleIn;
+    calculateDelta();
 }
 
-double AdditiveHarmonic::getPi()
+double AdditiveHarmonic::getAngle()
 {
-    return juce::MathConstants<double>::pi;
+    return angle;
+}
+
+void AdditiveHarmonic::reset()
+{
+    angle = 0;
+    settings.resetDefaultValues();
 }
 
 void AdditiveHarmonic::setKnobsListener(Knob::KnobListener* knobListenerPntr)
 {
-    harmonicSettings.phaseKnob.setListener(knobListenerPntr);
-    harmonicSettings.freqKnob.setListener(knobListenerPntr);
-    harmonicSettings.volumeKnob.setListener(knobListenerPntr);
-    harmonicSettings.panKnob.setListener(knobListenerPntr);
+    settings.setKnobsListener(knobListenerPntr);
 }
 
 void AdditiveHarmonic::removeKnobsListener()
 {
-    harmonicSettings.phaseKnob.removeListener();
-    harmonicSettings.freqKnob.removeListener();
-    harmonicSettings.volumeKnob.removeListener();
-    harmonicSettings.panKnob.removeListener();
+    settings.removeKnobsListener();
 }
 

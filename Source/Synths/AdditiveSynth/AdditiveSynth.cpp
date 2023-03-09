@@ -12,17 +12,23 @@
 
 AdditiveSynth::AdditiveSynth()
 {
-    addAndMakeVisible(additiveSynthSettings);
-    addAndMakeVisible(additiveVisualiser);
-    additiveSynthSettings.harmonicCount.slider.addListener(this);
-    additiveSynthSettings.harmonicSelect.slider.addListener(this);
+    addAndMakeVisible(settings);
+    addAndMakeVisible(visualiser);
+    settings.addListener(this);
+
+    for (int i = 0; i < 5; i++)
+    {
+        harmonics.add(new AdditiveHarmonic());
+        harmonics[i]->setKnobsListener(knobListener);
+        addAndMakeVisible(harmonics.getLast());
+    }
+    harmonics[0]->toFront(true);
 }
 
 AdditiveSynth::~AdditiveSynth()
 {
-    additiveSynthSettings.harmonicCount.slider.removeListener(this);
-    additiveSynthSettings.harmonicSelect.slider.removeListener(this);
-    additiveHarmonics.clear();
+    settings.removeListener(this);
+    harmonics.clear();
     knobListener = nullptr;
 }
 
@@ -34,50 +40,42 @@ void AdditiveSynth::paint(Graphics& g)
 void AdditiveSynth::resized()
 {
 
-    // Top GranularSynthSettings
-    int8 topSettingsHeight = 50;
-
-    additiveSynthSettings.setBounds(getLocalBounds().withTrimmedBottom(getHeight() - topSettingsHeight));
+    settings.setBounds(getLocalBounds().withTrimmedBottom(getHeight() - TOP_BAR_HEIGHT));
 
     // Harmonics
-    for (int i = 0; i < additiveHarmonics.size(); i++)
+    for (int i = 0; i < harmonics.size(); i++)
     {
-        additiveHarmonics[i]->setBounds(getLocalBounds().withTrimmedTop(topSettingsHeight + ((getHeight()- topSettingsHeight) * 2/3)));
+        harmonics[i]->setBounds(SETTINGS_SIZE);
     }
     // AudioVisualiser
-    additiveVisualiser.setBounds(getLocalBounds().withTrimmedTop(topSettingsHeight).withTrimmedBottom((getHeight() - topSettingsHeight) * 1/3));
+    visualiser.setBounds(getLocalBounds().withTrimmedTop(TOP_BAR_HEIGHT).withTrimmedBottom(((getHeight() - TOP_BAR_HEIGHT) / 2) + TOP_BAR_HEIGHT));
 }
 
 void AdditiveSynth::sliderValueChanged(Slider* slider)
 {
 
-    if (slider == &additiveSynthSettings.harmonicCount.slider)
+    if (settings.isHarmonicCountSlider(slider))
     {
         int8 val = static_cast<int8>(slider->getValue());
 
-        if (val > additiveHarmonics.size())
+        if (val > activeHarmonics)
         {
             addNewHarmonic();
         }
-        else if (val < additiveHarmonics.size())
+        else if (val < activeHarmonics)
         {
             removeHarmonic();
         }
 
-        for (AdditiveHarmonic* harmonic : additiveHarmonics)
-        {
-            harmonic->setKnobsListener(knobListener);
-        }
-
         // After adding, select this new player
-        additiveSynthSettings.harmonicSelect.slider.setValue(val);
+        settings.getHarmonicSelect().setValue(val, sendNotification);
     }
-    else if (slider == &additiveSynthSettings.harmonicSelect.slider)
+    else if (settings.isHarmonicSelectSlider(slider))
     {
 
         int8 val = static_cast<int8>(slider->getValue());
 
-        if (additiveHarmonics.size() > val - 1)
+        if (activeHarmonics > val - 1)
         {
             selectHarmonic(val);
         }
@@ -90,42 +88,48 @@ void AdditiveSynth::sliderValueChanged(Slider* slider)
 
 void AdditiveSynth::addNewHarmonic()
 {
-    const MessageManagerLock mmLock;
-    additiveHarmonics.add(new AdditiveHarmonic(sampleRate));
-    addAndMakeVisible(additiveHarmonics.getLast(), 5);
-    resized();
+    harmonicsToAdd++;
+    activeHarmonics++;
 }
 
 void AdditiveSynth::removeHarmonic()
 {
-    additiveHarmonics.getLast()->removeKnobsListener();
-    additiveHarmonics.removeLast();
+    activeHarmonics--;
+    harmonics[activeHarmonics]->reset();
     resized();
 }
 
 void AdditiveSynth::selectHarmonic(int harmonicNumber)
 {
-    additiveHarmonics[harmonicNumber - 1]->toFront(true);
+    harmonics[harmonicNumber - 1]->toFront(true);
 }
 
 void AdditiveSynth::processBlock(AudioBuffer<float>& bufferToFill, juce::MidiBuffer& midiMessages)
 {
-  
-    for (AdditiveHarmonic* harmonic : additiveHarmonics)
+    if (harmonicsToAdd > 0)
     {
-        harmonic->fillNextBuffer(bufferToFill, midiMessages);
+        for (int i = 0; i < harmonicsToAdd; i++)
+        {
+            harmonics[activeHarmonics - harmonicsToAdd + i]->setAngle(harmonics[0]->getAngle());
+        }
+        harmonicsToAdd = 0;
     }
-    additiveVisualiser.pushBuffer(bufferToFill);
+
+
+    for (int i = 0; i < activeHarmonics; i++)
+    {
+        harmonics[i]->processBlock(bufferToFill, midiMessages);
+    }
+
+    visualiser.pushBuffer(bufferToFill);
 }
 
-void AdditiveSynth::prepareToPlay(float sampleRateIn, int bufferSizeIn)
+void AdditiveSynth::prepareToPlay(float sampleRate, int bufferSize)
 {
-    additiveVisualiser.clear();
-    sampleRate = (int)sampleRateIn;
-    bufferSize = bufferSizeIn;
-    for (AdditiveHarmonic* harmonic: additiveHarmonics)
+    visualiser.clear();
+    for (AdditiveHarmonic* harmonic : harmonics)
     {
-        harmonic->setSampleRate(sampleRate);
+        harmonic->prepareToPlay(sampleRate, bufferSize);
     }
 }
 

@@ -21,24 +21,24 @@ WavetableLFO::WavetableLFO()
     addAndMakeVisible(wavetableSettings);
 
     combineButton.addListener(this);
-    wavetableSettings.waveCountKnob.slider.addListener(this);
-    wavetableSettings.rateKnob.slider.addListener(this);
+    wavetableSettings.waveCountKnob.addSliderListener(this);
+    wavetableSettings.rateKnob.addSliderListener(this);
 }
 
 WavetableLFO::~WavetableLFO()
 {
-    wavetableSettings.waveCountKnob.slider.removeListener(this);
-    wavetableSettings.rateKnob.slider.removeListener(this);
+    wavetableSettings.waveCountKnob.removeSliderListener(this);
+    wavetableSettings.rateKnob.removeSliderListener(this);
 
 }
 
 void WavetableLFO::sliderValueChanged(Slider* slider)
 {
-    if (slider == &wavetableSettings.waveCountKnob.slider)
+    if (slider == &wavetableSettings.waveCountKnob.getSlider())
     {
         combineButton.triggerClick();
     }
-    else if (slider == &wavetableSettings.rateKnob.slider)
+    else if (slider == &wavetableSettings.rateKnob.getSlider())
     {
         stopTimer();
         startTimerHz(slider->getValue());

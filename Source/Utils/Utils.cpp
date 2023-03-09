@@ -22,7 +22,14 @@ Utils::~Utils()
 void Utils::paintLogo(Graphics& g)
 {
     const Image logo = ImageFileFormat::loadFrom(BinaryData::logo250_png, BinaryData::logo250_pngSize);
-    g.drawImageAt(logo, (50 - 36) / 2, 7, false);
+    g.drawImageAt(logo, 7, 7, false);
+}
+
+void Utils::paintLogoWithUnderline(Graphics& g)
+{
+    paintLogo(g);
+    g.setColour(C_GRAY);
+    g.fillRect(0, TOP_BAR_HEIGHT - 2, W_WIDTH, 2);
 }
 
 int Utils::msToSamples(float timeInMs, int sampleRate) {
@@ -38,6 +45,11 @@ float Utils::samplesToMs(int samplesCount, int sampleRate) {
 int Utils::secToSamples(float timeInSec, int sampleRate) {
     int samples = std::round(sampleRate * timeInSec);
     return samples;
+}
+
+double Utils::degToRad(double phase)
+{
+    return ( (phase * PI) / (double)180);
 }
 
 float Utils::percentToFloat(int8 percent)

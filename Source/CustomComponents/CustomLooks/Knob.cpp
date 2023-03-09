@@ -10,12 +10,12 @@
 
 #include "Knob.h"
 
-Knob::Knob(String nameIn, Colour guiColorIn, float startRangIn, float endRangeIn, float stepIn, float defaultValue, bool displayLFO=true)
+Knob::Knob(String nameIn, Colour guiColorIn, float startRangIn, float endRangeIn, float stepIn, float defaultValueIn, bool displayLFO=true)
 {
 
     guiColor = guiColorIn;
     name = nameIn;
-    value = defaultValue;
+    defaultValue = defaultValueIn;
 
     setLookAndFeel(&customLook);
     slider.setRange(startRangIn, endRangeIn, stepIn);
@@ -55,37 +55,29 @@ void Knob::paint(Graphics& g)
 {
     g.setColour(guiColor);
     g.fillRect(Rectangle<float>(50, 10).withCentre(Point<float>(getWidth()/(float)2.0, 0)));
-
     g.setColour(C_SMOKE);
-    g.drawFittedText(name, getLocalBounds().withTrimmedTop(10).withTrimmedRight(getWidth() * 0.1).withTrimmedLeft(getWidth() * 0.1), Justification::centredTop, 1);
+    g.drawText(name, getLocalBounds().withSize(getWidth(), 20).withCentre(Point<int>(getWidth() / 2, 20)), Justification::centred, false);
 }
 
 void Knob::resized()
 {
-    slider.setBounds(
-        getLocalBounds()
-        .withTrimmedTop(25)
-        .withTrimmedBottom(50)
-        .withTrimmedLeft(getWidth()* 0.15)
-        .withTrimmedRight(getWidth() * 0.15)
-    );
+    slider.setBounds(getLocalBounds().withSize(KNOB_WIDTH, KNOB_HEIGHT).withCentre(Point<int>(getWidth() / 2, (KNOB_HEIGHT / 2) + 50)));
+    comboBox->setBounds(getLocalBounds().withSize(getWidth() * 0.7, 25).withCentre(Point<int>(getWidth() / 2, getHeight() - 30 )));
+}
 
-    comboBox->setBounds(
-        getLocalBounds()
-        .withTrimmedTop(getHeight()-50)
-        .withTrimmedBottom(25)
-        .withTrimmedLeft(getWidth() * 0.15)
-        .withTrimmedRight(getWidth() * 0.15)
-    );
+void Knob::setDefaultValue()
+{
+    slider.setValue(defaultValue);
+    comboBox->setSelectedItemIndex(0, NotificationType::sendNotification);
 }
 
 
-void Knob::addListener(Slider::Listener* listener)
+void Knob::addSliderListener(Slider::Listener* listener)
 {
     slider.addListener(listener);
 }
 
-void Knob::removeListener(Slider::Listener* listener)
+void Knob::removeSliderListener(Slider::Listener* listener)
 {
     slider.removeListener(listener);
 }
@@ -118,4 +110,14 @@ void Knob::setLfoValue(float value)
 float Knob::getValue()
 {
     return slider.getValue();
+}
+
+bool Knob::isCurrentSlider(Slider* currentSlider)
+{
+    return currentSlider == &slider;
+}
+
+Slider& Knob::getSlider()
+{
+    return slider;
 }

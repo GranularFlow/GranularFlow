@@ -44,10 +44,8 @@ void RadioBox::paint(Graphics& g) {
 
 void RadioBox::buttonStateChanged(Button* button)
 {
-
     const MessageManagerLock mmLock;
     repaint();
-
 }
 
 void RadioBox::buttonClicked(Button* button){}
@@ -60,6 +58,15 @@ int RadioBox::getValue(){
         }
     }
     return -666;    
+}
+
+void RadioBox::resetDefaultValue()
+{
+    for (ToggleButton* button: toggleButtons) {
+        button->setToggleState(false, NotificationType::sendNotification);
+    }
+
+    toggleButtons[0]->setToggleState(true, NotificationType::sendNotification);
 }
 
 void RadioBox::resized()

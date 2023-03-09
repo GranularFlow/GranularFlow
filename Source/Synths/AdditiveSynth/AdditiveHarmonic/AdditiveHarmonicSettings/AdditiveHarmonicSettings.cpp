@@ -12,17 +12,6 @@
 
 AdditiveHarmonicSettings::AdditiveHarmonicSettings()
 {
-    initGui();
-
-}
-
-AdditiveHarmonicSettings::~AdditiveHarmonicSettings()
-{
-    separators.clear();
-}
-
-void AdditiveHarmonicSettings::initGui()
-{
     // GUI
     for (int8 i = 0; i < 3; i++)
     {
@@ -38,19 +27,22 @@ void AdditiveHarmonicSettings::initGui()
     // Master
     addAndMakeVisible(volumeKnob);
     addAndMakeVisible(panKnob);
+
+}
+
+AdditiveHarmonicSettings::~AdditiveHarmonicSettings()
+{
+    separators.clear();
 }
 
 void AdditiveHarmonicSettings::paint(Graphics& g)
 {
     g.setColour(L_GRAY);
     g.fillRoundedRectangle(getLocalBounds().toFloat(), 30);
-
 }
 
 void AdditiveHarmonicSettings::resized()
 {
-    int sectionWidth = (getWidth() * 0.9) / 3;
-    int sectionHeight = getHeight();
 
     FlexBox fb{
             FlexBox::Direction::row,
@@ -60,24 +52,46 @@ void AdditiveHarmonicSettings::resized()
             FlexBox::JustifyContent::spaceAround
     };
 
-    // Second column
-    int tmp_height = sectionHeight;
-    int tmp_width = 100;
-    fb.items.add(FlexItem(midiModeRadioBox).withOrder(1).withMinWidth(tmp_width).withMinHeight(tmp_height));
-    fb.items.add(FlexItem(phaseKnob).withOrder(3).withMinWidth(tmp_width).withMinHeight(tmp_height));
-    fb.items.add(FlexItem(freqKnob).withOrder(5).withMinWidth(tmp_width).withMinHeight(tmp_height));
-    fb.items.add(FlexItem(volumeKnob).withOrder(7).withMinWidth(tmp_width).withHeight(tmp_height));
-    fb.items.add(FlexItem(panKnob).withOrder(9).withMinWidth(tmp_width).withHeight(tmp_height));
 
+    int tmp_width = (getWidth() / 8) * 0.9;
+    Utils::addToFb(&fb, midiModeRadioBox, 1, tmp_width, getHeight());
+    Utils::addToFb(&fb, phaseKnob, 3, tmp_width, getHeight());
+    Utils::addToFb(&fb, freqKnob, 5, tmp_width, getHeight());
+    Utils::addToFb(&fb, volumeKnob, 7, tmp_width, getHeight());
+    Utils::addToFb(&fb, panKnob, 9, tmp_width, getHeight());
 
     // White lines
-    for (int8 i = 0; i < 4; i++)
+    for (int8 i = 0; i < separators.size(); i++)
     {
-        fb.items.add(FlexItem(*separators[i]).withMinWidth(1).withHeight(sectionHeight).withOrder((i + 1) * 2));
+        Utils::addToFb(&fb, *separators[i], (i + 1) * 2, 1, getHeight());
     }
 
-    fb.performLayout(getLocalBounds());
+    fb.performLayout(getLocalBounds().withTrimmedLeft(2/3 * getWidth()));
+}
 
+void AdditiveHarmonicSettings::setKnobsListener(Knob::KnobListener* knobListenerPntr)
+{
+    phaseKnob.setKnobListener(knobListenerPntr);
+    freqKnob.setKnobListener(knobListenerPntr);
+    volumeKnob.setKnobListener(knobListenerPntr);
+    panKnob.setKnobListener(knobListenerPntr);
+}
+
+void AdditiveHarmonicSettings::removeKnobsListener()
+{
+    phaseKnob.removeKnobListener();
+    freqKnob.removeKnobListener();
+    volumeKnob.removeKnobListener();
+    panKnob.removeKnobListener();
+}
+
+void AdditiveHarmonicSettings::resetDefaultValues()
+{
+    midiModeRadioBox.resetDefaultValue();
+    phaseKnob.setDefaultValue();
+    freqKnob.setDefaultValue();
+    volumeKnob.setDefaultValue();
+    panKnob.setDefaultValue();
 }
 
 float AdditiveHarmonicSettings::getPhase()
@@ -95,12 +109,32 @@ float AdditiveHarmonicSettings::getVolume()
     return (float)volumeKnob.getValue() / 100;
 }
 
-float AdditiveHarmonicSettings::getPan(int8 channel)
+float AdditiveHarmonicSettings::getPan(bool leftChannel)
 {
-    return  1 - abs(channel - ((float)panKnob.getValue() / 100));
+    return  1 - abs((int)leftChannel - ((float)panKnob.getValue() / 100));
 }
 
 bool AdditiveHarmonicSettings::isCurrentMidiMode(AdditiveHarmonicSettings::MidiMode mode)
 {
     return ((AdditiveHarmonicSettings::MidiMode)midiModeRadioBox.getValue() == mode);
+}
+
+bool AdditiveHarmonicSettings::isPhaseKnob(Slider* slider)
+{
+    return phaseKnob.isCurrentSlider(slider);
+}
+
+bool AdditiveHarmonicSettings::isFreqKnob(Slider* slider)
+{
+    return freqKnob.isCurrentSlider(slider);
+}
+
+Knob& AdditiveHarmonicSettings::getPhaseKnob()
+{
+    return phaseKnob;
+}
+
+Knob& AdditiveHarmonicSettings::getFreqKnob()
+{
+    return freqKnob;
 }

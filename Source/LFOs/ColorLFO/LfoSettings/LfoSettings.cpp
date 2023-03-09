@@ -18,7 +18,7 @@ LfoSettings::LfoSettings()
     addAndMakeVisible(rateKnob);
     addAndMakeVisible(uploadButton);
 
-    for (int8 i = 0; i < 5; i++)
+    for (int8 i = 0; i < 4; i++)
     {
         separators.add(new Separator());
         addAndMakeVisible(separators.getLast());
@@ -68,6 +68,18 @@ void LfoSettings::resized()
 
 }
 
+void LfoSettings::addListener(Slider::Listener* listener)
+{
+    rateKnob.addSliderListener(listener);
+    depthKnob.addSliderListener(listener);
+}
+
+void LfoSettings::removeListener(Slider::Listener* listener)
+{
+    rateKnob.removeSliderListener(listener);
+    depthKnob.removeSliderListener(listener);
+}
+
 bool LfoSettings::isCurrentDirection(Direction currentDirection)
 {
     return (directionRadioBox.getValue() == currentDirection);
@@ -76,6 +88,31 @@ bool LfoSettings::isCurrentDirection(Direction currentDirection)
 bool LfoSettings::isCurrentSelectedColor(SelectedColor selectedColor)
 {
     return (colorSelectRadioBox.getValue() == selectedColor);
+}
+
+bool LfoSettings::isRateKnobSlider(Slider* slider)
+{
+    return rateKnob.isCurrentSlider(slider);
+}
+
+bool LfoSettings::isUploadButton(Button* button)
+{
+    return button == &uploadButton;
+}
+
+TextButton& LfoSettings::getUploadButton()
+{
+    return uploadButton;
+}
+
+Knob& LfoSettings::getRateKnob()
+{
+    return rateKnob;
+}
+
+Knob& LfoSettings::getDepthKnob()
+{
+    return depthKnob;
 }
 
 float LfoSettings::getRate()

@@ -20,12 +20,15 @@ public:
 	~Utils();
     // GUI
     static void paintLogo(Graphics&);
+    static void paintLogoWithUnderline(Graphics&);
     // Tools
+    static double degToRad(double);
     static float percentToFloat(int8);
     static float samplesToPercent(int,int);
     static int msToSamples(float, int);
     static float samplesToMs(int, int);
     static int secToSamples(float, int);
+
     static void addToFb(FlexBox*, Component&, int8, int, int);
     static void addToFb(FlexBox*, FlexBox, int8, int, int);
     static void addToFb(FlexBox*, FlexItem, int8, int, int);

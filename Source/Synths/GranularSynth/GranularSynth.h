@@ -27,53 +27,46 @@ public:
     // GUI
     void paint(Graphics&) override;
 	void resized();
+    // -----------------
+    // ProcessBlock
+    // -----------------
+    void prepareToPlay(float, int);
+    void processBlock(AudioBuffer<float>&, MidiBuffer&);
+    // -----------------    
     // Listeners
     void sliderValueChanged(Slider*) override;
     void buttonClicked(Button*) override;
-    void addListeners();
-    void removeListeners();
-    // Tools
-    void handleMidi(MidiBuffer&);
-    void loadAudioFromFile(File);
-    void loadAudioIntoSamples();
+    // Get
     int getNumTotalSamples();
+    int8 getPlayerCount();
+    // Set
+    void setKnobsListener(Knob::KnobListener*);
+    // Tools
+    // ---MIDI
+    void handleMidi(MidiBuffer&);
+    // -- Load from File
+    void loadAudioFromFile(File);
+    void loadAudioIntoSamples();    
+    // ---Init
     void initAudioSamples(int);
+    void initPlayers();
     void clearAudioSamples();
     void addNewPlayer();
     void removePlayer();
-    void selectPlayer(int8 playerNumber);
-
-    // --------
-    void prepareToPlay(float, int);
-    void processBlock(AudioBuffer<float>&, MidiBuffer&);
-    // --------
-   
-    // Getters    
-    int8 getPlayerCount();
-
-    void setKnobsListener(Knob::KnobListener*);
-
+    void selectPlayer(int8 playerNumber);  
 private:
     Knob::KnobListener* knobListener = nullptr;
-
+    std::shared_ptr<RingBuffer> ringBufferPntr = nullptr;
     std::unique_ptr<juce::FileChooser> fileChooser = nullptr;
-    // Players    
-	OwnedArray<GranularPlayer> granularPlayers; //Owned array is similar to uniquePtr array
-    // Visualiser
-	GranularVisualiser granularVisualiser;
-    // Top settings
-    GranularSettings granularSettings;    
-    // Samples [channel][sample]
+	
+    GranularSettings topSettings;  
+    GranularVisualiser visualiser;
+    OwnedArray<GranularPlayer> players;
     AudioBuffer<float> audioSamples {2, 256};
-    // Ring buffer
-    RingBuffer* ringBufferPntr = nullptr;
 
-    float increment = 1.0f;
-    int lastMidiNote = -1;
-    int bufferSize = 256;
+    double increment = 1;
+    int8 lastMidiNote = 255;
     float sampleRate = 48000;
-    float maxPlayTime = 3.0; // 3s   
-    // Buffer check
     bool waveFormWasSet = false;
     bool midiNoteOn = false;
     bool inputFromFile = true;

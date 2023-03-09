@@ -17,6 +17,16 @@
 const int W_WIDTH = 1200;
 const int W_HEIGHT = 700;
 
+const int KNOB_WIDTH = 100;
+const int KNOB_HEIGHT = 120;
+const int TOP_BAR_HEIGHT = 60;
+const int IMAGE_WIDTH = 250;
+
+const juce::Rectangle<int> SETTINGS_SIZE = Rectangle<int>().withSize(W_WIDTH-50,225).withCentre(Point<int>(W_WIDTH / 2, W_HEIGHT - 150));
+
+
+const double PI = 3.141592653589793238;
+
 const int8 CURSOR_BALL_RADIUS = 10;
 
 // Font sizes
@@ -26,6 +36,7 @@ const float T_MH_SIZE = 14.f;
 const float T_H_SIZE = 18.f;
 
 // BufferSize/Length for Synth
+const int SAMPLE_RATE = 48000;
 const int8 NUM_BUFFERS = 100;
 
 // GranularPlayer enumToString

@@ -48,13 +48,8 @@ void GranularPlayer::paint(Graphics& g) {
 
 void GranularPlayer::resized()
 {
-    cursor.setBounds(getLocalBounds().withTrimmedBottom(getHeight() / 2));    
-    settings.setBounds(getLocalBounds()
-        .withTrimmedTop((getHeight() / 2) * (1.025))
-        .withTrimmedLeft(getWidth() * 0.025)
-        .withTrimmedRight(getWidth() * 0.025)
-        .withTrimmedBottom(getWidth() * 0.025)
-    );
+    cursor.setBounds(getLocalBounds().withTrimmedTop(TOP_BAR_HEIGHT).withTrimmedBottom(SETTINGS_SIZE.getHeight() + 30));
+    settings.setBounds(SETTINGS_SIZE.withCentre(Point<int>(SETTINGS_SIZE.getCentreX(), SETTINGS_SIZE.getCentreY())));
 }
 
 void GranularPlayer::onCursorPositionChange(int cursorPositionIn)
@@ -82,7 +77,8 @@ int GranularPlayer::getMaxSamples() {
 }
 
 void GranularPlayer::addGrain(int startPosition, int length) {    
-    auto tmp_grain = new Grain(startPosition, Utils::msToSamples(length, sampleRate), 0, settings.getGrainPitch(), settings.getVolume() * settings.getPan(0), settings.getVolume() * settings.getPan(1));
+    auto tmp_grain = new Grain();
+    //TODOstartPosition, Utils::msToSamples(length, sampleRate), 0, settings.getGrainPitch(), settings.getVolume() * settings.getPan(0), settings.getVolume() * settings.getPan(1)
     grains.add(tmp_grain);
 }
 
@@ -190,11 +186,11 @@ void GranularPlayer::changeTimer(int sampleRateIn)
 
 void GranularPlayer::setKnobsListener(Knob::KnobListener* knobListenerPntr)
 {
-    settings.grainLengthKnob.setListener(knobListenerPntr);
-    settings.grainPitchKnob.setListener(knobListenerPntr);
-    settings.grainNumKnob.setListener(knobListenerPntr);
-    settings.grainOffsetKnob.setListener(knobListenerPntr);
+    settings.grainLengthKnob.setKnobListener(knobListenerPntr);
+    settings.grainPitchKnob.setKnobListener(knobListenerPntr);
+    settings.grainNumKnob.setKnobListener(knobListenerPntr);
+    settings.grainOffsetKnob.setKnobListener(knobListenerPntr);
 
-    settings.volumeKnob.setListener(knobListenerPntr);
-    settings.panKnob.setListener(knobListenerPntr);
+    settings.volumeKnob.setKnobListener(knobListenerPntr);
+    settings.panKnob.setKnobListener(knobListenerPntr);
 }

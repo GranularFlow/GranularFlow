@@ -13,6 +13,7 @@
 CustomLook::CustomLook() {}
 CustomLook::~CustomLook() {}
 
+
 void CustomLook::drawPopupMenuItem(Graphics& g, const Rectangle<int>& area, const bool isSeparator, const bool isActive, const bool isHighlighted, const bool isTicked, const bool hasSubMenu, const String& text, const String& shortcutKeyText, const Drawable* icon, const Colour* textColourToUse)
 {
     Colour backgroundColour = C_DARK;
@@ -31,6 +32,7 @@ void CustomLook::drawPopupMenuItem(Graphics& g, const Rectangle<int>& area, cons
     g.setFont(getPopupMenuFont());
     g.drawFittedText(text, area.reduced(2), juce::Justification::centred, 1);
 }
+
 void CustomLook::drawComboBox(Graphics& g, int width, int height, bool isButtonDown, int buttonX, int buttonY, int buttonW, int buttonH, ComboBox& box)
 {
     auto cornerSize = box.findParentComponentOfClass<ChoicePropertyComponent>() != nullptr ? 0.0f : 3.0f;
@@ -50,8 +52,7 @@ void CustomLook::drawComboBox(Graphics& g, int width, int height, bool isButtonD
     g.strokePath(path, PathStrokeType(2.0f));
 }
 
-void CustomLook::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos,
-    const float rotaryStartAngle, const float rotaryEndAngle, juce::Slider& slider)
+void CustomLook::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, const float rotaryStartAngle, const float rotaryEndAngle, juce::Slider& slider)
 {
     auto outline = M_DARK;
     auto fill = slider.findColour(Slider::rotarySliderFillColourId);
@@ -113,11 +114,8 @@ void CustomLook::drawRotarySlider(juce::Graphics& g, int x, int y, int width, in
 
     
 }
-void CustomLook::drawLinearSlider(Graphics& g, int x, int y, int width, int height,
-    float sliderPos,
-    float minSliderPos,
-    float maxSliderPos,
-    const Slider::SliderStyle style, Slider& slider)
+
+void CustomLook::drawLinearSlider(Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider& slider)
 {
     if (slider.isBar())
     {
@@ -168,7 +166,7 @@ void CustomLook::drawLinearSlider(Graphics& g, int x, int y, int width, int heig
             maxPoint = { kx, ky };
         }
 
-        auto thumbWidth = getSliderThumbRadius(slider);
+        auto thumbWidth = slider.getHeight() * 0.25;
 
         valueTrack.startNewSubPath(minPoint);
         valueTrack.lineTo(isThreeVal ? thumbPoint : maxPoint);
@@ -210,12 +208,7 @@ void CustomLook::drawLinearSlider(Graphics& g, int x, int y, int width, int heig
     
 }
 
-void CustomLook::drawTickBox(Graphics& g, Component& component,
-    float x, float y, float w, float h,
-    const bool ticked,
-    const bool isEnabled,
-    const bool shouldDrawButtonAsHighlighted,
-    const bool shouldDrawButtonAsDown)
+void CustomLook::drawTickBox(Graphics& g, Component& component, float x, float y, float w, float h, const bool ticked, const bool isEnabled, const bool shouldDrawButtonAsHighlighted, const bool shouldDrawButtonAsDown)
 {
     ignoreUnused(isEnabled, shouldDrawButtonAsHighlighted, shouldDrawButtonAsDown);
     Rectangle<float> tickBounds(x + (w * 0.25 / 2), y + (h * 0.25 / 2), w * 0.75, h * 0.75);

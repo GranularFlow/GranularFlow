@@ -23,13 +23,13 @@ public:
     // GUI
     void paint(Graphics& g) override;
     // Callbacks
-    void setPntr(RingBuffer*);
+    void setPntr(std::shared_ptr<RingBuffer>);
     void timerCallback() override;
     // Setters
     void setWaveForm(AudioBuffer<float>&);
 
 private:
-    RingBuffer* ringBufferPointer = nullptr;
+    std::shared_ptr<RingBuffer> ringBufferPointer = nullptr;
     Array<float> waveForm;
     bool waveformSet = false;
 };

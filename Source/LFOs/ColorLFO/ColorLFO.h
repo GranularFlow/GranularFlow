@@ -22,18 +22,16 @@ public:
     // Class
 	ColorLFO();
 	~ColorLFO();
-
     // GUI
     void paint(Graphics&)override;
     void resized()override;
-
     // Listener
     void buttonClicked(Button*);
     void timerCallback() override;
     void sliderValueChanged(Slider*) override;
-
+    // Process
     void prepareToPlay(double, int);
-
+    // Tools
     void imageLoaded() override;
 private:
     //  -- Settings

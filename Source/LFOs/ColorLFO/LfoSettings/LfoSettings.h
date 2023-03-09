@@ -37,22 +37,29 @@ public:
     // GUI
     void paint(Graphics&)override;
     void resized()override;
-
-    // Getters
-    bool isCurrentDirection(Direction);
-    bool isCurrentSelectedColor(SelectedColor);
-
+    // Listener
+    void addListener(Slider::Listener*);
+    void removeListener(Slider::Listener*);
+    // Get
     float getRate();
     float getDepth();
+    // Tools
+    bool isCurrentDirection(Direction);
+    bool isCurrentSelectedColor(SelectedColor);
+    bool isRateKnobSlider(Slider*);
+    bool isUploadButton(Button*);
+    // Objects
+    TextButton& getUploadButton();
+    Knob& getRateKnob();
+    Knob& getDepthKnob();
 
-    //  -- Button
-    TextButton uploadButton { "LOAD" };
-    // Settings
-    RadioBox directionRadioBox { "DIRECTION", C_BARARED, DIRECTION_MODE };
-    Knob rateKnob { "RATE", C_BILLS, 1, 20, 1, 2, false };
-    Knob depthKnob { "DEPTH", C_BILLS, 0, 1, 0.1, 0.5, false };
-    RadioBox colorSelectRadioBox { "SELECTED COLOR", C_BARARED, SELECTED_COLOR };
 private:
+    TextButton uploadButton{ "LOAD" };
+    // Settings
+    RadioBox directionRadioBox{ "DIRECTION", C_BARARED, DIRECTION_MODE };
+    Knob rateKnob{ "RATE", C_BILLS, 1, 20, 1, 2, false };
+    Knob depthKnob{ "DEPTH", C_BILLS, 0, 1, 0.1, 0.5, false };
+    RadioBox colorSelectRadioBox{ "SELECTED COLOR", C_BARARED, SELECTED_COLOR };
     // GUI
     OwnedArray<Separator> separators;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LfoSettings);

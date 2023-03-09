@@ -37,7 +37,6 @@ public:
     double getNext();
     void calculateDelta();
     double calculateEquation(double);
-    double getPi();
     bool isValidExpression(const std::string&);
 
 private:

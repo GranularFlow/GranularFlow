@@ -15,14 +15,9 @@
 GranularSettings::GranularSettings()
 {
     addAndMakeVisible(openBufferButton);
-    addAndMakeVisible(timeLengthNum);
     addAndMakeVisible(openAudioButton);
     addChildComponent(playerSelectNum);
     addChildComponent(playerCountNum);
-
-    timeLengthNum.clearTop();
-    playerSelectNum.clearTop();
-    playerCountNum.clearTop();
 }
 
 GranularSettings::~GranularSettings()
@@ -33,19 +28,58 @@ GranularSettings::~GranularSettings()
 void GranularSettings::enablePlayers()
 {
     // This prevents from creating players before file Load
-    playerCountNum.slider.setValue(1, sendNotification);
-    playerCountNum.slider.setRange(1, playerCountNum.slider.getMaximum(), playerCountNum.slider.getInterval());
+    playerCountNum.setValue(1, sendNotification);
+    playerCountNum.setRange(1, playerCountNum.getMaximum(), playerCountNum.getInterval());
 
-    playerSelectNum.slider.setValue(1, dontSendNotification);
-    playerSelectNum.slider.setRange(1, playerCountNum.slider.getMaximum(), playerCountNum.slider.getInterval());
+    playerSelectNum.setValue(1, dontSendNotification);
+    playerSelectNum.setRange(1, playerCountNum.getMaximum(), playerCountNum.getInterval());
 
     playerSelectNum.setVisible(true);
     playerCountNum.setVisible(true);
 }
 
+bool GranularSettings::isPlayerCountSlider(Slider* slider)
+{
+    return playerCountNum.isCurrentSlider(slider);
+}
+
+bool GranularSettings::isPlayerSelectSlider(Slider* slider)
+{
+    return playerSelectNum.isCurrentSlider(slider);
+}
+
+bool GranularSettings::isOpenAudioButton(Button* button)
+{
+    return  button == &openAudioButton;
+}
+
+bool GranularSettings::isOpenBufferButton(Button* button)
+{
+    return  button == &openBufferButton;
+}
+
+NumberSelect& GranularSettings::getPlayerCountNum()
+{
+    return playerCountNum;
+}
+
+NumberSelect& GranularSettings::getPlayerSelectNum()
+{
+    return playerSelectNum;
+}
+
+Button& GranularSettings::getOpenBufferButton()
+{
+    return openBufferButton;
+}
+
+Button& GranularSettings::getOpenAudioButton()
+{
+    return openAudioButton;
+}
+
 void GranularSettings::paint (Graphics& g)
 {
-    //g.fillAll(C_WHITE);
 }
 
 void GranularSettings::resized()
@@ -58,14 +92,40 @@ void GranularSettings::resized()
            FlexBox::JustifyContent::flexEnd
     };
 
-    Utils::addToFb(&fb, openBufferButton, 0, 100, getHeight());
+    Utils::addToFb(&fb, openBufferButton, 0, 100, getHeight() * 0.8);
+    Utils::addToFb(&fb, openAudioButton, 1, 100, getHeight() * 0.8);
+    Utils::addToFb(&fb, playerCountNum, 2, 100, getHeight() * 0.8);
+    Utils::addToFb(&fb, playerSelectNum, 3, 100, getHeight() * 0.8);
 
-    Utils::addToFb(&fb, openAudioButton, 1, 100, getHeight());
+    fb.performLayout(getLocalBounds().withTrimmedLeft(IMAGE_WIDTH));
+}
 
-    Utils::addToFb(&fb, timeLengthNum, 2, 100, getHeight());
-    Utils::addToFb(&fb, playerCountNum, 3, 100, getHeight());
-    Utils::addToFb(&fb, playerSelectNum, 4, 100, getHeight());
+void GranularSettings::addButtonListener(Button::Listener* listener)
+{
+    openAudioButton.addListener(listener);
+    openBufferButton.addListener(listener);
+}
 
-    fb.performLayout(getLocalBounds().withTrimmedLeft(250));
+void GranularSettings::removeButtonListener(Button::Listener* listener)
+{
+    openAudioButton.removeListener(listener);
+    openBufferButton.removeListener(listener);
+}
+
+void GranularSettings::addSliderListener(Slider::Listener* listener)
+{
+    playerSelectNum.addListener(listener);
+    playerCountNum.addListener(listener);
+}
+
+void GranularSettings::removeSliderListener(Slider::Listener* listener)
+{
+    playerSelectNum.removeListener(listener);
+    playerCountNum.removeListener(listener);
+}
+
+int8 GranularSettings::getPlayerCount()
+{
+    return playerCountNum.getValue();
 }
 

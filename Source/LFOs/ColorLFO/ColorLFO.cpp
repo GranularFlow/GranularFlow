@@ -1,3 +1,4 @@
+
 /*
   ==============================================================================
 
@@ -13,19 +14,20 @@
 
 ColorLFO::ColorLFO()
 {
-    addAndMakeVisible(settings);
-    settings->uploadButton.addListener(this);
-    settings->rateKnob.slider.addListener(this);
+    addAndMakeVisible(settings);    
     addAndMakeVisible(*imageHandler);
+
+    settings->addListener(this);
     imageHandler->setListener(this);
 }
 
 ColorLFO::~ColorLFO()
 {
-    imageHandler->removeListener();
     stopTimer();
-    settings->uploadButton.removeListener(this);
-    settings->rateKnob.slider.removeListener(this);
+
+    imageHandler->removeListener();    
+    settings->removeListener(this);
+
     delete imageHandler;
     delete settings;
 }
@@ -38,14 +40,14 @@ void ColorLFO::paint(Graphics& g)
 
 void ColorLFO::resized()
 {
-    Rectangle<int> settingsBounds = getLocalBounds().withTrimmedTop((getHeight() - 50) * 4 / 5).withTrimmedBottom(10).withTrimmedLeft(getWidth() * 1 / 4).withTrimmedRight(getWidth() * 1 / 4);
-    settings->setBounds(settingsBounds);
-    imageHandler->setBounds(getLocalBounds().withTrimmedTop(60).withTrimmedBottom(settingsBounds.getHeight() + 20).withTrimmedLeft(20).withTrimmedRight(20));
+    //Rectangle<int> settingsBounds = getLocalBounds().withTrimmedTop((getHeight() - 50) * 4 / 5).withTrimmedBottom(10).withTrimmedLeft(getWidth() * 1 / 4).withTrimmedRight(getWidth() * 1 / 4);
+    settings->setBounds(SETTINGS_SIZE);
+    imageHandler->setBounds(getLocalBounds().withTrimmedTop(60).withTrimmedBottom(SETTINGS_SIZE.getHeight() + 40).withTrimmedLeft(20).withTrimmedRight(20));
 }
 
 void ColorLFO::buttonClicked(Button* button)
 {
-    if (button == &settings->uploadButton)
+    if (settings->isUploadButton(button))
     {
         imageHandler->loadImage();        
     }
@@ -58,11 +60,11 @@ void ColorLFO::timerCallback()
 
 void ColorLFO::sliderValueChanged(Slider* slider)
 {
-    if (slider == &settings->rateKnob.slider)
+    if (settings->isRateKnobSlider(slider))
     {
         if (imageHandler->isImageSet()) {
             stopTimer();
-            startTimerHz(settings->rateKnob.getValue());
+            startTimerHz(slider->getValue());
         }
     }
 }
@@ -75,5 +77,5 @@ void ColorLFO::prepareToPlay(double sampleRate, int samplesPerBlock)
 void ColorLFO::imageLoaded()
 {
     stopTimer();
-    startTimerHz(settings->rateKnob.getValue());
+    startTimerHz(settings->getRate());
 }

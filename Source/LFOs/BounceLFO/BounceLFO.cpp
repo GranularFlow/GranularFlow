@@ -15,8 +15,8 @@ BounceLFO::BounceLFO()
    addAndMakeVisible(settings);
    addAndMakeVisible(canvas);
 
-   settings.rateKnob.slider.addListener(this);
-   settings.ballSpeedKnob.slider.addListener(this);
+   settings.rateKnob.addSliderListener(this);
+   settings.ballSpeedKnob.addSliderListener(this);
    settings.clearButton.addListener(this);
    settings.startButton.addListener(this);
 }
@@ -24,8 +24,8 @@ BounceLFO::BounceLFO()
 BounceLFO::~BounceLFO()
 {
     stopTimer();
-    settings.rateKnob.slider.removeListener(this);
-    settings.ballSpeedKnob.slider.removeListener(this);
+    settings.rateKnob.removeSliderListener(this);
+    settings.ballSpeedKnob.removeSliderListener(this);
     settings.clearButton.removeListener(this);
     settings.startButton.removeListener(this);
 }
@@ -52,12 +52,12 @@ void BounceLFO::timerCallback()
 
 void BounceLFO::sliderValueChanged(Slider* slider)
 {    
-    if (slider == &settings.rateKnob.slider)
+    if (settings.rateKnob.isCurrentSlider(slider))
     {
         stopTimer();
         startTimerHz(slider->getValue());
     }
-    if (slider == &settings.ballSpeedKnob.slider)
+    if (settings.ballSpeedKnob.isCurrentSlider(slider))
     {
         canvas.setBallSpeed(slider->getValue());
     }

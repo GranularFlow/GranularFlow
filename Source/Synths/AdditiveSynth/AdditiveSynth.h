@@ -28,26 +28,28 @@ public:
     void resized()override;
     // Listeners
     void sliderValueChanged(Slider*) override;
-
+    // ----------------------
+    // ProcessBlock
+    // ----------------------
+    void prepareToPlay(float, int)override;
+    void processBlock(AudioBuffer<float>&, juce::MidiBuffer&)override;
+    // ----------------------    
     // Tools
     void addNewHarmonic();
     void removeHarmonic();
-    void selectHarmonic(int);
-
-    // --------
-    void prepareToPlay(float, int)override;
-    void processBlock(AudioBuffer<float>&, juce::MidiBuffer&)override;
-    // --------
+    void selectHarmonic(int);    
+    // Get
+    // Set
     void setKnobsListener(Knob::KnobListener*) override;
-    // Getters
-    // Setters
     
 private:
     Knob::KnobListener* knobListener = nullptr;
-    float sampleRate = 48000;
-    int bufferSize = 256;
-    AdditiveSynthSettings additiveSynthSettings;
-    AdditiveVisualiser additiveVisualiser;
-    OwnedArray<AdditiveHarmonic> additiveHarmonics;
 
+    int8 activeHarmonics = 0;
+    int8 selectedHarmonic = 0;
+    int8 harmonicsToAdd = 0;
+
+    AdditiveSynthSettings settings;
+    AdditiveVisualiser visualiser;
+    OwnedArray<AdditiveHarmonic> harmonics;
 };

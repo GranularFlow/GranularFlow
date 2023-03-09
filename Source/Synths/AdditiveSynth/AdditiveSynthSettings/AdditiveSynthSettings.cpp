@@ -15,11 +15,11 @@ AdditiveSynthSettings::AdditiveSynthSettings()
     addAndMakeVisible(harmonicCount);
     addAndMakeVisible(harmonicSelect);
 
-    harmonicCount.slider.setValue(1, sendNotification);
-    harmonicCount.slider.setRange(1, harmonicCount.slider.getMaximum(), harmonicCount.slider.getInterval());
+    harmonicCount.setValue(1, sendNotification);
+    harmonicCount.setRange(1, harmonicCount.getMaximum(), harmonicCount.getInterval());
 
-    harmonicSelect.slider.setValue(1, dontSendNotification);
-    harmonicSelect.slider.setRange(1, harmonicCount.slider.getMaximum(), harmonicCount.slider.getInterval());
+    harmonicSelect.setValue(1, dontSendNotification);
+    harmonicSelect.setRange(1, harmonicCount.getMaximum(), harmonicCount.getInterval());
 }
 
 AdditiveSynthSettings::~AdditiveSynthSettings()
@@ -28,7 +28,6 @@ AdditiveSynthSettings::~AdditiveSynthSettings()
 
 void AdditiveSynthSettings::paint(Graphics& g)
 {
-    //g.fillAll(C_RADIANTYELLOW);
 }
 
 void AdditiveSynthSettings::resized()
@@ -46,4 +45,36 @@ void AdditiveSynthSettings::resized()
 
     Utils::addToFb(&fb, harmonicSelect, 1, 100, getHeight());
     fb.performLayout(getLocalBounds().withTrimmedLeft(250));    
+}
+
+void AdditiveSynthSettings::addListener(Slider::Listener* listener)
+{
+    harmonicCount.addListener(listener);
+    harmonicSelect.addListener(listener);
+}
+
+void AdditiveSynthSettings::removeListener(Slider::Listener* listener)
+{
+    harmonicCount.removeListener(listener);
+    harmonicSelect.removeListener(listener);
+}
+
+bool AdditiveSynthSettings::isHarmonicCountSlider(Slider* slider)
+{
+    return harmonicCount.isCurrentSlider(slider);
+}
+
+bool AdditiveSynthSettings::isHarmonicSelectSlider(Slider* slider)
+{
+    return harmonicSelect.isCurrentSlider(slider);
+}
+
+NumberSelect& AdditiveSynthSettings::getHarmonicCount()
+{
+    return harmonicCount;
+}
+
+NumberSelect& AdditiveSynthSettings::getHarmonicSelect()
+{
+    return harmonicSelect;
 }

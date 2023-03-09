@@ -22,11 +22,25 @@ public:
     // GUI
     void paint(Graphics&) override;
     void resized() override;
-    void clearTop();
-    // Public vars
-    Slider slider{ Slider::SliderStyle::LinearHorizontal, Slider::TextEntryBoxPosition::TextBoxAbove};
+    // Listener
+    void addListener(Slider::Listener*);
+    void removeListener(Slider::Listener*);
+    // Get
+    double getValue();
+    double getMaximum();
+    double getMinimum();
+    double getInterval();
+    // Set
+    void setValue(double, NotificationType);
+    void setRange(double, double, double);
+    // Tools
+    bool isCurrentSlider(Slider*);
+    Slider& getSlider();
+    
 private:
     CustomLook customLook;
     String name;
     Colour guiColor;
+
+    Slider slider{ Slider::SliderStyle::LinearHorizontal, Slider::TextEntryBoxPosition::TextBoxBelow };
 };

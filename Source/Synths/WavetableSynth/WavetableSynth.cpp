@@ -18,22 +18,27 @@ WavetableSynth::WavetableSynth()
     addAndMakeVisible(canvas3);
     addAndMakeVisible(canvas4);
     addAndMakeVisible(combineButton);
-    combineButton.addListener(this);
-    wavetableSettings.waveCountKnob.slider.addListener(this);
     addAndMakeVisible(wavetableSettings);
+
+    combineButton.addListener(this);
+    wavetableSettings.addSlidersListener(this);
 }
 
 WavetableSynth::~WavetableSynth()
 {
-    wavetableSettings.waveCountKnob.slider.removeListener(this);
+    wavetableSettings.removeSlidersListener(this);
     combineButton.removeListener(this);
     removeKnobsListener();
 }
 void WavetableSynth::sliderValueChanged(Slider* slider)
 {
-    if (slider == &wavetableSettings.waveCountKnob.slider)
+    if (wavetableSettings.isWaveCountKnobSlider(slider))
     {
         combineButton.triggerClick();
+    }
+    else if (wavetableSettings.isFreqKnobSlider(slider))
+    {
+        calculateIncrement();
     }
 }
 
@@ -52,12 +57,8 @@ void WavetableSynth::resized()
     canvas3.setBounds(getLocalBounds().withTrimmedLeft(margin + (W_WIDTH * 2 / 4)).withTrimmedTop(100).withTrimmedBottom(getHeight() / 2).withTrimmedRight(margin + (W_WIDTH * 1 / 4)));
     canvas4.setBounds(getLocalBounds().withTrimmedLeft(margin + (W_WIDTH * 3 / 4)).withTrimmedTop(100).withTrimmedBottom(getHeight() / 2).withTrimmedRight(margin));
 
-    wavetableSettings.setBounds(getLocalBounds()
-        .withTrimmedTop((getHeight()* 2/3) * 1.01)
-        .withTrimmedLeft(getWidth() * 0.01)
-        .withTrimmedRight(getWidth() * 0.01)
-        .withTrimmedBottom(getWidth() * 0.01)
-    );
+    wavetableSettings.setBounds(SETTINGS_SIZE);
+
 }
 
 void WavetableSynth::buttonClicked(Button* button)
@@ -71,9 +72,15 @@ void WavetableSynth::buttonClicked(Button* button)
             canvas3.waveTableSamples.size() > 0)
         {
             initSamples(); 
+            calculateIncrement();
             canvas4.setWaveForm(sampleY);
         }
     }
+}
+
+void WavetableSynth::calculateIncrement()
+{
+    increment = wavetableSettings.getFreq() / (double)440;
 }
 
 void WavetableSynth::initSamples()
@@ -167,8 +174,8 @@ void WavetableSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& 
 {
     float* leftChannel = bufferToFill.getWritePointer(0);
     float* rightChannel = bufferToFill.getWritePointer(1);
-    frequency = wavetableSettings.freqKnob.getValue();
-    increment = frequency / (float)440.f;
+
+    
 
     if (sampleY.size() != (wavetableSettings.getWaveCount() + 3) * 100)
     {
@@ -183,9 +190,9 @@ void WavetableSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& 
         }
     }
     for (int i = 0; i < bufferToFill.getNumSamples(); i++)
-    {
+    {   
+     
         float totalPosition = fmod((currentPosition * increment), sampleY.size());
-
         if (totalPosition < 0)
         {
             totalPosition = sampleY.size() - fmod(abs(totalPosition), sampleY.size());
@@ -196,7 +203,6 @@ void WavetableSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& 
             totalPosition = fmod(totalPosition, sampleY.size());
         }
 
-        float finalSample = 0;
         if (wavetableSettings.isCurrentInterpolationType(WavetableSynthSettings::LINEAR))
         {
            finalSample = Utils::interpolateLinear(totalPosition, (int)std::floor(totalPosition) % sampleY.size(), (int)std::ceil(totalPosition + 1) % sampleY.size(), sampleY[(int)std::floor(totalPosition) % sampleY.size()], sampleY[(int)std::ceil(totalPosition + 1) % sampleY.size()]);
@@ -209,8 +215,7 @@ void WavetableSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& 
         else if (wavetableSettings.isCurrentInterpolationType(WavetableSynthSettings::HERMITE))
         {
             finalSample = Utils::interpolateHermite(totalPosition, sampleY);
-        }
-         
+        }         
 
         if (abs(finalSample) >= 0.9999f)
         {
@@ -246,16 +251,10 @@ void WavetableSynth::handleMidi(MidiBuffer& midiMessages)
 
 void WavetableSynth::setKnobsListener(Knob::KnobListener* knobListenerPntr)
 {
-    wavetableSettings.freqKnob.setListener(knobListenerPntr);
-    wavetableSettings.waveCountKnob.setListener(knobListenerPntr);
-    wavetableSettings.volumeKnob.setListener(knobListenerPntr);
-    wavetableSettings.panKnob.setListener(knobListenerPntr);
+    wavetableSettings.setKnobsListener(knobListenerPntr);
 };
 
 void WavetableSynth::removeKnobsListener()
 {
-    wavetableSettings.freqKnob.removeListener();
-    wavetableSettings.waveCountKnob.removeListener();
-    wavetableSettings.volumeKnob.removeListener();
-    wavetableSettings.panKnob.removeListener();
+    wavetableSettings.removeKnobsListener();
 };

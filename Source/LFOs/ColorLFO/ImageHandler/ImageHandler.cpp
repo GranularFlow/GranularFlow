@@ -13,16 +13,14 @@
 ImageHandler::ImageHandler(Component::SafePointer<LfoSettings> settingsIn)
 {
     settings = settingsIn;
+    settings->addListener(this);
     addAndMakeVisible(decomposer);
-    settings->rateKnob.addListener(this);
-    settings->depthKnob.addListener(this);
 }
 
 ImageHandler::~ImageHandler()
 {
     imageHandlerListener = nullptr;
-    settings->rateKnob.removeListener(this);
-    settings->depthKnob.removeListener(this);
+    settings->removeListener(this);
 }
 
 void ImageHandler::paint(Graphics& g)
@@ -71,7 +69,7 @@ void ImageHandler::prepareToPlay(double sampleRateIn)
 
 void ImageHandler::sliderValueChanged(Slider* slider)
 {
-    if (slider == &settings->rateKnob.slider)
+    if (settings->isRateKnobSlider(slider))
     {
         increment = slider->getValue() / (float)sampleRate;
     }
