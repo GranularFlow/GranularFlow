@@ -13,7 +13,7 @@
 AdditiveHarmonicSettings::AdditiveHarmonicSettings()
 {
     // GUI
-    for (int8 i = 0; i < 3; i++)
+    for (int i = 0; i < 3; i++)
     {
         separators.add(new Separator());
         addAndMakeVisible(separators.getLast());
@@ -61,7 +61,7 @@ void AdditiveHarmonicSettings::resized()
     Utils::addToFb(&fb, panKnob, 9, tmp_width, getHeight());
 
     // White lines
-    for (int8 i = 0; i < separators.size(); i++)
+    for (int i = 0; i < separators.size(); i++)
     {
         Utils::addToFb(&fb, *separators[i], (i + 1) * 2, 1, getHeight());
     }

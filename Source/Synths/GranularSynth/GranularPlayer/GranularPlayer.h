@@ -22,7 +22,7 @@
   ==============================================================================
 
 */
-class GranularPlayer : public Component, public PlayerCursor::Listener, public Timer
+class GranularPlayer : public Component, public PlayerCursor::Listener
 {
 public:
     // Class
@@ -37,11 +37,11 @@ public:
 	bool isCurrentRunningMode(PlayerSettings::RunningMode) override;
 	bool isCurrentMidiMode(PlayerSettings::MidiMode) override;
 	int getMaxSamples() override;
-	void timerCallback() override;
+	void movePositionCallback();
     // Tools
 	void addGrain(int, int);
 	int calculateStep();
-	int percentToSamplePosition(int8);
+	int percentToSamplePosition(int);
     // Getters
 	void fillNextBuffer(AudioBuffer<float>&, AudioBuffer<float>&);
 	void fillNextBuffer(AudioBuffer<float>&, AudioBuffer<float>&, float);

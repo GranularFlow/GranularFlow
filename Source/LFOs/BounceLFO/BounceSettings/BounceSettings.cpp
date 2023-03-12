@@ -21,7 +21,7 @@ BounceSettings::BounceSettings()
     addAndMakeVisible(startButton);
 
 
-    for (int8 i = 0; i < 4; i++)
+    for (int i = 0; i < 4; i++)
     {
         separators.add(new Separator());
         addAndMakeVisible(separators.getLast());
@@ -63,7 +63,7 @@ void BounceSettings::resized()
     
 
     // White lines
-    for (int8 i = 0; i < separators.size(); i++)
+    for (int i = 0; i < separators.size(); i++)
     {
         fb.items.add(FlexItem(*separators[i]).withMinWidth(1).withHeight(tmpHeight).withOrder((i + 1) * 2));
     }

@@ -10,17 +10,13 @@
 
 #include "ImageHandler.h"
 
-ImageHandler::ImageHandler(Component::SafePointer<LfoSettings> settingsIn)
+ImageHandler::ImageHandler()
 {
-    settings = settingsIn;
-    settings->addListener(this);
     addAndMakeVisible(decomposer);
 }
 
 ImageHandler::~ImageHandler()
 {
-    imageHandlerListener = nullptr;
-    settings->removeListener(this);
 }
 
 void ImageHandler::paint(Graphics& g)
@@ -62,19 +58,6 @@ bool ImageHandler::isImageSet()
     return !image.isNull();
 }
 
-void ImageHandler::prepareToPlay(double sampleRateIn)
-{
-    sampleRate = sampleRateIn;
-}
-
-void ImageHandler::sliderValueChanged(Slider* slider)
-{
-    if (settings->isRateKnobSlider(slider))
-    {
-        increment = slider->getValue() / (float)sampleRate;
-    }
-}
-
 float ImageHandler::getRed(int x, int y)
 {
     return image.getPixelAt(x, y).getFloatRed();
@@ -102,7 +85,7 @@ double ImageHandler::getNext()
         currentY = random.nextInt(getHeight() - 20);
     }
     else if (settings->isCurrentDirection(LfoSettings::FORWARD)) {
-        phase = abs(fmod(phase + increment, 1.f));
+        phase = abs(fmod(phase, 1.f));
 
         currentX = phase * getImageWidth();
         if (currentX == getImageWidth() - 1)

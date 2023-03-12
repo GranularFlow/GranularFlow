@@ -65,7 +65,7 @@ public:
     float getGrainOffset();
     //int getOffset();
     float getVolume();
-    float getPan(int8 channel);
+    float getPan(int channel);
     // Setters
     void setGuiColor(Colour colour);
 

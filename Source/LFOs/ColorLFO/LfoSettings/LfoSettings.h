@@ -38,8 +38,8 @@ public:
     void paint(Graphics&)override;
     void resized()override;
     // Listener
-    void addListener(Slider::Listener*);
-    void removeListener(Slider::Listener*);
+    void addRateListener(Slider::Listener*);
+    void removeRateListener(Slider::Listener*);
     // Get
     float getRate();
     float getDepth();

@@ -23,7 +23,6 @@ BounceLFO::BounceLFO()
 
 BounceLFO::~BounceLFO()
 {
-    stopTimer();
     settings.rateKnob.removeSliderListener(this);
     settings.ballSpeedKnob.removeSliderListener(this);
     settings.clearButton.removeListener(this);
@@ -45,16 +44,19 @@ void BounceLFO::resized()
     canvas.setBounds(getLocalBounds().withTrimmedTop(90).withTrimmedBottom(settingsBounds.getHeight() + 40).withTrimmedLeft(200).withTrimmedRight(200));
 }
 
-void BounceLFO::timerCallback()
-{
-    updateKnobs(getNext());
+void ColorLFO::addTimerListener(Slider::Listener* listener) {
+    settings.addRateListener(listener);
 }
+
+void ColorLFO::removeTimerListener(Slider::Listener* listener) {
+    settings.removeRateListener(listener);
+}
+
 
 void BounceLFO::sliderValueChanged(Slider* slider)
 {    
     if (settings.rateKnob.isCurrentSlider(slider))
     {
-        stopTimer();
         startTimerHz(slider->getValue());
     }
     if (settings.ballSpeedKnob.isCurrentSlider(slider))
@@ -72,7 +74,10 @@ void BounceLFO::buttonClicked(Button* button)
 
     if (button == &settings.startButton)
     {
-        canvas.startStop(settings.ballSpeedKnob.getValue());
+        if (){
+
+        }
+        settings.ballSpeedKnob.getValue();
     }
 }
 
@@ -80,3 +85,8 @@ double BounceLFO::getNext()
 {
     return canvas.getOutput(settings.isCurrentSelectedCoordinate(BounceSettings::X)) * settings.getDepth();
 }
+
+void BounceLFO::updateCallback() {
+    updateKnobs(getNext());
+}
+

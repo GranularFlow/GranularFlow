@@ -23,15 +23,15 @@ public:
     static void paintLogoWithUnderline(Graphics&);
     // Tools
     static double degToRad(double);
-    static float percentToFloat(int8);
+    static float percentToFloat(int);
     static float samplesToPercent(int,int);
     static int msToSamples(float, int);
     static float samplesToMs(int, int);
     static int secToSamples(float, int);
 
-    static void addToFb(FlexBox*, Component&, int8, int, int);
-    static void addToFb(FlexBox*, FlexBox, int8, int, int);
-    static void addToFb(FlexBox*, FlexItem, int8, int, int);
+    static void addToFb(FlexBox*, Component&, int, int, int);
+    static void addToFb(FlexBox*, FlexBox, int, int, int);
+    static void addToFb(FlexBox*, FlexItem, int, int, int);
 
     //Interpolations
     static double interpolateLinear(double x, double x1, double x2, double y1, double y2);

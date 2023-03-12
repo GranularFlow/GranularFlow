@@ -56,7 +56,7 @@ void AdditiveSynth::sliderValueChanged(Slider* slider)
 
     if (settings.isHarmonicCountSlider(slider))
     {
-        int8 val = static_cast<int8>(slider->getValue());
+        int val = static_cast<int>(slider->getValue());
 
         if (val > activeHarmonics)
         {
@@ -73,7 +73,7 @@ void AdditiveSynth::sliderValueChanged(Slider* slider)
     else if (settings.isHarmonicSelectSlider(slider))
     {
 
-        int8 val = static_cast<int8>(slider->getValue());
+        int val = static_cast<int>(slider->getValue());
 
         if (activeHarmonics > val - 1)
         {

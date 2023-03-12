@@ -13,18 +13,10 @@
 
 BounceCanvas::BounceCanvas()
 {
-    paintTiming.setListener(this);
-    moveBallTiming.setListener(this);
-
-    paintTiming.startTimerHz(33);
 }
 
 BounceCanvas::~BounceCanvas()
 {
-    paintTiming.stopTimer();
-    moveBallTiming.stopTimer();
-    paintTiming.removeListener();
-    moveBallTiming.removeListener();
 }
 
 void BounceCanvas::paint(Graphics& g)
@@ -45,12 +37,6 @@ void BounceCanvas::paint(Graphics& g)
     g.fillRoundedRectangle(colision.x - 2.f, colision.y - 2.f, 4.f, 4.f, 2.f);*/    
 }
 
-void BounceCanvas::setBallSpeed(int speed)
-{
-    moveBallTiming.stopTimer();
-    moveBallTiming.startTimerHz(speed);
-}
-
 double BounceCanvas::getOutput(bool getX)
 {
 
@@ -60,18 +46,6 @@ double BounceCanvas::getOutput(bool getX)
     }
     return currentPosition.getY() / (double)getHeight();
 
-}
-
-void BounceCanvas::timeCall(Timing* timing)
-{
-    if (timing == &moveBallTiming)
-    {
-        moveBall();
-    }
-    else if (timing == &paintTiming)
-    {
-        repaint();
-    }
 }
 
 void BounceCanvas::mouseDrag(const MouseEvent& e)
@@ -99,18 +73,6 @@ void BounceCanvas::mouseUp(const MouseEvent& e)
     drawPaths.add(tmpPath);
 
     mousePositions.clear();
-}
-
-void BounceCanvas::startStop(int speed)
-{
-    if (moveBallTiming.isTimerRunning())
-    {
-        moveBallTiming.stopTimer();
-    }
-    else
-    {
-        moveBallTiming.startTimerHz(speed);
-    }      
 }
 
 void BounceCanvas::moveBall()

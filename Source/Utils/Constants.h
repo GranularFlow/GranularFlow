@@ -17,17 +17,20 @@
 const int W_WIDTH = 1200;
 const int W_HEIGHT = 700;
 
+// Timer
+const int TIMER_HZ = 30;
+
+// Component sizes
 const int KNOB_WIDTH = 100;
 const int KNOB_HEIGHT = 120;
 const int TOP_BAR_HEIGHT = 60;
 const int IMAGE_WIDTH = 250;
-
 const juce::Rectangle<int> SETTINGS_SIZE = Rectangle<int>().withSize(W_WIDTH-50,225).withCentre(Point<int>(W_WIDTH / 2, W_HEIGHT - 150));
+const int CURSOR_BALL_RADIUS = 10;
 
-
+// Math
 const double PI = 3.141592653589793238;
 
-const int8 CURSOR_BALL_RADIUS = 10;
 
 // Font sizes
 const float T_S_SIZE = 10.f;
@@ -37,7 +40,7 @@ const float T_H_SIZE = 18.f;
 
 // BufferSize/Length for Synth
 const int SAMPLE_RATE = 48000;
-const int8 NUM_BUFFERS = 100;
+const int NUM_BUFFERS = 100;
 
 // GranularPlayer enumToString
 const Array<String> INPUT_TYPE = { "BUFFER", "FILE" };
@@ -100,7 +103,6 @@ const Colour C_MARINE = Colour::fromRGB(0, 168, 255);
 const Colour C_LAVENDER = Colour::fromRGB(217, 128, 250);
 
 const Colour C_BARARED = Colour::fromRGB(237, 76, 103);
-
 
 //
 const Colour C_VL_GRAY = Colour::fromRGB(118, 118, 118);

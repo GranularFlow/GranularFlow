@@ -18,7 +18,7 @@ LfoSettings::LfoSettings()
     addAndMakeVisible(rateKnob);
     addAndMakeVisible(uploadButton);
 
-    for (int8 i = 0; i < 4; i++)
+    for (int i = 0; i < 4; i++)
     {
         separators.add(new Separator());
         addAndMakeVisible(separators.getLast());
@@ -59,7 +59,7 @@ void LfoSettings::resized()
 
 
     // White lines
-    for (int8 i = 0; i < separators.size(); i++)
+    for (int i = 0; i < separators.size(); i++)
     {
         fb.items.add(FlexItem(*separators[i]).withMinWidth(1).withHeight(tmpHeight).withOrder((i + 1) * 2));
     }
@@ -68,16 +68,14 @@ void LfoSettings::resized()
 
 }
 
-void LfoSettings::addListener(Slider::Listener* listener)
+void LfoSettings::addRateListener(Slider::Listener* listener)
 {
     rateKnob.addSliderListener(listener);
-    depthKnob.addSliderListener(listener);
 }
 
-void LfoSettings::removeListener(Slider::Listener* listener)
+void LfoSettings::removeRateListener(Slider::Listener* listener)
 {
     rateKnob.removeSliderListener(listener);
-    depthKnob.removeSliderListener(listener);
 }
 
 bool LfoSettings::isCurrentDirection(Direction currentDirection)

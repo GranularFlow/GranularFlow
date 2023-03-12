@@ -40,7 +40,7 @@ public:
     void addSliderListener(Slider::Listener*);
     void removeSliderListener(Slider::Listener*);
     // Get
-    int8 getPlayerCount();
+    int getPlayerCount();
     // Tools
     void enablePlayers();
     bool isPlayerCountSlider(Slider*);

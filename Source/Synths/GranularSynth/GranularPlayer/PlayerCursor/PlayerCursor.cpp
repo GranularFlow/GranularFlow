@@ -38,7 +38,7 @@ void PlayerCursor::paintCursor(Graphics& g) {
                   (float)CURSOR_BALL_RADIUS * 2);
 }
 
-void PlayerCursor::setOpacity(int8 opacityIn)
+void PlayerCursor::setOpacity(int opacityIn)
 {
     opacity = opacityIn;
     repaint();

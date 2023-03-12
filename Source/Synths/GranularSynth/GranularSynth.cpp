@@ -145,7 +145,7 @@ void GranularSynth::clearAudioSamples() {
 void GranularSynth::sliderValueChanged(Slider* slider)
 {
     if (topSettings.isPlayerCountSlider(slider)) {
-        int8 val = static_cast<int8>(slider->getValue());
+        int val = static_cast<int>(slider->getValue());
 
         if (val > getPlayerCount())
         {
@@ -160,7 +160,7 @@ void GranularSynth::sliderValueChanged(Slider* slider)
     }
     else if(topSettings.isPlayerSelectSlider(slider))
     {        
-        int8 val = static_cast<int8>(slider->getValue());
+        int val = static_cast<int>(slider->getValue());
 
         if (getPlayerCount() > val - 1)
         {
@@ -171,7 +171,7 @@ void GranularSynth::sliderValueChanged(Slider* slider)
             slider->setValue(val - 1);
         }
 
-        for (int8 playerId = 0; playerId < players.size(); playerId++)
+        for (int playerId = 0; playerId < players.size(); playerId++)
         {
             if (playerId != val-1)
             {
@@ -233,7 +233,7 @@ void GranularSynth::removePlayer() {
     resized();
 }
 
-void GranularSynth::selectPlayer(int8 playerNumber) {
+void GranularSynth::selectPlayer(int playerNumber) {
     players[playerNumber - 1]->toFront(true);
 }
 
@@ -285,12 +285,22 @@ void GranularSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& m
     }
 }
 
-int8 GranularSynth::getPlayerCount()
+int GranularSynth::getPlayerCount()
 {
-    return static_cast<int8>(players.size());
+    return static_cast<int>(players.size());
 }
 
 void GranularSynth::setKnobsListener(Knob::KnobListener* listenerPntr)
 {
     knobListener = listenerPntr;
+}
+
+void GranularSynth::setWaveCallback() {
+    visualiser.setWaveCallback();
+}
+
+void GranularSynth::movePositionCallback() {
+    for (GranularPlayer player : players) {
+        player.movePositionCallback();
+    }
 }

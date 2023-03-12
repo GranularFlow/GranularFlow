@@ -15,21 +15,11 @@
 ColorLFO::ColorLFO()
 {
     addAndMakeVisible(settings);    
-    addAndMakeVisible(*imageHandler);
-
-    settings->addListener(this);
-    imageHandler->setListener(this);
+    addAndMakeVisible(imageHandler);
 }
 
 ColorLFO::~ColorLFO()
 {
-    stopTimer();
-
-    imageHandler->removeListener();    
-    settings->removeListener(this);
-
-    delete imageHandler;
-    delete settings;
 }
 
 void ColorLFO::paint(Graphics& g)
@@ -41,41 +31,31 @@ void ColorLFO::paint(Graphics& g)
 void ColorLFO::resized()
 {
     //Rectangle<int> settingsBounds = getLocalBounds().withTrimmedTop((getHeight() - 50) * 4 / 5).withTrimmedBottom(10).withTrimmedLeft(getWidth() * 1 / 4).withTrimmedRight(getWidth() * 1 / 4);
-    settings->setBounds(SETTINGS_SIZE);
-    imageHandler->setBounds(getLocalBounds().withTrimmedTop(60).withTrimmedBottom(SETTINGS_SIZE.getHeight() + 40).withTrimmedLeft(20).withTrimmedRight(20));
+    settings.setBounds(SETTINGS_SIZE);
+    imageHandler.setBounds(getLocalBounds().withTrimmedTop(60).withTrimmedBottom(SETTINGS_SIZE.getHeight() + 40).withTrimmedLeft(20).withTrimmedRight(20));
 }
 
 void ColorLFO::buttonClicked(Button* button)
 {
-    if (settings->isUploadButton(button))
+    if (settings.isUploadButton(button))
     {
-        imageHandler->loadImage();        
+        imageHandler.loadImage();
     }
 }
 
-void ColorLFO::timerCallback()
+void ColorLFO::timeCallback()
 {
-    updateKnobs(imageHandler->getNext());
+    updateKnobs(imageHandler.getNext());
 }
 
-void ColorLFO::sliderValueChanged(Slider* slider)
-{
-    if (settings->isRateKnobSlider(slider))
-    {
-        if (imageHandler->isImageSet()) {
-            stopTimer();
-            startTimerHz(slider->getValue());
-        }
-    }
+int ColorLFO::getTimerHz() {
+    return settings->getRate();
 }
 
-void ColorLFO::prepareToPlay(double sampleRate, int samplesPerBlock)
-{
-    imageHandler->prepareToPlay(sampleRate);
+void ColorLFO::addTimerListener(Slider::Listener* listener) {
+    settings.addRateListener(listener);
 }
 
-void ColorLFO::imageLoaded()
-{
-    stopTimer();
-    startTimerHz(settings->getRate());
+void ColorLFO::removeTimerListener(Slider::Listener* listener) {
+    settings.removeRateListener(listener);
 }

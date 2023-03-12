@@ -50,14 +50,14 @@ void MathSettings::resized()
     Utils::addToFb(&fb, textEditor, 5, 300, 50);
     Utils::addToFb(&fb, enterButton, 7, tmpWidth, 50);
 
-    for (int8 i = 0; i < 2; i++)
+    for (int i = 0; i < 2; i++)
     {
         separators.add(new Separator());
         addAndMakeVisible(separators.getLast());
     }
 
     // White lines
-    for (int8 i = 0; i < 2; i++)
+    for (int i = 0; i < 2; i++)
     {
         fb.items.add(FlexItem(*separators[i]).withMinWidth(1).withHeight(tmpHeight).withOrder((i + 1) * 2));
     }

@@ -45,9 +45,9 @@ public:
 private:
     Knob::KnobListener* knobListener = nullptr;
 
-    int8 activeHarmonics = 0;
-    int8 selectedHarmonic = 0;
-    int8 harmonicsToAdd = 0;
+    int activeHarmonics = 0;
+    int selectedHarmonic = 0;
+    int harmonicsToAdd = 0;
 
     AdditiveSynthSettings settings;
     AdditiveVisualiser visualiser;

@@ -88,13 +88,13 @@ void Knob::comboBoxChanged(ComboBox* box)
     {
         if (box->getSelectedId() == 1)
         {
-            knobListenerPntr->removeLfoPointer(this, lastSelectedLFO);
+            knobListenerPntr->removeKnobFromLfo(this, lastSelectedLFO);
             lastSelectedLFO = 0;
         }
         else
         {
-            knobListenerPntr->removeLfoPointer(this, lastSelectedLFO);
-            knobListenerPntr->setLfoPointer(this, box->getSelectedId());
+            knobListenerPntr->removeKnobFromLfo(this, lastSelectedLFO);
+            knobListenerPntr->setKnobToLfo(this, box->getSelectedId());
             lastSelectedLFO = box->getSelectedId();
         }
     }

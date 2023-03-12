@@ -52,7 +52,7 @@ double Utils::degToRad(double phase)
     return ( (phase * PI) / (double)180);
 }
 
-float Utils::percentToFloat(int8 percent)
+float Utils::percentToFloat(int percent)
 {
     return (float)percent/100;
 }
@@ -62,15 +62,15 @@ float Utils::samplesToPercent(int samplePosition, int totalSamples)
     return (samplePosition/(float) totalSamples) * 100.0;
 }
 
-void Utils::addToFb(FlexBox* fb, Component& c, int8 order, int minWidth,int minHeight) {
+void Utils::addToFb(FlexBox* fb, Component& c, int order, int minWidth,int minHeight) {
     fb->items.add(FlexItem(c).withMinWidth(minWidth).withMinHeight(minHeight).withMargin(0).withOrder(order));
 }
 
-void Utils::addToFb(FlexBox* fb, FlexBox f, int8 order, int minWidth, int minHeight) {
+void Utils::addToFb(FlexBox* fb, FlexBox f, int order, int minWidth, int minHeight) {
     fb->items.add(FlexItem(f).withMinWidth(minWidth).withMinHeight(minHeight).withMargin(0).withOrder(order));
 }
 
-void Utils::addToFb(FlexBox* fb, FlexItem i, int8 order, int minWidth, int minHeight) {
+void Utils::addToFb(FlexBox* fb, FlexItem i, int order, int minWidth, int minHeight) {
     fb->items.add(i.withMinWidth(minWidth).withMinHeight(minHeight).withMargin(0).withOrder(order));
 }
 

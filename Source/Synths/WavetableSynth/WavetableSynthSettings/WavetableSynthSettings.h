@@ -47,7 +47,7 @@ public:
     float getFreq();
     float getWaveCount();
     float getVolume();
-    float getPan(int8);
+    float getPan(int);
     // Tools
     bool isCurrentMidiMode(WavetableSynthSettings::MidiMode);
     bool isCurrentInterpolationType(WavetableSynthSettings::InterpolationType);

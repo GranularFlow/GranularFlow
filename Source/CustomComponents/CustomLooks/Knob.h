@@ -21,8 +21,8 @@ public:
     // -----------------------------------
     struct KnobListener
     {
-        virtual void setLfoPointer(Knob*, int) = 0;
-        virtual void removeLfoPointer(Knob*, int) = 0;
+        virtual void setKnobToLfo(Knob*, int) = 0;
+        virtual void removeKnobFromLfo(Knob*, int) = 0;
     };
 
     void setKnobListener(KnobListener* knobListenerPntrIn) 
@@ -64,7 +64,7 @@ private:
 
     String name;
     Colour guiColor;
-    int8 lastSelectedLFO = 0;
+    int lastSelectedLFO = 0;
     float defaultValue;
 
     Slider slider{ Slider::SliderStyle::RotaryHorizontalDrag, Slider::TextEntryBoxPosition::TextBoxBelow };

@@ -38,10 +38,12 @@ public:
     void buttonClicked(Button*) override;
     // Get
     int getNumTotalSamples();
-    int8 getPlayerCount();
+    int getPlayerCount();
     // Set
     void setKnobsListener(Knob::KnobListener*);
     // Tools
+    void movePositionCallback();
+    void setWaveCallback();
     // ---MIDI
     void handleMidi(MidiBuffer&);
     // -- Load from File
@@ -53,7 +55,7 @@ public:
     void clearAudioSamples();
     void addNewPlayer();
     void removePlayer();
-    void selectPlayer(int8 playerNumber);  
+    void selectPlayer(int playerNumber);
 private:
     Knob::KnobListener* knobListener = nullptr;
     std::shared_ptr<RingBuffer> ringBufferPntr = nullptr;
@@ -65,7 +67,7 @@ private:
     AudioBuffer<float> audioSamples {2, 256};
 
     double increment = 1;
-    int8 lastMidiNote = 255;
+    int lastMidiNote = 255;
     float sampleRate = 48000;
     bool waveFormWasSet = false;
     bool midiNoteOn = false;

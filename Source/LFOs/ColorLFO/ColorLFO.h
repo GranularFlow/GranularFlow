@@ -16,7 +16,7 @@
 #include "ImageHandler/ImageHandler.h"
 #include "../LFO.h"
 
-class ColorLFO : public Component, public Button::Listener, public Slider::Listener, public LFO, public Timer, public ImageHandler::ImageHandlerListener
+class ColorLFO : public Component, public Button::Listener, public Slider::Listener, public LFO
 {
 public:
     // Class
@@ -27,17 +27,19 @@ public:
     void resized()override;
     // Listener
     void buttonClicked(Button*);
-    void timerCallback() override;
+    void timeCallback();
     void sliderValueChanged(Slider*) override;
-    // Process
-    void prepareToPlay(double, int);
+    // Get
+    int getTimerHz();
     // Tools
-    void imageLoaded() override;
+    void addTimerListener(Slider::Listener*);
+    void removeTimerListener(Slider::Listener*);
+
 private:
     //  -- Settings
-    Component::SafePointer<LfoSettings> settings = new LfoSettings();
+    LfoSettings settings = new LfoSettings();
     //  -- handler
-    Component::SafePointer<ImageHandler> imageHandler = new ImageHandler(settings);
+    ImageHandler imageHandler = new ImageHandler();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ColorLFO);
 };

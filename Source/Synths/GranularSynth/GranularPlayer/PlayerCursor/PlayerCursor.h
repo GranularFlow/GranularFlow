@@ -35,7 +35,7 @@ public:
     // GUI
 	void paint(Graphics& g) override;
 	void paintCursor(Graphics& g);
-    void setOpacity(int8 opacityIn);
+    void setOpacity(int opacityIn);
     // Listeners
     void mouseDrag(const MouseEvent&) override;
     void mouseDown(const MouseEvent&) override;

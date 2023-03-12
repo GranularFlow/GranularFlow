@@ -74,7 +74,7 @@ void Grain::fillNextSamples(AudioBuffer<float>& sourceBuffer, AudioBuffer<float>
             return;
         }
 
-        for (int8 channel = 0; channel < 2; channel++)
+        for (int channel = 0; channel < 2; channel++)
         {
             // Apply envelope, apply volume, apply panning+
             auto src = sourceBuffer.getReadPointer(channel);

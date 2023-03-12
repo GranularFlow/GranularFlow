@@ -18,7 +18,7 @@
 #include "BounceCanvas/BounceCanvas.h"
 
 
-class BounceLFO : public Component, public Slider::Listener, public Timer, public Button::Listener, public LFO
+class BounceLFO : public Component, public Slider::Listener, public Button::Listener, public LFO
 {
 public:
     // Class
@@ -28,13 +28,15 @@ public:
     // GUI
     void paint(Graphics&) override;
     void resized() override;
-
     // Listeners
-    void timerCallback();
+    void addTimerListener(Slider::Listener*);
+    void removeTimerListener(Slider::Listener*);
+    void timeCallback()override;
     void sliderValueChanged(Slider*);
     void buttonClicked(Button*);
     // Getters
     double getNext();
+
 
 private:
     BounceSettings settings;

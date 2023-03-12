@@ -124,7 +124,7 @@ void GranularSettings::removeSliderListener(Slider::Listener* listener)
     playerCountNum.removeListener(listener);
 }
 
-int8 GranularSettings::getPlayerCount()
+int GranularSettings::getPlayerCount()
 {
     return playerCountNum.getValue();
 }

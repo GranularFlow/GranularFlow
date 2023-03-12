@@ -17,7 +17,6 @@ GranularVisualiser::GranularVisualiser()
 
 GranularVisualiser::~GranularVisualiser()
 {
-    stopTimer();
     ringBufferPointer = nullptr;
 }
 
@@ -59,10 +58,9 @@ void GranularVisualiser::paint(Graphics& g) {
 void GranularVisualiser::setPntr(std::shared_ptr<RingBuffer> ringPointer)
 {
     ringBufferPointer = ringPointer;
-    startTimerHz(1);
 }
 
-void GranularVisualiser::timerCallback()
+void GranularVisualiser::setWaveCallback()
 {
     if (ringBufferPointer != nullptr)
     {

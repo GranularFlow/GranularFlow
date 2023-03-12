@@ -13,7 +13,7 @@
 #include "../../../Utils/Constants.h"
 #include "../../../Utils/Timing/Timing.h"
 
-class BounceCanvas : public Component, public Timing::TimingListener
+class BounceCanvas : public Component
 {
 public:
     // Class
@@ -26,19 +26,14 @@ public:
     // Getters
     double getOutput(bool);    
     // Listeners
-    void timeCall(Timing*)override;
-
     void mouseDrag(const MouseEvent& e) override;
     void mouseUp(const MouseEvent&) override;
     // Tools
-    void startStop(int);
-    void moveBall();
+    void moveBall(); // TODO
     void clearLines();
 
 
 private:
-    Timing moveBallTiming;
-    Timing paintTiming;
 
     float radius = 20.f;
     bool wasDrawn = false;

@@ -19,7 +19,7 @@ public:
 	~LFO() {
 
     }
-
+    virtual void timeCallback() = 0;
     void updateKnobs(double value) {
         for (Knob* knob : knobPntrs)
         {
@@ -47,7 +47,6 @@ public:
         }
     }
     OwnedArray<Knob> knobPntrs;
-    
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LFO);
 };

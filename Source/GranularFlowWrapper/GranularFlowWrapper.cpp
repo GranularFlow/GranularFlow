@@ -11,101 +11,17 @@
 #include "GranularFlowWrapper.h"
 
 GranularFlowWrapper::GranularFlowWrapper()
-{    
-    // -----
-    // GUI
-    // -----
-    // Separator
-    addAndMakeVisible(topLine);
-    // Reset SYNTH
-    addAndMakeVisible(wavetableSynthReset);
-    addAndMakeVisible(granularSynthReset);
-    addAndMakeVisible(additiveSynthReset);
-    // Synth squares
-    addAndMakeVisible(wavetableSynthBox);
-    addAndMakeVisible(granularSynthBox);
-    addAndMakeVisible(additiveSynthBox);
-    // Reset LFO
-    addAndMakeVisible(colorLfoReset);
-    addAndMakeVisible(bounceLfoReset);
-    addAndMakeVisible(mathLfoReset);
-    addAndMakeVisible(wavetableLfoReset);
-    // Lfo squares
-    addAndMakeVisible(colorLfoBox);
-    addAndMakeVisible(bounceLfoBox);
-    addAndMakeVisible(wavetableLfoBox);
-    addAndMakeVisible(mathLfoBox);
+{
+    initGui();
+    makeWindowsIgnoreClicks();
 
-    // Non visible process Synths  
-    //SYNTH
-    addChildComponent(wavetableSynth.get());
-    addChildComponent(granularSynth.get());
-    addChildComponent(additiveSynth.get());
-    //LFO
-    addChildComponent(colorLfo.get());
-    addChildComponent(bounceLfo.get());
-    addChildComponent(mathLfo.get());
-    addChildComponent(wavetableLfo.get());
 
-    // -----
-    // GUI WINDOWS
-    // -----
-    // add all components to separate windows
-    // SYNTH
-    synthWindows.add(new CustomWindow("Wavetable synth", wavetableSynth.get()));
-    synthWindows.add(new CustomWindow("Granular synth", granularSynth.get()));
-    synthWindows.add(new CustomWindow("Additive synth", additiveSynth.get()));
-    // LFO
-    lfoWindows.add(new CustomWindow("Color LFO", colorLfo.get()));
-    lfoWindows.add(new CustomWindow("Bounce LFO", bounceLfo.get()));
-    lfoWindows.add(new CustomWindow("Math LFO", mathLfo.get()));
-    lfoWindows.add(new CustomWindow("Wavetable LFO", wavetableLfo.get()));
-
-    // -----------------
-    // IGNORE CLICKS
-    // -----------------
-    // Child ignores clicks and lets Wrapper take mouse events instead
-    // Synth
-    wavetableSynthBox->setInterceptsMouseClicks(false, false);
-    granularSynthBox->setInterceptsMouseClicks(false, false);
-    additiveSynthBox->setInterceptsMouseClicks(false, false);
-    // Lfo
-    colorLfoBox->setInterceptsMouseClicks(false, false);
-    bounceLfoBox->setInterceptsMouseClicks(false, false);
-    wavetableLfoBox->setInterceptsMouseClicks(false, false);
-    mathLfoBox->setInterceptsMouseClicks(false, false);
-
-    // -----------------
-    // Listeners
-    // -----------------
-    // Reset buttons
-    wavetableSynthReset.setListener(this);
-    granularSynthReset.setListener(this);
-    additiveSynthReset.setListener(this);
-
-    colorLfoReset.setListener(this);
-    bounceLfoReset.setListener(this);
-    mathLfoReset.setListener(this);
-    wavetableLfoReset.setListener(this);
-
-    setAllKnobs();
+    startTimerHz(TIMER_HZ);
 }
 
 GranularFlowWrapper::~GranularFlowWrapper()
 {
-    // -----------------
-    // Listeners
-    // -----------------
-    // Reset buttons
-    //SYNTH
-    wavetableSynthReset.removeListener();
-    granularSynthReset.removeListener();
-    additiveSynthReset.removeListener();
-    //LFO
-    colorLfoReset.removeListener();
-    bounceLfoReset.removeListener();
-    mathLfoReset.removeListener();
-    wavetableLfoReset.removeListener();
+    removeThisFromAllListeners();
     
     // Delete synths that are inside boxes
     //SYNTH
@@ -130,7 +46,7 @@ GranularFlowWrapper::~GranularFlowWrapper()
     delete colorLfoBox;
     delete bounceLfoBox;
     delete wavetableLfoBox;
-    delete mathLfoBox;   
+    delete mathLfoBox;
 }
 
 void GranularFlowWrapper::paintJacks(Graphics& g, int center, int circleRadius, int endY)
@@ -350,7 +266,7 @@ void GranularFlowWrapper::reseted(ResetButton* button)
 
 }
 
-void GranularFlowWrapper::setLfoPointer(Knob* knobPntr, int lfoId)
+void GranularFlowWrapper::setLfoPointers(Knob* knobPntr, int lfoId)
 {
     switch (lfoId)
     {
@@ -371,7 +287,7 @@ void GranularFlowWrapper::setLfoPointer(Knob* knobPntr, int lfoId)
     }
 }
 
-void GranularFlowWrapper::removeLfoPointer(Knob* knobPntr, int lfoId)
+void GranularFlowWrapper::removeKnobFromLfo(Knob* knobPntr, int lfoId)
 {
     switch (lfoId)
     {
@@ -485,5 +401,124 @@ void GranularFlowWrapper::setAllKnobs()
     wavetableSynth->setKnobsListener(this);
     granularSynth->setKnobsListener(this);
     additiveSynth->setKnobsListener(this);
+}
 
+void GranularFlowWrapper::timerCallback() {
+    colorLfoTimer++;
+    bounceLfoTimer++;
+    mathLfoTimer++;
+    wavetableLfoTimer++;
+
+    if (colorLfoTimer == colorLfo.getTimerHz())
+
+}
+
+void GranularFlowWrapper::removeThisFromAllListeners() {
+    // -----------------
+    // Listeners
+    // -----------------
+    // Reset buttons
+    // =====SYNTH
+    wavetableSynthReset.removeListener();
+    granularSynthReset.removeListener();
+    additiveSynthReset.removeListener();
+    // =====LFO
+    colorLfoReset.removeListener();
+    bounceLfoReset.removeListener();
+    mathLfoReset.removeListener();
+    wavetableLfoReset.removeListener();
+    // Sliders
+    // =====LFO
+    colorLfo->removeTimerListener(this);
+
+}
+
+void GranularFlowWrapper::initGui() {
+    // -----
+    // Components
+    // -----
+    // Separator
+    addAndMakeVisible(topLine);
+    // Reset SYNTH
+    addAndMakeVisible(wavetableSynthReset);
+    addAndMakeVisible(granularSynthReset);
+    addAndMakeVisible(additiveSynthReset);
+    // Synth squares
+    addAndMakeVisible(wavetableSynthBox);
+    addAndMakeVisible(granularSynthBox);
+    addAndMakeVisible(additiveSynthBox);
+    // Reset LFO
+    addAndMakeVisible(colorLfoReset);
+    addAndMakeVisible(bounceLfoReset);
+    addAndMakeVisible(mathLfoReset);
+    addAndMakeVisible(wavetableLfoReset);
+    // Lfo squares
+    addAndMakeVisible(colorLfoBox);
+    addAndMakeVisible(bounceLfoBox);
+    addAndMakeVisible(wavetableLfoBox);
+    addAndMakeVisible(mathLfoBox);
+    // -----
+    // Non visible process Synths
+    // -----
+    // SYNTH
+    addChildComponent(wavetableSynth.get());
+    addChildComponent(granularSynth.get());
+    addChildComponent(additiveSynth.get());
+    // LFO
+    addChildComponent(colorLfo.get());
+    addChildComponent(bounceLfo.get());
+    addChildComponent(mathLfo.get());
+    addChildComponent(wavetableLfo.get());
+    // -----
+    // WINDOWS
+    // -----
+    // add all components to separate windows
+    // SYNTH
+    synthWindows.add(new CustomWindow("Wavetable synth", wavetableSynth.get()));
+    synthWindows.add(new CustomWindow("Granular synth", granularSynth.get()));
+    synthWindows.add(new CustomWindow("Additive synth", additiveSynth.get()));
+    // LFO
+    lfoWindows.add(new CustomWindow("Color LFO", colorLfo.get()));
+    lfoWindows.add(new CustomWindow("Bounce LFO", bounceLfo.get()));
+    lfoWindows.add(new CustomWindow("Math LFO", mathLfo.get()));
+    lfoWindows.add(new CustomWindow("Wavetable LFO", wavetableLfo.get()));
+}
+
+void GranularFlowWrapper::makeWindowsIgnoreClicks() {
+    // -----------------
+    // IGNORE CLICKS
+    // -----------------
+    // Child ignores clicks and lets Wrapper take mouse events instead
+    // Synth
+    wavetableSynthBox->setInterceptsMouseClicks(false, false);
+    granularSynthBox->setInterceptsMouseClicks(false, false);
+    additiveSynthBox->setInterceptsMouseClicks(false, false);
+    // Lfo
+    colorLfoBox->setInterceptsMouseClicks(false, false);
+    bounceLfoBox->setInterceptsMouseClicks(false, false);
+    wavetableLfoBox->setInterceptsMouseClicks(false, false);
+    mathLfoBox->setInterceptsMouseClicks(false, false);
+}
+
+void GranularFlowWrapper::addAllListeners() {
+    // -----------------
+    // Reset buttons
+    // -----------------
+    // SYNTH
+    wavetableSynthReset.setListener(this);
+    granularSynthReset.setListener(this);
+    additiveSynthReset.setListener(this);
+    // LFO
+    colorLfoReset.setListener(this);
+    bounceLfoReset.setListener(this);
+    mathLfoReset.setListener(this);
+    wavetableLfoReset.setListener(this);
+    // -----------------
+    // Timer Listeners
+    // -----------------
+    colorLfo->addTimerListener(this);
+    bounceLfo->addTimerListener(this);
+    mathLfo->addTimerListener(this);
+    wavetableLfo->addTimerListener(this);
+    setAllKnobs();
 }

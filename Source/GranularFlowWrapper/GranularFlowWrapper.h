@@ -24,7 +24,7 @@
 #include "../LFOs/MathLFO/MathLFO.h"
 #include "../LFOs/WavetableLFO/WavetableLFO.h"
 
-class GranularFlowWrapper : public Component, public ResetButton::ResetListener, public Knob::KnobListener
+class GranularFlowWrapper : public Component, public ResetButton::ResetListener, public Knob::KnobListener, public Timer
 {
 public:
     // Class
@@ -43,10 +43,15 @@ public:
 
     // Listeners
     void reseted(ResetButton*)override;
-    void setLfoPointer(Knob*, int)override;
-    void removeLfoPointer(Knob*, int)override;
+    void setKnobToLfo(Knob*, int)override;
+    void removeKnobFromLfo(Knob*, int)override;
+    void timerCallback()override;
 
     // Tools
+    void initGui();
+    void makeWindowsIgnoreClicks();
+    void addAllListeners();
+    void removeThisFromAllListeners();
     void closeWindows();
     void minimizeWindows();
     void mouseDown(const MouseEvent&);
@@ -56,6 +61,22 @@ public:
 
 
 private:
+    int colorLfoTimer = 0;
+    int bounceLfoTimer = 0;
+    int mathLfoTimer = 0;
+    int wavetableLfoTimer = 0;
+
+    // bounce canvas repaint constantly 33hz;
+    int bounceCanvasTimer = 0; // atleast 33Hz
+    // granular player move cursor constant;
+    int guiRepaintTimer = 0; // 10
+    // granular player move cursor constant IF RINGBUFFER IS ON;
+    int granularVisualiserTimer = 0; // 1Hz
+    // bounce moveBALL = DYNAMIC
+
+
+
+
     Path cableWavetable;
     Path cableGranular;
     Path cableAdditive;

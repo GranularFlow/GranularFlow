@@ -14,7 +14,7 @@
 #include "../../../Utils/Constants.h"
 #include "../RingBuffer/RingBuffer.h"
 
-class GranularVisualiser : public Component, public Timer
+class GranularVisualiser : public Component
 {
 public:
     // Class
@@ -24,7 +24,7 @@ public:
     void paint(Graphics& g) override;
     // Callbacks
     void setPntr(std::shared_ptr<RingBuffer>);
-    void timerCallback() override;
+    void setWaveCallback();
     // Setters
     void setWaveForm(AudioBuffer<float>&);
 

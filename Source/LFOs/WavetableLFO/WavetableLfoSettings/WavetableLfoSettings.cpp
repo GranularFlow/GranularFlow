@@ -52,7 +52,7 @@ void WavetableLfoSettings::resized()
 
 
     // White lines
-    for (int8 i = 0; i < 3; i++)
+    for (int i = 0; i < 3; i++)
     {
         fb.items.add(FlexItem(*separators[i]).withMinWidth(1).withHeight(sectionHeight).withOrder((i + 1) * 2));
     }

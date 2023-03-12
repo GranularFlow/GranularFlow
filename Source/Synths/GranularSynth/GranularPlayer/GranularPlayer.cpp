@@ -17,9 +17,9 @@ GranularPlayer::GranularPlayer(int totalSamplesIn, int sampleRateIn) {
 
     Random& random = Random::getSystemRandom();
     Colour guiColor = Colour(
-        (int8)random.nextInt(255),
-        (int8)random.nextInt(255),
-        (int8)random.nextInt(255));
+        (int)random.nextInt(255),
+        (int)random.nextInt(255),
+        (int)random.nextInt(255));
 
     // Cursor
     cursorPosition = random.nextInt((int)std::floor(totalSamples / 2) + (int)std::floor(totalSamples / 4));
@@ -33,13 +33,9 @@ GranularPlayer::GranularPlayer(int totalSamplesIn, int sampleRateIn) {
     addAndMakeVisible(settings);
 
     cursor.setListener(this);
-
-    startTimer(1);
 }
 
 GranularPlayer::~GranularPlayer() {
-
-    stopTimer();
     grains.clear();
 }
 
@@ -82,7 +78,7 @@ void GranularPlayer::addGrain(int startPosition, int length) {
     grains.add(tmp_grain);
 }
 
-void GranularPlayer::timerCallback()
+void GranularPlayer::movePositionCallback()
 {
     //check if running
 
@@ -132,7 +128,7 @@ int GranularPlayer::calculateStep()
     return 1;
 }
 
-int GranularPlayer::percentToSamplePosition(int8 newCursorPositionPercent)
+int GranularPlayer::percentToSamplePosition(int newCursorPositionPercent)
 {
     return (int)std::floor((newCursorPositionPercent /(float) 100) * totalSamples);
 }
@@ -145,7 +141,7 @@ void GranularPlayer::fillNextBuffer(AudioBuffer<float>& toFill, AudioBuffer<floa
 void GranularPlayer::fillNextBuffer(AudioBuffer<float>& toFill, AudioBuffer<float>& sourceSamples, float increment)
 {
 
-    Array<int8> deleteArray;
+    Array<int> deleteArray;
     for (int i = 0; i < grains.size(); i++)
     {
         if (grains[i] != nullptr)
@@ -161,7 +157,7 @@ void GranularPlayer::fillNextBuffer(AudioBuffer<float>& toFill, AudioBuffer<floa
         }        
     }
 
-    for (int8 i = 0; i < deleteArray.size(); i++)
+    for (int i = 0; i < deleteArray.size(); i++)
     {
         grains.remove(deleteArray[i], true);
     }
@@ -178,10 +174,7 @@ PlayerCursor* GranularPlayer::getCursor() {
 
 void GranularPlayer::changeTimer(int sampleRateIn)
 {
-    stopTimer();
     sampleRate = sampleRateIn;
-    // sample rate is very high, need to reduce it to less drastic timing
-    startTimerHz(std::floor(sampleRate/(float)10));
 }
 
 void GranularPlayer::setKnobsListener(Knob::KnobListener* knobListenerPntr)

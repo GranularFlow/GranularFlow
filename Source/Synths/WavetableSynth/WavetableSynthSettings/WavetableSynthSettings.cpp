@@ -54,7 +54,7 @@ void WavetableSynthSettings::resized()
     // Second column
     int tmpheight = sectionHeight;
     int tmpWidth = 100;
-    // addToFb(FlexBox* fb, Component& c, int8 order, int minWidth, int minHeight);
+    // addToFb(FlexBox* fb, Component& c, int order, int minWidth, int minHeight);
     Utils::addToFb(&fb, midiModeRadioBox, 1, tmpWidth, tmpheight);
     Utils::addToFb(&fb, freqKnob, 3, tmpWidth, tmpheight);
     Utils::addToFb(&fb, waveCountKnob, 5, tmpWidth, tmpheight);
@@ -117,7 +117,7 @@ float WavetableSynthSettings::getVolume()
     return (float)volumeKnob.getValue() / 100;
 }
 
-float WavetableSynthSettings::getPan(int8 channel)
+float WavetableSynthSettings::getPan(int channel)
 {
     return  1 - abs(channel - ((float)panKnob.getValue() / 100));
 }

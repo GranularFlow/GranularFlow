@@ -44,7 +44,7 @@ private:
     double angle = 0.0;
     double delta = 0.0;
     //
-    int8 lastMidiNote = -1;
+    int lastMidiNote = -1;
     bool midiNoteOn = false;
     float midiNoteFrequency = 0.f;
     bool lastMidiMode = false;

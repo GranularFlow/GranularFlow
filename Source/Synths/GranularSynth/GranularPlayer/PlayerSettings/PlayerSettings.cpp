@@ -14,7 +14,7 @@
 PlayerSettings::PlayerSettings()
 {
     // GUI
-    for (int8 i = 0; i < 2; i++)
+    for (int i = 0; i < 2; i++)
     {
         separators.add(new Separator());
         addAndMakeVisible(separators.getLast());
@@ -113,7 +113,7 @@ void PlayerSettings::resized() {
 
 
     // White lines
-    for (int8 i = 0; i < separators.size(); i++)
+    for (int i = 0; i < separators.size(); i++)
     {
         Utils::addToFb(&fb, *separators[i], (i + 1) * 2, 1, sectionHeight);
     }
@@ -161,7 +161,7 @@ float PlayerSettings::getVolume()
     return (float)volumeKnob.getValue() / 100;
 }
 
-float PlayerSettings::getPan(int8 channel)
+float PlayerSettings::getPan(int channel)
 {
     return  1 - abs(channel - ((float)panKnob.getValue() / 100));
 }
