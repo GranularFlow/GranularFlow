@@ -66,3 +66,43 @@ void MathSettings::resized()
 
 }
 
+void MathSettings::addRateListener(Slider::Listener* listener)
+{
+    rateKnob.addSliderListener(listener);
+}
+
+void MathSettings::removeRateListener(Slider::Listener* listener)
+{
+    rateKnob.removeSliderListener(listener);
+}
+
+void MathSettings::addEnterListener(Button::Listener* listener)
+{
+    enterButton.addListener(listener);
+}
+
+void MathSettings::removeEnterListener(Button::Listener* listener)
+{
+    enterButton.removeListener(listener);
+}
+
+std::string MathSettings::getText()
+{
+    return textEditor.getText().toStdString();
+}
+
+int MathSettings::getRate()
+{
+    return rateKnob.getValue();
+}
+
+bool MathSettings::isRateSlider(Slider* slider)
+{
+    return rateKnob.isCurrentSlider(slider);
+}
+
+bool MathSettings::isEnterButton(Button* button)
+{
+    return button == &enterButton;
+}
+

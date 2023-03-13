@@ -29,48 +29,37 @@ int Grain::getLengthInSamples()
 {
     return lengthInSamples;
 }
-
-int Grain::getDelete()
+bool Grain::isSkipped()
 {
-    return toDelete;
+    return toSkip;
 }
 
-void Grain::setNewGrain(int startPositionIn, int sampleLengthIn, int offsetIn, float pitchIn, float volumeLeft, float volumeRight)
+void Grain::setNewGrain(int startPositionIn, int sampleLengthIn, int offsetIn, float pitchIn, float volumeLeft, float volumeRight, PlayerSettings::GranularMode granularModeIn, PlayerSettings::WindowType windowTypeIn)
 {
     startingPosition = startPositionIn;
     lengthInSamples = sampleLengthIn;
+    offset = offsetIn;
     pitch = pitchIn;
     volume[0] = volumeLeft;
     volume[1] = volumeRight;
+    granularMode = granularModeIn;
+    windowType = windowTypeIn;
+    currentPosition = 0;
+    toSkip = false;
+    window = 0.0f;
+    currentPositionPercent = 0;
 }
 
-void Grain::fillNextSamples(AudioBuffer<float>& sourceBuffer, AudioBuffer<float>& destinationBuffer, PlayerSettings* settings, int totalSamples, double increment)
-{
-    
-    double window = 0.0f;
-    double percent = (currentPosition * 100.0 / (double)lengthInSamples);
+void Grain::fillNextSamples(AudioBuffer<float>& sourceBuffer, AudioBuffer<float>& destinationBuffer, float increment)
+{    
+    calculateWindow();
 
-    if (settings->isWindowType(PlayerSettings::HALF_SINE))
-    {
-        window = sin(3.14159 * percent / (double)100);
-    }
-    else if (settings->isWindowType(PlayerSettings::HANN))
-    {
-        window = ( 0.5f * (1.0f - cos(2.0f * PI * (percent / (double)100.0)))); // Hann
-    }
-    else if (settings->isWindowType(PlayerSettings::TRIANGLE))
-    {
-        window = (0.5f - (abs(percent - 50.0f) /(double) 50.0)); // Triangle
-        
-    }
-    if ((window > 1))
-    {
-        DBG("window cracks");
-    }
+    currentPositionPercent = (currentPosition * 100.0 / (double)lengthInSamples);
+
     for (int i = 0; i < destinationBuffer.getNumSamples(); i++) {
 
         if (abs(currentPosition) > lengthInSamples) {
-            toDelete = true;
+            toSkip = true;
             return;
         }
 
@@ -92,7 +81,7 @@ void Grain::fillNextSamples(AudioBuffer<float>& sourceBuffer, AudioBuffer<float>
 
             double finalSample = Utils::interpolateLinear(totalPosition, (int)std::floor(totalPosition) % sourceBuffer.getNumSamples(), (int)std::ceil(totalPosition + 1) % sourceBuffer.getNumSamples(), src[(int)std::floor(totalPosition) % sourceBuffer.getNumSamples()], src[(int)std::ceil(totalPosition + 1) % sourceBuffer.getNumSamples()]);
             
-            if (settings->isGranularMode(PlayerSettings::MIRROR) || settings->isGranularMode(PlayerSettings::REV_MIRROR))
+            if (granularMode == PlayerSettings::MIRROR || granularMode == PlayerSettings::REV_MIRROR)
             {
                 totalPosition = fmod((startingPosition - currentPosition) * pitch, sourceBuffer.getNumSamples());
 
@@ -119,17 +108,38 @@ void Grain::fillNextSamples(AudioBuffer<float>& sourceBuffer, AudioBuffer<float>
                 DBG("sample crack" << finalSample);
                 finalSample = 0;
             }
-            destinationBuffer.getWritePointer(channel)[i] += (finalSample * volume[channel] * window) /(double)( settings->getNumGrains()*0.1f);
+            destinationBuffer.getWritePointer(channel)[i] += (finalSample * volume[channel] * window);
         }
 
 
-        if (settings->isGranularMode(PlayerSettings::ORDER) || settings->isGranularMode(PlayerSettings::MIRROR))
+        if (granularMode == PlayerSettings::ORDER || granularMode == PlayerSettings::MIRROR)
         {
             currentPosition++;
         }
-        else if (settings->isGranularMode(PlayerSettings::REV_ORDER) || settings->isGranularMode(PlayerSettings::REV_MIRROR))
+        else if (granularMode == PlayerSettings::REV_ORDER || granularMode ==  PlayerSettings::REV_MIRROR)
         {
             currentPosition--;
         }
     }    
+}
+
+void Grain::calculateWindow()
+{
+    if (windowType == PlayerSettings::HALF_SINE)
+    {
+        window = sin(3.14159 * currentPositionPercent / (double)100);
+    }
+    else if (windowType == PlayerSettings::HANN)
+    {
+        window = (0.5f * (1.0f - cos(2.0f * PI * (currentPositionPercent / (double)100.0)))); // Hann
+    }
+    else if (windowType == PlayerSettings::TRIANGLE)
+    {
+        window = (0.5f - (abs(currentPositionPercent - 50.0f) / (double)50.0)); // Triangle
+
+    }
+    if ((window > 1))
+    {
+        DBG("window cracks");
+    }
 }

@@ -18,12 +18,12 @@ class ResetButton : public Component
 {
 public:
 
-    struct ResetListener
+    struct Listener
     {
         virtual void reseted(ResetButton*) = 0;
     };
 
-    void setListener(ResetListener* resetPntrIn) { resetPntr = resetPntrIn; }
+    void setListener(ResetButton::Listener* resetPntrIn) { resetPntr = resetPntrIn; }
     void removeListener() { resetPntr = nullptr; }
 
 	ResetButton();
@@ -38,7 +38,7 @@ public:
     ImageButton reloadButton{ "reloadButton" };
 
 private:
-    ResetListener* resetPntr = nullptr;
+    Listener* resetPntr = nullptr;
     Colour bgColor = C_GRAY;
     CustomLook customLook;
     Image buttonImage = ImageFileFormat::loadFrom(BinaryData::reload_png, BinaryData::reload_pngSize);

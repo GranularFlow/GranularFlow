@@ -16,10 +16,14 @@ ColorLFO::ColorLFO()
 {
     addAndMakeVisible(settings);    
     addAndMakeVisible(imageHandler);
+    settings.addDirectionListener(this);
+    settings.addColorListener(this);
 }
 
 ColorLFO::~ColorLFO()
 {
+    settings.removeDirectionListener();
+    settings.removeColorListener();
 }
 
 void ColorLFO::paint(Graphics& g)
@@ -42,14 +46,20 @@ void ColorLFO::buttonClicked(Button* button)
         imageHandler.loadImage();
     }
 }
-
 void ColorLFO::timeCallback()
 {
-    updateKnobs(imageHandler.getNext());
+    updateKnobs(imageHandler.getNext() * settings.getDepth());
+}
+
+
+void ColorLFO::onValueChange(RadioBox* radioBox, int selectedButton)
+{
+    DBG("selectedButton " << selectedButton);
+    
 }
 
 int ColorLFO::getTimerHz() {
-    return settings->getRate();
+    return settings.getRate();
 }
 
 void ColorLFO::addTimerListener(Slider::Listener* listener) {

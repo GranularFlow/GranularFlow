@@ -40,14 +40,14 @@ public:
     void selectHarmonic(int);    
     // Get
     // Set
-    void setKnobsListener(Knob::KnobListener*) override;
+    void setKnobsListener(Knob::Listener*) override;
+    void removeKnobsListener()override;
     
 private:
-    Knob::KnobListener* knobListener = nullptr;
+    Knob::Listener* knobListener = nullptr;
 
     int activeHarmonics = 0;
     int selectedHarmonic = 0;
-    int harmonicsToAdd = 0;
 
     AdditiveSynthSettings settings;
     AdditiveVisualiser visualiser;

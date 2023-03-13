@@ -34,7 +34,7 @@ public:
     void setAngle(double);
     double getAngle();
     void reset();
-    void setKnobsListener(Knob::KnobListener* knobListenerPntr);
+    void setKnobsListener(Knob::Listener* knobListenerPntr);
     void removeKnobsListener();
 private:
     // Wave parameters

@@ -40,7 +40,7 @@ public:
     void calculateIncrement();
     void initSamples();
     void handleMidi(MidiBuffer&);
-    void setKnobsListener(Knob::KnobListener*);
+    void setKnobsListener(Knob::Listener*);
     void removeKnobsListener();
 
 private:

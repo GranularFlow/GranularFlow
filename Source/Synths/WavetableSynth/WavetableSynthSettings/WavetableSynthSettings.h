@@ -41,7 +41,7 @@ public:
     // Listeners
     void addSlidersListener(Slider::Listener*);
     void removeSlidersListener(Slider::Listener*);
-    void setKnobsListener(Knob::KnobListener*);
+    void setKnobsListener(Knob::Listener*);
     void removeKnobsListener();
     // Getters
     float getFreq();

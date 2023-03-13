@@ -72,6 +72,16 @@ void BounceSettings::resized()
 
 }
 
+void BounceSettings::addRateListener(Slider::Listener* listener)
+{
+    rateKnob.addSliderListener(listener);
+}
+
+void BounceSettings::removeRateListener(Slider::Listener* listener)
+{
+    rateKnob.removeSliderListener(listener);
+}
+
 bool BounceSettings::isCurrentSelectedCoordinate(Coordinate selectedCoord)
 {
     return coordinateRadioBox.getValue() == selectedCoord;

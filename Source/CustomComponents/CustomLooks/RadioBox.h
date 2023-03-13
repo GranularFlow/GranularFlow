@@ -16,6 +16,14 @@
 class RadioBox : public Component, public ToggleButton::Listener
 {
 public:
+
+    struct Listener {
+        virtual void onValueChange(RadioBox*, int) = 0;
+    };
+    void setListener(RadioBox::Listener* listenerPntr) { radioBoxListenerPntr = listenerPntr; }
+    void removeListener() { radioBoxListenerPntr = nullptr; }
+    Listener* radioBoxListenerPntr = nullptr;
+
     // Class
 	RadioBox(String, Colour, Array<String>);
     ~RadioBox();

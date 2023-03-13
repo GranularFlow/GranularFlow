@@ -44,11 +44,6 @@ void ImageHandler::loadImage()
     fileChooser->launchAsync({}, [this](const FileChooser& fc) {
         setImage(fc.getResult());
         repaint();
-
-        if (imageHandlerListener != nullptr)
-        {
-            imageHandlerListener->imageLoaded();
-        }
     });
 
 }
@@ -78,14 +73,14 @@ double ImageHandler::getNext()
 {     
 
     // What direction to go for a pixel
-    if (settings->isCurrentDirection(LfoSettings::RANDOM))
+    if (direction == LfoSettings::RANDOM)
     {
         Random random;
         currentX = random.nextInt((getWidth() / 2) - 20);
         currentY = random.nextInt(getHeight() - 20);
     }
-    else if (settings->isCurrentDirection(LfoSettings::FORWARD)) {
-        phase = abs(fmod(phase, 1.f));
+    else if (direction == LfoSettings::FORWARD) {
+        phase = abs(fmod(phase+0.1, 1.f));
 
         currentX = phase * getImageWidth();
         if (currentX == getImageWidth() - 1)
@@ -94,8 +89,8 @@ double ImageHandler::getNext()
             currentY = (currentY + 1) % getImageHeight();
         }
     }
-    else if (settings->isCurrentDirection(LfoSettings::REVERSED)) {
-        phase = abs(fmod(phase - increment, 1.f));
+    else if (direction == LfoSettings::REVERSED) {
+        phase = abs(fmod(phase-0.1, 1.f));
 
         currentX = phase * getImageWidth();
         if (currentX == 0)
@@ -112,20 +107,20 @@ double ImageHandler::getNext()
 
     double outputValue = 0;
     // What color to get
-    if (settings->isCurrentSelectedColor(LfoSettings::RED))
+    if (color == LfoSettings::RED)
     {
         outputValue = getRed(currentX, currentY);
     }
-    else if (settings->isCurrentSelectedColor(LfoSettings::GREEN))
+    else if (color == LfoSettings::GREEN)
     {
         outputValue = getGreen(currentX, currentY);
     }
-    else if (settings->isCurrentSelectedColor(LfoSettings::BLUE))
+    else if (color == LfoSettings::BLUE)
     {
         outputValue = getBlue(currentX, currentY);
     }
 
-    return outputValue * settings->getDepth();
+    return outputValue;    
 }
 
 int ImageHandler::getImageHeight()
@@ -136,4 +131,9 @@ int ImageHandler::getImageHeight()
 int ImageHandler::getImageWidth()
 {
     return image.getWidth();
+}
+
+void ImageHandler::setDirection(LfoSettings::Direction directionIn)
+{
+    direction = directionIn;
 }

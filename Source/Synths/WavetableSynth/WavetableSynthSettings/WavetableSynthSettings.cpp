@@ -85,7 +85,7 @@ void WavetableSynthSettings::removeSlidersListener(Slider::Listener* listener)
     waveCountKnob.removeSliderListener(listener);
 }
 
-void WavetableSynthSettings::setKnobsListener(Knob::KnobListener* knobListenerPntr)
+void WavetableSynthSettings::setKnobsListener(Knob::Listener* knobListenerPntr)
 {
     freqKnob.setKnobListener(knobListenerPntr);
     waveCountKnob.setKnobListener(knobListenerPntr);

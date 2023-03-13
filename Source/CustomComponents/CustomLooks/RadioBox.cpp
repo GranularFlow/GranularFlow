@@ -48,7 +48,16 @@ void RadioBox::buttonStateChanged(Button* button)
     repaint();
 }
 
-void RadioBox::buttonClicked(Button* button){}
+void RadioBox::buttonClicked(Button* button){
+    for (int i = 0; i < toggleButtons.size(); ++i) {
+        if (toggleButtons[i]->getToggleState()) {
+            if (radioBoxListenerPntr != nullptr)
+            {
+                radioBoxListenerPntr->onValueChange(this, i);
+            }
+        }
+    }
+}
 
 
 int RadioBox::getValue(){

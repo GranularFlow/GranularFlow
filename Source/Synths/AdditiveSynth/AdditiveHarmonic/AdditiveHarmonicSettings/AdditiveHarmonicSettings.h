@@ -33,7 +33,7 @@ public:
     void paint(Graphics& graphics) override;
     void resized() override;
     // Knobs
-    void setKnobsListener(Knob::KnobListener*);
+    void setKnobsListener(Knob::Listener*);
     void removeKnobsListener();
     void resetDefaultValues();
     // Getters

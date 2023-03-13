@@ -18,7 +18,7 @@
 
 
 
-class MathLFO : public Component, public Timer, public Slider::Listener, public Button::Listener, public LFO
+class MathLFO : public Component, public LFO, public Button::Listener, public Slider::Listener
 {
 public:
     // Class
@@ -27,14 +27,18 @@ public:
     // GUI
     void paint(Graphics&)override;
     void resized()override;
-
-    // Listener
-    void timerCallback();
-    void sliderValueChanged(Slider*);
+    // Listeners
+    void addTimerListener(Slider::Listener*)override;
+    void removeTimerListener(Slider::Listener*)override;
+    void timeCallback()override;
+    // --------
+    void sliderValueChanged(Slider*)override;
     void buttonClicked(Button*)override;
-
-    void initSamples();
+    // Get
+    int getTimerHz();
     double getNext();
+    // Tools
+    void initSamples();
     void calculateDelta();
     double calculateEquation(double);
     bool isValidExpression(const std::string&);

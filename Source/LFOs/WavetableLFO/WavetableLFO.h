@@ -17,7 +17,7 @@
 #include "WavetableLfoCanvas/WavetableLfoCanvas.h"
 #include "WavetableLfoVisualiser/WavetableLfoVisualiser.h"
 
-class WavetableLFO : public Component, public Button::Listener, public Slider::Listener, public LFO, public Timer
+class WavetableLFO : public Component, public LFO, public Button::Listener, public Slider::Listener
 {
 public:
     // Class
@@ -26,20 +26,26 @@ public:
     // Listeners
     void sliderValueChanged(Slider*) override;
     void buttonClicked(Button*) override;
-    void timerCallback() override;
+    // ---LFO
+    void addTimerListener(Slider::Listener*)override;
+    void removeTimerListener(Slider::Listener*)override;
+    void timeCallback()override;
     // GUI
     void paint(Graphics&) override;
     void resized()override;    
+
+    // Get
+    int getTimerHz();
+    double getNext();
     // Tools
     void initSamples();
-    double getNext();
 private:
     TextButton combineButton{ "COMBINE" };
     WavetableLfoCanvas canvas1 {"FIRST WAVE"};
     WavetableLfoCanvas canvas2 {"SECOND WAVE"};
     WavetableLfoCanvas canvas3 {"THIRD WAVE"};
     WavetableLfoVisualiser canvas4;
-    WavetableLfoSettings wavetableSettings;
+    WavetableLfoSettings settings;
     Array<float> sampleY;
 
     int currentPosition = 0;

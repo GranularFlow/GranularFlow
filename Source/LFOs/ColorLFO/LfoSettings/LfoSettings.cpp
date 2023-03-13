@@ -78,19 +78,24 @@ void LfoSettings::removeRateListener(Slider::Listener* listener)
     rateKnob.removeSliderListener(listener);
 }
 
-bool LfoSettings::isCurrentDirection(Direction currentDirection)
+void LfoSettings::addDirectionListener(RadioBox::Listener* listener)
 {
-    return (directionRadioBox.getValue() == currentDirection);
+    directionRadioBox.setListener(listener);
 }
 
-bool LfoSettings::isCurrentSelectedColor(SelectedColor selectedColor)
+void LfoSettings::removeDirectionListener()
 {
-    return (colorSelectRadioBox.getValue() == selectedColor);
+    directionRadioBox.removeListener();
 }
 
-bool LfoSettings::isRateKnobSlider(Slider* slider)
+void LfoSettings::addColorListener(RadioBox::Listener* listener)
 {
-    return rateKnob.isCurrentSlider(slider);
+    colorSelectRadioBox.setListener(listener);
+}
+
+void LfoSettings::removeColorListener()
+{
+    colorSelectRadioBox.removeListener();
 }
 
 bool LfoSettings::isUploadButton(Button* button)

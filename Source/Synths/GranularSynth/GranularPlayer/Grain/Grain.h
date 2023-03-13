@@ -21,17 +21,26 @@ public:
     // Getters
     int getCurrentPosition();
     int getLengthInSamples();
-    int getDelete();
+    bool isSkipped();
     // Setters
-    void setNewGrain(int, int, int, float, float, float);
+    void setNewGrain(int, int, int, float, float, float, PlayerSettings::GranularMode, PlayerSettings::WindowType);
     // Audio
-    void fillNextSamples(AudioBuffer<float>&, AudioBuffer<float>&, PlayerSettings*, int, double);
+    void fillNextSamples(AudioBuffer<float>&, AudioBuffer<float>&, float);
+    void calculateWindow();
+
 private:
-    bool toDelete = false;
+
 
     int startingPosition = 0;
-    int currentPosition = 0;
     int lengthInSamples = 0;
+    int offset = 0;
     float pitch = 1;
-    float volume[2] = {0,0};
+    float volume[2] = { 0,0 };
+    PlayerSettings::GranularMode granularMode = PlayerSettings::GranularMode::ORDER;
+    PlayerSettings::WindowType windowType = PlayerSettings::WindowType::HALF_SINE;
+    int currentPosition = 0;
+    bool toSkip = true;
+    double window = 0.0f;
+    double currentPositionPercent = 0;
+
 };

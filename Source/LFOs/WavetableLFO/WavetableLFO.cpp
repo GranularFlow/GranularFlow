@@ -18,30 +18,22 @@ WavetableLFO::WavetableLFO()
     addAndMakeVisible(canvas3);
     addAndMakeVisible(canvas4);
     addAndMakeVisible(combineButton);
-    addAndMakeVisible(wavetableSettings);
+    addAndMakeVisible(settings);
 
     combineButton.addListener(this);
-    wavetableSettings.waveCountKnob.addSliderListener(this);
-    wavetableSettings.rateKnob.addSliderListener(this);
+    settings.addWaveCountListener(this);
 }
 
 WavetableLFO::~WavetableLFO()
 {
-    wavetableSettings.waveCountKnob.removeSliderListener(this);
-    wavetableSettings.rateKnob.removeSliderListener(this);
-
+    settings.removeWaveCountListener(this);
 }
 
 void WavetableLFO::sliderValueChanged(Slider* slider)
 {
-    if (slider == &wavetableSettings.waveCountKnob.getSlider())
+    if (settings.isWaveCountSlider(slider))
     {
         combineButton.triggerClick();
-    }
-    else if (slider == &wavetableSettings.rateKnob.getSlider())
-    {
-        stopTimer();
-        startTimerHz(slider->getValue());
     }
 }
 
@@ -61,7 +53,7 @@ void WavetableLFO::resized()
     canvas3.setBounds(getLocalBounds().withTrimmedLeft(margin + (W_WIDTH * 2 / 4)).withTrimmedTop(100).withTrimmedBottom(getHeight() / 2).withTrimmedRight(margin + (W_WIDTH * 1 / 4)));
     canvas4.setBounds(getLocalBounds().withTrimmedLeft(margin + (W_WIDTH * 3 / 4)).withTrimmedTop(100).withTrimmedBottom(getHeight() / 2).withTrimmedRight(margin));
 
-    wavetableSettings.setBounds(getLocalBounds()
+    settings.setBounds(getLocalBounds()
         .withTrimmedTop((getHeight()* 2/3) * 1.01)
         .withTrimmedLeft(getWidth() * 0.01)
         .withTrimmedRight(getWidth() * 0.01)
@@ -81,15 +73,23 @@ void WavetableLFO::buttonClicked(Button* button)
         {
             initSamples();
             canvas4.setWaveForm(sampleY);
-            stopTimer();
-            startTimerHz(wavetableSettings.getRate());
         }
     }
 }
 
-void WavetableLFO::timerCallback()
+void WavetableLFO::addTimerListener(Slider::Listener* listener)
 {
-    if (sampleY.size() == (wavetableSettings.getWaveCount() + 3) * 100)
+    settings.addRateListener(listener);
+}
+
+void WavetableLFO::removeTimerListener(Slider::Listener* listener)
+{
+    settings.removeRateListener(listener);
+}
+
+void WavetableLFO::timeCallback()
+{
+    if (sampleY.size() == (settings.getWaveCount() + 3) * 100)
     {
         updateKnobs(getNext());
     }    
@@ -105,7 +105,7 @@ void WavetableLFO::initSamples()
     }   
 
     // split waves between 1-2 && 2-3
-    int semiWaves = wavetableSettings.getWaveCount() / 2;
+    int semiWaves = settings.getWaveCount() / 2;
 
     Array<Array<float>> samplesForEachWave;
     for (int sampleIndex = 0; sampleIndex < canvas1.waveTableSamples.size(); sampleIndex++)
@@ -175,6 +175,10 @@ void WavetableLFO::initSamples()
     }
 }
 
+int WavetableLFO::getTimerHz() {
+    return settings.getRate();
+}
+
 double WavetableLFO::getNext()
 {
 
@@ -193,7 +197,6 @@ double WavetableLFO::getNext()
     float finalSample = Utils::interpolateLinear(totalPosition, (int)std::floor(totalPosition) % sampleY.size(), (int)std::ceil(totalPosition + 1) % sampleY.size(), sampleY[(int)std::floor(totalPosition) % sampleY.size()], sampleY[(int)std::ceil(totalPosition + 1) % sampleY.size()]);
 
     currentPosition++;
-    finalSample = std::abs(finalSample * wavetableSettings.getDepth());
-    DBG("finalSample " << finalSample);
+    finalSample = std::abs(finalSample * settings.getDepth());
     return finalSample;
 }

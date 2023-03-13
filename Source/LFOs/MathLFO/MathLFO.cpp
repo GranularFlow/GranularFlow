@@ -15,15 +15,14 @@ MathLFO::MathLFO()
     addAndMakeVisible(visualiser);
     addAndMakeVisible(settings);
 
-    settings.rateKnob.addSliderListener(this);
-    settings.enterButton.addListener(this);
+    settings.addRateListener(this);    
+    settings.addEnterListener(this);
 }
 
 MathLFO::~MathLFO()
 {
-    stopTimer();
-    settings.rateKnob.removeSliderListener(this);
-    settings.enterButton.removeListener(this);
+    settings.removeRateListener(this);
+    settings.removeEnterListener(this);
 }
 
 void MathLFO::paint(Graphics& g)
@@ -39,7 +38,17 @@ void MathLFO::resized()
     visualiser.setBounds(getLocalBounds().withSize(1000,400).withCentre(Point<int>(getWidth()/2, 200 + 60 )));
 }
 
-void MathLFO::timerCallback()
+void MathLFO::addTimerListener(Slider::Listener* listener)
+{
+    settings.addRateListener(listener);
+}
+
+void MathLFO::removeTimerListener(Slider::Listener* listener)
+{
+    settings.removeRateListener(listener);
+}
+
+void MathLFO::timeCallback()
 {
     if (isValidExpression(expressionString))
     {
@@ -49,20 +58,18 @@ void MathLFO::timerCallback()
 
 void MathLFO::sliderValueChanged(Slider* slider)
 {
-    if (slider == &settings.rateKnob.getSlider())
-    {
-        stopTimer();        
+    if (settings.isRateSlider(slider))
+    {     
         frequency = slider->getValue();
         calculateDelta();
-        startTimerHz(frequency);
     }
 }
 
 void MathLFO::buttonClicked(Button* button)
 {
-    if (button == &settings.enterButton)
+    if (settings.isEnterButton(button))
     {        
-        std::string tmpExpressionString = settings.textEditor.getText().toStdString();
+        std::string tmpExpressionString = settings.getText();
 
         if (isValidExpression(tmpExpressionString))
         {
@@ -80,7 +87,6 @@ void MathLFO::calculateDelta()
 
 double MathLFO::calculateEquation(double x) {
     // Create expression and variables
-    //DBG("x" << x);
     exprtk::parser<double> parser;
     exprtk::expression<double> expr;
     exprtk::symbol_table<double> symbolTable;
@@ -91,7 +97,6 @@ double MathLFO::calculateEquation(double x) {
     // Parse expression
     // "sin(x) + 2 * cos(x)";
     parser.compile(expressionString, expr);
-    //DBG("expr.value()" << expr.value());
     return expr.value();
 }
 
@@ -103,6 +108,10 @@ void MathLFO::initSamples()
         samples.add(getNext());
     }
     visualiser.setSamples(samples);
+}
+
+int MathLFO::getTimerHz() {
+    return settings.getRate();
 }
 
 double MathLFO::getNext()

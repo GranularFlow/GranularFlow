@@ -38,15 +38,19 @@ public:
     void paint(Graphics&)override;
     void resized()override;
     // Listener
+    // ---LFO TIMER
     void addRateListener(Slider::Listener*);
     void removeRateListener(Slider::Listener*);
+    // ---Direction
+    void addDirectionListener(RadioBox::Listener*);
+    void removeDirectionListener();
+    // ---Color
+    void addColorListener(RadioBox::Listener*);
+    void removeColorListener();
     // Get
     float getRate();
     float getDepth();
     // Tools
-    bool isCurrentDirection(Direction);
-    bool isCurrentSelectedColor(SelectedColor);
-    bool isRateKnobSlider(Slider*);
     bool isUploadButton(Button*);
     // Objects
     TextButton& getUploadButton();

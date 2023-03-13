@@ -27,13 +27,25 @@ public:
     // GUI
     void paint(Graphics&)override;
     void resized()override;
+    // Listener
+    // ---LFO TIMER
+    void addRateListener(Slider::Listener*);
+    void removeRateListener(Slider::Listener*);
+    // ---Enter button
+    void addEnterListener(Button::Listener*);
+    void removeEnterListener(Button::Listener*);
+    // Get
+    std::string getText();
+    int getRate();
+    bool isRateSlider(Slider*);
+    bool isEnterButton(Button*);
 
+
+private:    
     Knob rateKnob{ "RATE", C_BILLS, 1, 20, 1, 2, false };
     Knob depthKnob{ "DEPTH", C_BILLS, 1, 100, 1, 50, false };
-
     TextEditor textEditor;
     TextButton enterButton{ "ENTER" };
-private:    
     // GUI
     OwnedArray<Separator> separators;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MathSettings);

@@ -45,7 +45,7 @@ void PlayerCursor::setOpacity(int opacityIn)
 }
 
 float PlayerCursor::getCursorPositionInPixels(float cursorPositionPercent) {
-    return (cursorPositionPercent / (float)100) * getWidth();
+    return (cursorPositionPercent / (float)100) * W_WIDTH;
 }
 
 float PlayerCursor::getCursorPositionInPixels() {

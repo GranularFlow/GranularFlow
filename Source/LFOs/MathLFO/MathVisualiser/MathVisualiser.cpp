@@ -38,7 +38,6 @@ void MathVisualiser::paint(Graphics& g)
         p.startNewSubPath(0, yOffset);
 
         for (int i = 0; i < sampleCount; i++) {
-            DBG("samples[i]" << samples[i]);
             float y = yOffset - (yOffset * samples[i]); // 0 ; 200
             p.lineTo(index, y);
             //g.drawLine(index, y, index, yOffset, 2.0f); // Draw from peak to middle

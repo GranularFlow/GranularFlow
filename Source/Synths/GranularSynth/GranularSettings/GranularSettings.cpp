@@ -27,10 +27,10 @@ GranularSettings::~GranularSettings()
 
 void GranularSettings::enablePlayers()
 {
-    // This prevents from creating players before file Load
+    // This prevents from creating players before file Load    
     playerCountNum.setValue(1, sendNotification);
     playerCountNum.setRange(1, playerCountNum.getMaximum(), playerCountNum.getInterval());
-
+    
     playerSelectNum.setValue(1, dontSendNotification);
     playerSelectNum.setRange(1, playerCountNum.getMaximum(), playerCountNum.getInterval());
 

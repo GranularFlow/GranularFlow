@@ -11,7 +11,6 @@
 #pragma once
 #include <JuceHeader.h>
 #include "../../../Utils/Constants.h"
-#include "../../../Utils/Timing/Timing.h"
 
 class BounceCanvas : public Component
 {
@@ -22,17 +21,14 @@ public:
     // GUI
     void paint(Graphics&) override;
     // Setters
-    void setBallSpeed(int);
     // Getters
     double getOutput(bool);    
     // Listeners
     void mouseDrag(const MouseEvent& e) override;
     void mouseUp(const MouseEvent&) override;
     // Tools
-    void moveBall(); // TODO
+    void moveBall();
     void clearLines();
-
-
 private:
 
     float radius = 20.f;

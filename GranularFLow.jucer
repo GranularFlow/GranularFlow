@@ -222,10 +222,6 @@
           <FILE id="UxoeaL" name="AudioLoad.cpp" compile="1" resource="0" file="Source/Utils/AudioLoad/AudioLoad.cpp"/>
           <FILE id="c1W0vV" name="AudioLoad.h" compile="0" resource="0" file="Source/Utils/AudioLoad/AudioLoad.h"/>
         </GROUP>
-        <GROUP id="{0B4CEEA7-F638-A8F7-727B-07C488BEEA35}" name="Timing">
-          <FILE id="aA7UZH" name="Timing.cpp" compile="1" resource="0" file="Source/Utils/Timing/Timing.cpp"/>
-          <FILE id="rDuDqA" name="Timing.h" compile="0" resource="0" file="Source/Utils/Timing/Timing.h"/>
-        </GROUP>
         <FILE id="TVRgG3" name="Constants.h" compile="0" resource="0" file="Source/Utils/Constants.h"/>
         <FILE id="sGtKGF" name="Utils.cpp" compile="1" resource="0" file="Source/Utils/Utils.cpp"/>
         <FILE id="ocj1gM" name="Utils.h" compile="0" resource="0" file="Source/Utils/Utils.h"/>

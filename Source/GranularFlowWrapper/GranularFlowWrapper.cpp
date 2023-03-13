@@ -13,9 +13,8 @@
 GranularFlowWrapper::GranularFlowWrapper()
 {
     initGui();
+    addAllListeners();
     makeWindowsIgnoreClicks();
-
-
     startTimerHz(TIMER_HZ);
 }
 
@@ -204,6 +203,10 @@ void GranularFlowWrapper::processBlock(AudioBuffer<float>& buffer, MidiBuffer& m
     }
 }
 
+void GranularFlowWrapper::sliderValueChanged(Slider* slider)
+{
+}
+
 void GranularFlowWrapper::reseted(ResetButton* button)
 {
     if (button == &wavetableSynthReset && !processWavetable)
@@ -266,7 +269,7 @@ void GranularFlowWrapper::reseted(ResetButton* button)
 
 }
 
-void GranularFlowWrapper::setLfoPointers(Knob* knobPntr, int lfoId)
+void GranularFlowWrapper::setKnobToLfo(Knob* knobPntr, int lfoId)
 {
     switch (lfoId)
     {
@@ -398,18 +401,43 @@ void GranularFlowWrapper::mouseDown(const MouseEvent& e)
 
 void GranularFlowWrapper::setAllKnobs()
 {
-    wavetableSynth->setKnobsListener(this);
-    granularSynth->setKnobsListener(this);
-    additiveSynth->setKnobsListener(this);
+
 }
 
 void GranularFlowWrapper::timerCallback() {
+
     colorLfoTimer++;
     bounceLfoTimer++;
     mathLfoTimer++;
-    wavetableLfoTimer++;
+    wavetableLfoTimer++; 
+    if (processGranular){ granularVisualiserTimer++; }
+    
 
-    if (colorLfoTimer == colorLfo.getTimerHz())
+    if (colorLfoTimer == colorLfo->getTimerHz()) {
+
+        colorLfoTimer = 0;
+    }
+
+    if (bounceLfoTimer == bounceLfo->getTimerHz()) {
+
+        bounceLfoTimer = 0;
+    }
+
+    if (mathLfoTimer == mathLfo->getTimerHz()) {
+        mathLfo->timeCallback();
+        mathLfoTimer = 0;
+    }
+
+    if (wavetableLfoTimer == wavetableLfo->getTimerHz()) {
+
+        wavetableLfoTimer = 0;
+    }
+
+    if (granularVisualiserTimer == TIMER_HZ * 2)
+    {
+        granularSynth->movePositionCallback();
+        granularVisualiserTimer = 0;
+    }
 
 }
 
@@ -520,5 +548,42 @@ void GranularFlowWrapper::addAllListeners() {
     bounceLfo->addTimerListener(this);
     mathLfo->addTimerListener(this);
     wavetableLfo->addTimerListener(this);
-    setAllKnobs();
+    // ---------------
+    // Knobs listeners
+    // ---------------
+    // SYNTHS
+    wavetableSynth->setKnobsListener(this);
+    granularSynth->setKnobsListener(this);
+    additiveSynth->setKnobsListener(this);
+}
+
+void GranularFlowWrapper::removeAllListeners()
+{
+    // -----------------
+    // Reset buttons
+    // -----------------
+    // SYNTH
+    wavetableSynthReset.removeListener();
+    granularSynthReset.removeListener();
+    additiveSynthReset.removeListener();
+    // LFO
+    colorLfoReset.removeListener();
+    bounceLfoReset.removeListener();
+    mathLfoReset.removeListener();
+    wavetableLfoReset.removeListener();
+    // -----------------
+    // Timer Listeners
+    // -----------------
+    colorLfo->removeTimerListener(this);
+    bounceLfo->removeTimerListener(this);
+    mathLfo->removeTimerListener(this);
+    wavetableLfo->removeTimerListener(this);
+    // ---------------
+    // Knobs listeners
+    // ---------------
+    // SYNTHS
+    wavetableSynth->removeKnobsListener();
+    granularSynth->removeKnobsListener();
+    additiveSynth->removeKnobsListener();
+    
 }

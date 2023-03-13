@@ -42,7 +42,6 @@ PlayerSettings::~PlayerSettings()
 
 void PlayerSettings::paint(Graphics& g) {
     // Settings panel
-    g.fillAll(C_BARARED);
     g.setColour(L_GRAY);
     g.fillRoundedRectangle(getLocalBounds().toFloat(), 30);
 }
@@ -139,6 +138,20 @@ bool PlayerSettings::isRunningMode(PlayerSettings::RunningMode mode) {
     return (PlayerSettings::RunningMode)runningModeRadioBox.getValue() == mode;
 }
 
+void PlayerSettings::resetDefaultValues()
+{
+    granularModeRadioBox.resetDefaultValue();
+    runningModeRadioBox.resetDefaultValue();
+    midiModeRadioBox.resetDefaultValue();
+    windowTypeRadioBox.resetDefaultValue();
+    grainLengthKnob.setDefaultValue();
+    grainPitchKnob.setDefaultValue();
+    grainNumKnob.setDefaultValue();
+    grainOffsetKnob.setDefaultValue();
+    volumeKnob.setDefaultValue();
+    panKnob.setDefaultValue();
+}
+
 bool PlayerSettings::isGranularMode(PlayerSettings::GranularMode mode) {
     return (PlayerSettings::GranularMode)granularModeRadioBox.getValue() == mode;
 }
@@ -164,6 +177,16 @@ float PlayerSettings::getVolume()
 float PlayerSettings::getPan(int channel)
 {
     return  1 - abs(channel - ((float)panKnob.getValue() / 100));
+}
+
+PlayerSettings::GranularMode PlayerSettings::getGranularMode()
+{
+    return (PlayerSettings::GranularMode)granularModeRadioBox.getValue();
+}
+
+PlayerSettings::WindowType PlayerSettings::getWindowType()
+{
+    return (PlayerSettings::WindowType)windowTypeRadioBox.getValue();
 }
 
 void PlayerSettings::setGuiColor(Colour guiColourIn)

@@ -18,7 +18,7 @@
 #include "RingBuffer/RingBuffer.h"
 #include "../Synth.h"
 
-class GranularSynth : public Component, public Slider::Listener, public Button::Listener
+class GranularSynth : public Synth, public Component, public Slider::Listener, public Button::Listener
 {
 public:
     // Class
@@ -35,12 +35,13 @@ public:
     // -----------------    
     // Listeners
     void sliderValueChanged(Slider*) override;
-    void buttonClicked(Button*) override;
+    void buttonClicked(Button*)override;
     // Get
     int getNumTotalSamples();
     int getPlayerCount();
-    // Set
-    void setKnobsListener(Knob::KnobListener*);
+    // SYNTH
+    void setKnobsListener(Knob::Listener*)override;
+    void removeKnobsListener()override;
     // Tools
     void movePositionCallback();
     void setWaveCallback();
@@ -50,21 +51,23 @@ public:
     void loadAudioFromFile(File);
     void loadAudioIntoSamples();    
     // ---Init
-    void initAudioSamples(int);
-    void initPlayers();
+    void showPlayers();
     void clearAudioSamples();
     void addNewPlayer();
     void removePlayer();
     void selectPlayer(int playerNumber);
 private:
-    Knob::KnobListener* knobListener = nullptr;
+    Knob::Listener* knobListener = nullptr;
     std::shared_ptr<RingBuffer> ringBufferPntr = nullptr;
     std::unique_ptr<juce::FileChooser> fileChooser = nullptr;
 	
+    int activePlayers = 0;
+    int selectedPlayer = 0;
+
     GranularSettings topSettings;  
     GranularVisualiser visualiser;
     OwnedArray<GranularPlayer> players;
-    AudioBuffer<float> audioSamples {2, 256};
+    AudioBuffer<float> audioSamples {2, 144000 };
 
     double increment = 1;
     int lastMidiNote = 255;

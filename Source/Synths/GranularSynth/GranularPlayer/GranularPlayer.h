@@ -31,26 +31,28 @@ public:
     // GUI
 	void paint(Graphics& g) override;
 	void resized() override;
-	// Listeners
+	// ------- PlayerCursor
 	void onCursorPositionChange(int) override;
-	bool isCurrentGranularMode(PlayerSettings::GranularMode) override;
 	bool isCurrentRunningMode(PlayerSettings::RunningMode) override;
-	bool isCurrentMidiMode(PlayerSettings::MidiMode) override;
-	int getMaxSamples() override;
+	bool isCurrentMidiMode(PlayerSettings::MidiMode);
+	// -------
+
 	void movePositionCallback();
     // Tools
-	void addGrain(int, int);
-	int calculateStep();
-	int percentToSamplePosition(int);
+	void init();
+	void initGrains();
+	void reset();
+	void addGrain(int);
+	void removeGrain();
     // Getters
+	int getActiveGrains();
 	void fillNextBuffer(AudioBuffer<float>&, AudioBuffer<float>&);
 	void fillNextBuffer(AudioBuffer<float>&, AudioBuffer<float>&, float);
-	int getGrainNumSamples();
 	PlayerCursor* getCursor();
 	// Setters
 	void changeTimer(int);
 
-	void setKnobsListener(Knob::KnobListener*);
+	void setKnobsListener(Knob::Listener*);
 
 private:
 	// Settings
@@ -58,9 +60,8 @@ private:
 	int sampleRate;
 
 	// cursor position in samples
-	int cursorPosition;
+	int cursorPosition = 0;
 	int cursorTimer = 0;
-
 	bool waitForNextGrain = false;
 	int grainTimer = 0;
 	OwnedArray<Grain> grains;

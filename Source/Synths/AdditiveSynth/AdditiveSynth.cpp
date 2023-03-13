@@ -88,7 +88,7 @@ void AdditiveSynth::sliderValueChanged(Slider* slider)
 
 void AdditiveSynth::addNewHarmonic()
 {
-    harmonicsToAdd++;
+    harmonics[activeHarmonics]->setAngle(harmonics[0]->getAngle());
     activeHarmonics++;
 }
 
@@ -106,14 +106,6 @@ void AdditiveSynth::selectHarmonic(int harmonicNumber)
 
 void AdditiveSynth::processBlock(AudioBuffer<float>& bufferToFill, juce::MidiBuffer& midiMessages)
 {
-    if (harmonicsToAdd > 0)
-    {
-        for (int i = 0; i < harmonicsToAdd; i++)
-        {
-            harmonics[activeHarmonics - harmonicsToAdd + i]->setAngle(harmonics[0]->getAngle());
-        }
-        harmonicsToAdd = 0;
-    }
 
 
     for (int i = 0; i < activeHarmonics; i++)
@@ -133,7 +125,12 @@ void AdditiveSynth::prepareToPlay(float sampleRate, int bufferSize)
     }
 }
 
-void AdditiveSynth::setKnobsListener(Knob::KnobListener* knobListenerPntr)
+void AdditiveSynth::setKnobsListener(Knob::Listener* knobListenerPntr)
 {
     knobListener = knobListenerPntr;
+}
+
+void AdditiveSynth::removeKnobsListener()
+{
+    // DO nothing pointer gets nulled at deconstructor
 }

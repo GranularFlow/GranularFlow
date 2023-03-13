@@ -54,6 +54,7 @@ public:
 	void paint(Graphics&) override;
 	void resized();
     // Tools
+    void resetDefaultValues();
     bool isGranularMode(GranularMode);
     bool isRunningMode(RunningMode);
     bool isMidiMode(MidiMode);
@@ -63,9 +64,10 @@ public:
     int getGrainLength();
     float getGrainPitch();
     float getGrainOffset();
-    //int getOffset();
     float getVolume();
     float getPan(int channel);
+    PlayerSettings::GranularMode getGranularMode();
+    PlayerSettings::WindowType getWindowType();
     // Setters
     void setGuiColor(Colour colour);
 
@@ -76,14 +78,14 @@ public:
     RadioBox midiModeRadioBox{ "MIDI", C_SUNFLOWER, MIDI_MODE };
     RadioBox windowTypeRadioBox{ "WINDOW", C_MEDITERRANEAN, WINDOW_TYPE };
     // Grains
-    Knob grainLengthKnob{ "LENGTH", C_MARTINA, 1, 1000, 1, 50, true }; // ms
-    Knob grainPitchKnob{ "PITCH", C_RADIANTYELLOW, 0.1, 1.9, 0.001, 1, true }; // - 1 ; 1 x 
-    Knob grainNumKnob{ "GRAINS", C_ENERGOS, 1, 25, 1, 5, true }; // ms
-    Knob grainOffsetKnob{ "OFFSET", C_BARARED, 1, 100, 1, 10, true }; // ms how fast to generate new sample after creating last one
+    Knob grainLengthKnob{ "LENGTH", C_MARTINA, 1, 1000, 1, 50, true };
+    Knob grainPitchKnob{ "PITCH", C_RADIANTYELLOW, 0.1, 1.9, 0.001, 1, true };
+    Knob grainNumKnob{ "GRAINS", C_ENERGOS, 1, 10, 1, 2, true };
+    Knob grainOffsetKnob{ "OFFSET", C_BARARED, 1, 100, 1, 10, true };
 
     // Master
-    Knob volumeKnob{ "VOLUME", C_SUNFLOWER, 0, 100, 1, 50, true }; // %
-    Knob panKnob{ "PAN", C_BILLS, 0, 100, 1, 50, true }; // %
+    Knob volumeKnob{ "VOLUME", C_SUNFLOWER, 0, 100, 1, 50, true };
+    Knob panKnob{ "PAN", C_BILLS, 0, 100, 1, 50, true };
     // ADSR
 
 private:

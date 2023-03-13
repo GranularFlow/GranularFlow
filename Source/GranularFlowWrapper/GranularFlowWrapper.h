@@ -24,42 +24,39 @@
 #include "../LFOs/MathLFO/MathLFO.h"
 #include "../LFOs/WavetableLFO/WavetableLFO.h"
 
-class GranularFlowWrapper : public Component, public ResetButton::ResetListener, public Knob::KnobListener, public Timer
+class GranularFlowWrapper : public Component, public Slider::Listener, public ResetButton::Listener, public Knob::Listener, public Timer
 {
 public:
     // Class
     GranularFlowWrapper();
 	~GranularFlowWrapper();
-
     // GUI
     void paintJacks(Graphics&, int, int, int);
     void paintCables(Graphics&, int, int, int, int, int, int);
     void paint(Graphics&)override;
     void resized();
-
     // Process
     void prepareToPlay(float, int);
     void processBlock(AudioBuffer<float>&, MidiBuffer&);
-
     // Listeners
+    void sliderValueChanged(Slider*)override;
     void reseted(ResetButton*)override;
     void setKnobToLfo(Knob*, int)override;
     void removeKnobFromLfo(Knob*, int)override;
     void timerCallback()override;
-
     // Tools
     void initGui();
     void makeWindowsIgnoreClicks();
+    // -- LISTENERS
     void addAllListeners();
+    void removeAllListeners();
+    // ------
     void removeThisFromAllListeners();
     void closeWindows();
     void minimizeWindows();
     void mouseDown(const MouseEvent&);
-
     /*ADDD ALL KNOBS*/
     void setAllKnobs();
-
-
 private:
     int colorLfoTimer = 0;
     int bounceLfoTimer = 0;

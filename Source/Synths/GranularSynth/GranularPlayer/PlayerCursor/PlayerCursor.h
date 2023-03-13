@@ -20,10 +20,7 @@ public:
     struct Listener
     {
         virtual void onCursorPositionChange(int newCursorPositionPercent) = 0;
-        virtual bool isCurrentMidiMode(PlayerSettings::MidiMode) = 0;
         virtual bool isCurrentRunningMode(PlayerSettings::RunningMode) = 0;
-        virtual bool isCurrentGranularMode(PlayerSettings::GranularMode) = 0;
-        virtual int getMaxSamples() = 0;
     };
     void setListener(Listener* listenerPntrIn) { listenerPntr = listenerPntrIn; }
     void removeListener() { listenerPntr = nullptr; }

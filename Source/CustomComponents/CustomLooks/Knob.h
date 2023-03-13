@@ -19,13 +19,13 @@ class Knob : public Component, private ComboBox::Listener
 public:
 
     // -----------------------------------
-    struct KnobListener
+    struct Listener
     {
         virtual void setKnobToLfo(Knob*, int) = 0;
         virtual void removeKnobFromLfo(Knob*, int) = 0;
     };
 
-    void setKnobListener(KnobListener* knobListenerPntrIn) 
+    void setKnobListener(Knob::Listener* knobListenerPntrIn)
     { 
         knobListenerPntr = knobListenerPntrIn; 
     }
@@ -36,7 +36,7 @@ public:
         knobListenerPntr = nullptr;
     }
 
-    KnobListener* knobListenerPntr = nullptr;
+    Listener* knobListenerPntr = nullptr;
     // -----------------------------------
 
     // Class
@@ -50,6 +50,7 @@ public:
     void removeSliderListener(Slider::Listener*);
     void comboBoxChanged(ComboBox*) override;
     // Setters
+    void setValue(float);
     void setDefaultValue();
     void setLfoValue(float);
     // Getters

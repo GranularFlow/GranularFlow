@@ -61,6 +61,26 @@ void WavetableLfoSettings::resized()
 
 }
 
+void WavetableLfoSettings::addRateListener(Slider::Listener* listener)
+{
+    rateKnob.addSliderListener(listener);
+}
+
+void WavetableLfoSettings::removeRateListener(Slider::Listener* listener)
+{
+    rateKnob.removeSliderListener(listener);
+}
+
+void WavetableLfoSettings::addWaveCountListener(Slider::Listener* listener)
+{
+    waveCountKnob.addSliderListener(listener);
+}
+
+void WavetableLfoSettings::removeWaveCountListener(Slider::Listener* listener)
+{
+    waveCountKnob.removeSliderListener(listener);
+}
+
 
 double WavetableLfoSettings::getRate()
 {
@@ -80,4 +100,9 @@ int WavetableLfoSettings::getWaveCount()
 bool WavetableLfoSettings::isCurrentInterpolationType(WavetableLfoSettings::InterpolationType type)
 {
     return ((WavetableLfoSettings::InterpolationType)interpolationRadioBox.getValue() == type);
+}
+
+bool WavetableLfoSettings::isWaveCountSlider(Slider* slider)
+{
+    return waveCountKnob.isCurrentSlider(slider);
 }

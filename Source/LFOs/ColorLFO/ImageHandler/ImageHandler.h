@@ -28,13 +28,15 @@ public:
     void loadImage();
     bool isImageSet();
     // Listeners
-    // Getters
+    // Get
     float getRed(int, int);
     float getGreen(int, int);
     float getBlue(int, int);
     double getNext();
     int getImageHeight();
     int getImageWidth();
+    // Set
+    void setDirection(LfoSettings::Direction);
 
 private:
     int currentX = 1;
@@ -45,6 +47,9 @@ private:
 
     Image image;
     ColorDecomposer decomposer;
+
+    LfoSettings::Direction direction = LfoSettings::Direction::RANDOM;
+    LfoSettings::SelectedColor color = LfoSettings::SelectedColor::RED;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ImageHandler);
 };

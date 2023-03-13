@@ -15,13 +15,15 @@ GranularSynth::GranularSynth()
     addAndMakeVisible(topSettings);
     addAndMakeVisible(visualiser);
 
-
-    initPlayers();
-    initAudioSamples(getNumTotalSamples());  
+    for (int i = 0; i < 3; i++)
+    {
+        players.add(new GranularPlayer(144000, sampleRate));
+        players.getLast()->setKnobsListener(knobListener);
+        addChildComponent(players.getLast());
+    }
 
     topSettings.addSliderListener(this);
-    topSettings.addButtonListener(this);
-    
+    topSettings.addButtonListener(this);    
 }
 
 GranularSynth::~GranularSynth()
@@ -52,7 +54,7 @@ void GranularSynth::resized()
     // Players
     for (GranularPlayer* player : players)
     {
-        player->setBounds(getLocalBounds());
+        player->setBounds(getLocalBounds().withTrimmedTop(TOP_BAR_HEIGHT));
     }
 
     // AudioVisualiser
@@ -110,34 +112,6 @@ int GranularSynth::getNumTotalSamples() {
     return 5 * sampleRate;
 }
 
-void GranularSynth::initAudioSamples(int numberToInit) {
-    AudioBuffer<float> tmpBuffer;
-    if (waveFormWasSet)
-    {        
-        tmpBuffer.makeCopyOf(audioSamples);
-    }
-
-    audioSamples.setSize(2, numberToInit);
-    audioSamples.clear();
-
-    if (waveFormWasSet)
-    {
-        int minSamples = jmin(numberToInit, audioSamples.getNumSamples());
-        //int destChannel, int destStartSample, const AudioBuffer &source, int sourceChannel, int sourceStartSample, int numSample
-        audioSamples.copyFrom(0, 0, tmpBuffer, 0, 0, minSamples);
-        audioSamples.copyFrom(1, 0, tmpBuffer, 1, 0, minSamples);
-    }
-
-}
-
-void GranularSynth::initPlayers()
-{
-    for (size_t i = 0; i < topSettings.getPlayerCount(); i++)
-    {
-        players.add(new GranularPlayer(getNumTotalSamples(), sampleRate));
-    }
-}
-
 void GranularSynth::clearAudioSamples() {
     audioSamples.clear();
 }
@@ -147,11 +121,11 @@ void GranularSynth::sliderValueChanged(Slider* slider)
     if (topSettings.isPlayerCountSlider(slider)) {
         int val = static_cast<int>(slider->getValue());
 
-        if (val > getPlayerCount())
+        if (val > activePlayers)
         {
             addNewPlayer();
         }
-        else if (val < getPlayerCount())
+        else if (val < activePlayers)
         {
             removePlayer();
         }
@@ -162,25 +136,13 @@ void GranularSynth::sliderValueChanged(Slider* slider)
     {        
         int val = static_cast<int>(slider->getValue());
 
-        if (getPlayerCount() > val - 1)
+        if (activePlayers > val - 1)
         {
             selectPlayer(val);
         }
         else
         {
             slider->setValue(val - 1);
-        }
-
-        for (int playerId = 0; playerId < players.size(); playerId++)
-        {
-            if (playerId != val-1)
-            {
-                players[playerId]->getCursor()->setOpacity(1);
-            }
-            else
-            {
-                players[playerId]->getCursor()->setOpacity(100);
-            }
         }
     }
 }
@@ -192,6 +154,7 @@ void GranularSynth::buttonClicked(Button* button)
         inputFromFile = true;
         // Load file
         loadAudioIntoSamples();
+        showPlayers();
         topSettings.enablePlayers();
         topSettings.getOpenAudioButton().setVisible(false);
         topSettings.getOpenBufferButton().setVisible(false);
@@ -203,13 +166,15 @@ void GranularSynth::buttonClicked(Button* button)
         ringBufferPntr = std::make_shared<RingBuffer>();
         visualiser.setPntr(ringBufferPntr);
         waveFormWasSet = true;
-
+        showPlayers();
         topSettings.enablePlayers();
         topSettings.getOpenAudioButton().setVisible(false);
         topSettings.getOpenBufferButton().setVisible(false);
-
-
     }
+}
+
+void GranularSynth::showPlayers() {
+    players[0]->setVisible(true);
 }
 
 void GranularSynth::prepareToPlay(float sampleRateIn, int bufferSizeIn) {
@@ -221,20 +186,28 @@ void GranularSynth::prepareToPlay(float sampleRateIn, int bufferSizeIn) {
 }
 
 void GranularSynth::addNewPlayer() {
-    const MessageManagerLock mmLock;
-    players.add(new GranularPlayer(getNumTotalSamples(), sampleRate));
-    addAndMakeVisible(players.getLast(), 5);
-    players.getLast()->setKnobsListener(knobListener);
-    resized();
+    // TODO
+    activePlayers++;
 }
 
 void GranularSynth::removePlayer() {
-    players.removeLast();
-    resized();
+    activePlayers--;
+    players[activePlayers]->reset();
 }
 
 void GranularSynth::selectPlayer(int playerNumber) {
-    players[playerNumber - 1]->toFront(true);
+
+    for (int playerId = 0; playerId < players.size(); playerId++)
+    {
+        if (playerId != playerNumber-1)
+        {
+            players[playerId]->setVisible(false);
+        }
+        else
+        {
+            players[playerId]->setVisible(true);
+        }
+    }
 }
 
 void GranularSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& midiMessages)
@@ -246,38 +219,38 @@ void GranularSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& m
 
     if (inputFromFile)
     {
-        for (GranularPlayer* player : players)
+        for (size_t i = 0; i < activePlayers; i++)
         {
-            if (player->isCurrentMidiMode(PlayerSettings::MidiMode::ON))
+            if (players[i]->isCurrentMidiMode(PlayerSettings::MidiMode::ON))
             {
                 handleMidi(midiMessages);
                 if (midiNoteOn)
                 {
-                    player->fillNextBuffer(bufferToFill, audioSamples, increment);
+                    players[i]->fillNextBuffer(bufferToFill, audioSamples, increment);
                 }
             }
             else
             {
-                player->fillNextBuffer(bufferToFill, audioSamples);
+                players[i]->fillNextBuffer(bufferToFill, audioSamples);
             }
         }
     }
     else {
         ringBufferPntr->addBuffer(bufferToFill);
         bufferToFill.clear();
-        for (GranularPlayer* player : players)
+        for (size_t i = 0; i < activePlayers; i++)
         {
-            if (player->isCurrentMidiMode(PlayerSettings::MidiMode::ON))
+            if (players[i]->isCurrentMidiMode(PlayerSettings::MidiMode::ON))
             {
                 handleMidi(midiMessages);
                 if (midiNoteOn)
                 {
-                    player->fillNextBuffer(bufferToFill, ringBufferPntr->getBuffer(), increment);
+                    players[i]->fillNextBuffer(bufferToFill, ringBufferPntr->getBuffer(), increment);
                 }
             }
             else
             {
-                player->fillNextBuffer(bufferToFill, ringBufferPntr->getBuffer());
+                players[i]->fillNextBuffer(bufferToFill, ringBufferPntr->getBuffer());
 
             }
         }
@@ -290,9 +263,14 @@ int GranularSynth::getPlayerCount()
     return static_cast<int>(players.size());
 }
 
-void GranularSynth::setKnobsListener(Knob::KnobListener* listenerPntr)
+void GranularSynth::setKnobsListener(Knob::Listener* listenerPntr)
 {
     knobListener = listenerPntr;
+}
+
+void GranularSynth::removeKnobsListener()
+{
+  // DO NOTHING knobPntr get removed at deconstructor
 }
 
 void GranularSynth::setWaveCallback() {
@@ -300,7 +278,7 @@ void GranularSynth::setWaveCallback() {
 }
 
 void GranularSynth::movePositionCallback() {
-    for (GranularPlayer player : players) {
-        player.movePositionCallback();
+    for (GranularPlayer* player : players) {
+        player->movePositionCallback();
     }
 }

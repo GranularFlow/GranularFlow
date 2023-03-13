@@ -15,24 +15,7 @@ GranularPlayer::GranularPlayer(int totalSamplesIn, int sampleRateIn) {
     totalSamples = totalSamplesIn;
     sampleRate = sampleRateIn;
 
-    Random& random = Random::getSystemRandom();
-    Colour guiColor = Colour(
-        (int)random.nextInt(255),
-        (int)random.nextInt(255),
-        (int)random.nextInt(255));
-
-    // Cursor
-    cursorPosition = random.nextInt((int)std::floor(totalSamples / 2) + (int)std::floor(totalSamples / 4));
-    cursor.init(Utils::samplesToPercent(cursorPosition, totalSamples), guiColor);
-
-    // Settings background
-    //settings.setGuiColor(guiColor);    
-
-    // Visibility
-    addAndMakeVisible(cursor);
-    addAndMakeVisible(settings);
-
-    cursor.setListener(this);
+    init();
 }
 
 GranularPlayer::~GranularPlayer() {
@@ -44,8 +27,8 @@ void GranularPlayer::paint(Graphics& g) {
 
 void GranularPlayer::resized()
 {
-    cursor.setBounds(getLocalBounds().withTrimmedTop(TOP_BAR_HEIGHT).withTrimmedBottom(SETTINGS_SIZE.getHeight() + 30));
-    settings.setBounds(SETTINGS_SIZE.withCentre(Point<int>(SETTINGS_SIZE.getCentreX(), SETTINGS_SIZE.getCentreY())));
+    cursor.setBounds(getLocalBounds().withTrimmedBottom(SETTINGS_SIZE.getHeight() + 30));
+    settings.setBounds(SETTINGS_SIZE.withCentre(Point<int>(SETTINGS_SIZE.getCentreX(), SETTINGS_SIZE.getCentreY() - TOP_BAR_HEIGHT - 10)).withSizeKeepingCentre(SETTINGS_SIZE.getWidth(), SETTINGS_SIZE.getHeight()+25));
 }
 
 void GranularPlayer::onCursorPositionChange(int cursorPositionIn)
@@ -53,9 +36,9 @@ void GranularPlayer::onCursorPositionChange(int cursorPositionIn)
     cursorPosition = (int)(cursorPositionIn * totalSamples/100);
 }
 
-bool GranularPlayer::isCurrentGranularMode(PlayerSettings::GranularMode mode)
+bool GranularPlayer::isCurrentRunningMode(PlayerSettings::RunningMode mode)
 {
-    return settings.isGranularMode(mode);
+    return settings.isRunningMode(mode);
 }
 
 bool GranularPlayer::isCurrentMidiMode(PlayerSettings::MidiMode mode)
@@ -63,19 +46,66 @@ bool GranularPlayer::isCurrentMidiMode(PlayerSettings::MidiMode mode)
     return settings.isMidiMode(mode);
 }
 
-bool GranularPlayer::isCurrentRunningMode(PlayerSettings::RunningMode mode)
+void GranularPlayer::init()
 {
-    return settings.isRunningMode(mode);
+    Random& random = Random::getSystemRandom();
+    Colour guiColor = Colour(
+        (int)random.nextInt(255),
+        (int)random.nextInt(255),
+        (int)random.nextInt(255));
+
+    // Cursor
+    cursorPosition = W_WIDTH / 2;
+    cursor.init(50, guiColor);
+
+    // Settings background
+    //settings.setGuiColor(guiColor);    
+
+    // Visibility
+    addAndMakeVisible(cursor);
+    addAndMakeVisible(settings);
+
+    cursor.setListener(this);
+
+    initGrains();
 }
 
-int GranularPlayer::getMaxSamples() {
-    return totalSamples;
+void GranularPlayer::initGrains()
+{
+    for (int i = 0; i < 10; i++)
+    {
+        grains.add(new Grain());
+    }
 }
 
-void GranularPlayer::addGrain(int startPosition, int length) {    
-    auto tmp_grain = new Grain();
-    //TODOstartPosition, Utils::msToSamples(length, sampleRate), 0, settings.getGrainPitch(), settings.getVolume() * settings.getPan(0), settings.getVolume() * settings.getPan(1)
-    grains.add(tmp_grain);
+void GranularPlayer::reset()
+{
+    init();
+    settings.resetDefaultValues();
+}
+
+void GranularPlayer::addGrain(int startPosition) {
+    for (Grain* grain : grains)
+    {
+        if (grain->isSkipped())
+        {
+            grain->setNewGrain(
+                startPosition,
+                Utils::msToSamples(settings.getGrainLength(), sampleRate),
+                Utils::msToSamples(settings.getGrainOffset(), sampleRate),
+                settings.getGrainPitch(),
+                settings.getVolume() * settings.getPan(0),
+                settings.getVolume() * settings.getPan(1),
+                settings.getGranularMode(),
+                settings.getWindowType()
+            );
+            break;
+        }
+    }
+}
+
+void GranularPlayer::removeGrain()
+{
 }
 
 void GranularPlayer::movePositionCallback()
@@ -101,12 +131,34 @@ void GranularPlayer::movePositionCallback()
         }
         
         cursor.setCursorPosition(100 * cursorPosition/(float)totalSamples);
+    }  
+
+}
+
+int GranularPlayer::getActiveGrains()
+{
+
+    int tmpCount = 0;
+    for (Grain* grain : grains)
+    {
+        if (!grain->isSkipped())
+        {
+            tmpCount++;
+        }
     }
+    return tmpCount;
+}
 
+void GranularPlayer::fillNextBuffer(AudioBuffer<float>& toFill, AudioBuffer<float>& sourceSamples)
+{
+    fillNextBuffer(toFill, sourceSamples, 1.f);
+}
+
+void GranularPlayer::fillNextBuffer(AudioBuffer<float>& toFill, AudioBuffer<float>& sourceSamples, float increment)
+{
     // check if need to add grain
-    if (grains.size() < settings.getNumGrains() && waitForNextGrain == false) {
-
-        addGrain(cursorPosition, settings.getGrainLength());
+    if (getActiveGrains() < settings.getNumGrains() && waitForNextGrain == false) {
+        addGrain(cursorPosition);
         waitForNextGrain = true;
     }
 
@@ -121,51 +173,13 @@ void GranularPlayer::movePositionCallback()
         grainTimer += 1;
     }
 
-}
-
-int GranularPlayer::calculateStep()
-{
-    return 1;
-}
-
-int GranularPlayer::percentToSamplePosition(int newCursorPositionPercent)
-{
-    return (int)std::floor((newCursorPositionPercent /(float) 100) * totalSamples);
-}
-
-void GranularPlayer::fillNextBuffer(AudioBuffer<float>& toFill, AudioBuffer<float>& sourceSamples)
-{
-    fillNextBuffer(toFill, sourceSamples, 1.f);
-}
-
-void GranularPlayer::fillNextBuffer(AudioBuffer<float>& toFill, AudioBuffer<float>& sourceSamples, float increment)
-{
-
-    Array<int> deleteArray;
-    for (int i = 0; i < grains.size(); i++)
+    for (Grain* grain : grains)
     {
-        if (grains[i] != nullptr)
+        if (!grain->isSkipped())
         {
-            if (grains[i]->getDelete())
-            {
-                deleteArray.add(i);
-            }
-            else
-            {
-                grains[i]->fillNextSamples(sourceSamples, toFill, &settings, totalSamples, increment);
-            }
-        }        
+            grain->fillNextSamples(sourceSamples, toFill, increment);
+        }
     }
-
-    for (int i = 0; i < deleteArray.size(); i++)
-    {
-        grains.remove(deleteArray[i], true);
-    }
-}
-
-int GranularPlayer::getGrainNumSamples() {
-    // calculate how many samples are in set ms length
-    return Utils::msToSamples(settings.getGrainLength(), sampleRate);
 }
 
 PlayerCursor* GranularPlayer::getCursor() {
@@ -177,7 +191,7 @@ void GranularPlayer::changeTimer(int sampleRateIn)
     sampleRate = sampleRateIn;
 }
 
-void GranularPlayer::setKnobsListener(Knob::KnobListener* knobListenerPntr)
+void GranularPlayer::setKnobsListener(Knob::Listener* knobListenerPntr)
 {
     settings.grainLengthKnob.setKnobListener(knobListenerPntr);
     settings.grainPitchKnob.setKnobListener(knobListenerPntr);

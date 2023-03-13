@@ -69,7 +69,7 @@ void AdditiveHarmonicSettings::resized()
     fb.performLayout(getLocalBounds().withTrimmedLeft(2/3 * getWidth()));
 }
 
-void AdditiveHarmonicSettings::setKnobsListener(Knob::KnobListener* knobListenerPntr)
+void AdditiveHarmonicSettings::setKnobsListener(Knob::Listener* knobListenerPntr)
 {
     phaseKnob.setKnobListener(knobListenerPntr);
     freqKnob.setKnobListener(knobListenerPntr);

@@ -31,10 +31,12 @@ public:
     // GUI
     void paint(Graphics&) override;
     void resized()override;
-
+    // Listeners
+    // ---LFO TIMER
+    void addRateListener(Slider::Listener*);
+    void removeRateListener(Slider::Listener*);
     // Getters
     bool isCurrentSelectedCoordinate(Coordinate);
-
     double getRate();
     double getDepth();
 

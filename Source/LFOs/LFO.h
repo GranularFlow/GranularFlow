@@ -16,9 +16,11 @@ class LFO
 {
 public:
 	LFO() {}
-	~LFO() {
+	~LFO() {}
 
-    }
+    virtual void addTimerListener(Slider::Listener*) = 0;
+    virtual void removeTimerListener(Slider::Listener*) = 0;
+
     virtual void timeCallback() = 0;
     void updateKnobs(double value) {
         for (Knob* knob : knobPntrs)
@@ -29,6 +31,7 @@ public:
             }
         }
     }
+    // Listener
     void addKnobToListeners(Knob* knobPntrIn) { knobPntrs.add(knobPntrIn); }
     void removeKnobFromListeners(Knob* knobPntrIn) {
         int index = -666;
@@ -46,7 +49,8 @@ public:
             knobPntrs.remove(index, false);
         }
     }
-    OwnedArray<Knob> knobPntrs;
+
 private:
+    OwnedArray<Knob> knobPntrs;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LFO);
 };

@@ -249,7 +249,7 @@ void WavetableSynth::handleMidi(MidiBuffer& midiMessages)
     }
 }
 
-void WavetableSynth::setKnobsListener(Knob::KnobListener* knobListenerPntr)
+void WavetableSynth::setKnobsListener(Knob::Listener* knobListenerPntr)
 {
     wavetableSettings.setKnobsListener(knobListenerPntr);
 };

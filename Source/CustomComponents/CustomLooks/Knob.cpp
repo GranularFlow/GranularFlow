@@ -65,6 +65,11 @@ void Knob::resized()
     comboBox->setBounds(getLocalBounds().withSize(getWidth() * 0.7, 25).withCentre(Point<int>(getWidth() / 2, getHeight() - 30 )));
 }
 
+void Knob::setValue(float value)
+{
+    slider.setValue(value);
+}
+
 void Knob::setDefaultValue()
 {
     slider.setValue(defaultValue);

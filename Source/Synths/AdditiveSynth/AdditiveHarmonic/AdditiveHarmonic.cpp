@@ -129,7 +129,7 @@ void AdditiveHarmonic::reset()
     settings.resetDefaultValues();
 }
 
-void AdditiveHarmonic::setKnobsListener(Knob::KnobListener* knobListenerPntr)
+void AdditiveHarmonic::setKnobsListener(Knob::Listener* knobListenerPntr)
 {
     settings.setKnobsListener(knobListenerPntr);
 }
