@@ -82,6 +82,28 @@ void BounceSettings::removeRateListener(Slider::Listener* listener)
     rateKnob.removeSliderListener(listener);
 }
 
+void BounceSettings::addButtonsListener(Button::Listener* listener)
+{
+    clearButton.addListener(listener);
+    startButton.addListener(listener);
+}
+
+void BounceSettings::removeButtonsListener(Button::Listener* listener)
+{
+    clearButton.removeListener(listener);
+    startButton.removeListener(listener);
+}
+
+void BounceSettings::addBallSpeedListener(Slider::Listener* listener)
+{
+    ballSpeedKnob.addSliderListener(listener);
+}
+
+void BounceSettings::removeBallSpeedListener(Slider::Listener* listener)
+{
+    ballSpeedKnob.removeSliderListener(listener);
+}
+
 bool BounceSettings::isCurrentSelectedCoordinate(Coordinate selectedCoord)
 {
     return coordinateRadioBox.getValue() == selectedCoord;
@@ -95,4 +117,34 @@ double BounceSettings::getRate()
 double BounceSettings::getDepth()
 {
     return depthKnob.getValue();
+}
+
+bool BounceSettings::isRateSlider(Slider* slider)
+{
+    return rateKnob.isCurrentSlider(slider);
+}
+
+bool BounceSettings::isBallSpeedSlider(Slider* slider)
+{
+    return ballSpeedKnob.isCurrentSlider(slider);
+}
+
+bool BounceSettings::isClearButton(Button* button)
+{
+    return button == &clearButton;
+}
+
+bool BounceSettings::isStartButton(Button* button)
+{
+    return button == &startButton;
+}
+
+void BounceSettings::setBallSpeed(int speed)
+{
+    ballSpeedKnob.setValue(speed);
+}
+
+int BounceSettings::getBallSpeed()
+{
+    return ballSpeedKnob.getValue();
 }

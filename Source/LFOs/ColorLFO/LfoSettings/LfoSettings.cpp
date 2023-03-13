@@ -43,7 +43,7 @@ void LfoSettings::resized()
             FlexBox::Wrap::noWrap,
             FlexBox::AlignContent::center,
             FlexBox::AlignItems::center,
-            FlexBox::JustifyContent::spaceBetween
+            FlexBox::JustifyContent::spaceAround
     };
     
     int tmpWidth = getWidth() * 1/5 * 0.85;
@@ -53,7 +53,7 @@ void LfoSettings::resized()
     Utils::addToFb(&fb, rateKnob, 3, tmpWidth, tmpHeight);
     Utils::addToFb(&fb, depthKnob, 5, tmpWidth, tmpHeight );
     Utils::addToFb(&fb, colorSelectRadioBox, 7, tmpWidth, tmpHeight);
-    Utils::addToFb(&fb, uploadButton, 9, tmpWidth, tmpHeight/2);
+    Utils::addToFb(&fb, uploadButton, 9, tmpWidth / 2, tmpHeight/2);
 
 
 
@@ -98,9 +98,34 @@ void LfoSettings::removeColorListener()
     colorSelectRadioBox.removeListener();
 }
 
+void LfoSettings::addButtonsListener(Button::Listener* listener)
+{
+    uploadButton.addListener(listener);
+}
+
+void LfoSettings::removeButtonsListener(Button::Listener* listener)
+{
+    uploadButton.removeListener(listener);
+}
+
 bool LfoSettings::isUploadButton(Button* button)
 {
     return button == &uploadButton;
+}
+
+bool LfoSettings::isRateSlider(Slider* slider)
+{
+    return rateKnob.isCurrentSlider(slider);
+}
+
+bool LfoSettings::isColourRadioBox(RadioBox* box)
+{
+    return box == &colorSelectRadioBox;
+}
+
+bool LfoSettings::isDirectionRadioBox(RadioBox* box)
+{
+    return box == &directionRadioBox;
 }
 
 TextButton& LfoSettings::getUploadButton()

@@ -39,7 +39,7 @@ void ImageHandler::setImage(File file)
 
 void ImageHandler::loadImage()
 {
-    fileChooser = std::make_unique<juce::FileChooser>("Select a png file...", juce::File{}, "*.png");
+    fileChooser = std::make_unique<juce::FileChooser>("Select a png file...", juce::File{}, "*.png;*.jpg");
 
     fileChooser->launchAsync({}, [this](const FileChooser& fc) {
         setImage(fc.getResult());
@@ -69,13 +69,19 @@ float ImageHandler::getBlue(int x, int y)
     return image.getPixelAt(x, y).getFloatBlue();
 }
 
+void ImageHandler::repaintCanvas() {
+    decomposer.setRGB(
+        image.getPixelAt(currentX, currentY).getRed(),
+        image.getPixelAt(currentX, currentY).getGreen(),
+        image.getPixelAt(currentX, currentY).getBlue()
+    );
+}
+
 double ImageHandler::getNext()
 {     
-
-    // What direction to go for a pixel
     if (direction == LfoSettings::RANDOM)
     {
-        Random random;
+        
         currentX = random.nextInt((getWidth() / 2) - 20);
         currentY = random.nextInt(getHeight() - 20);
     }
@@ -90,7 +96,8 @@ double ImageHandler::getNext()
         }
     }
     else if (direction == LfoSettings::REVERSED) {
-        phase = abs(fmod(phase-0.1, 1.f));
+        phase -= 0.1f;
+        phase = abs(fmod(phase + 1.f, 1.f));
 
         currentX = phase * getImageWidth();
         if (currentX == 0)
@@ -100,13 +107,7 @@ double ImageHandler::getNext()
         }
     }
 
-    decomposer.setRGB(
-        image.getPixelAt(currentX, currentY).getRed(),
-        image.getPixelAt(currentX, currentY).getGreen(),
-        image.getPixelAt(currentX, currentY).getBlue());
-
-    double outputValue = 0;
-    // What color to get
+    
     if (color == LfoSettings::RED)
     {
         outputValue = getRed(currentX, currentY);
@@ -136,4 +137,9 @@ int ImageHandler::getImageWidth()
 void ImageHandler::setDirection(LfoSettings::Direction directionIn)
 {
     direction = directionIn;
+}
+
+void ImageHandler::setColor(LfoSettings::SelectedColor colorIn)
+{
+    color = colorIn;
 }

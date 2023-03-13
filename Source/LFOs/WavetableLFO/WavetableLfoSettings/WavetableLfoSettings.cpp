@@ -16,7 +16,7 @@ WavetableLfoSettings::WavetableLfoSettings()
     addAndMakeVisible(depthKnob);
     addAndMakeVisible(rateKnob);
     addAndMakeVisible(waveCountKnob);
-    addAndMakeVisible(interpolationRadioBox);
+    addAndMakeVisible(incrementKnob);
 }
 
 WavetableLfoSettings::~WavetableLfoSettings()
@@ -48,7 +48,7 @@ void WavetableLfoSettings::resized()
     fb.items.add(FlexItem(rateKnob).withOrder(1).withMinWidth(tmp_width).withMinHeight(tmp_height));
     fb.items.add(FlexItem(depthKnob).withOrder(3).withMinWidth(tmp_width).withMinHeight(tmp_height));
     fb.items.add(FlexItem(waveCountKnob).withOrder(5).withMinWidth(tmp_width).withMinHeight(tmp_height));
-    fb.items.add(FlexItem(interpolationRadioBox).withOrder(5).withMinWidth(tmp_width).withMinHeight(tmp_height));
+    fb.items.add(FlexItem(incrementKnob).withOrder(5).withMinWidth(tmp_width).withMinHeight(tmp_height));
 
 
     // White lines
@@ -87,6 +87,11 @@ double WavetableLfoSettings::getRate()
     return rateKnob.getValue();
 }
 
+double WavetableLfoSettings::getIncrement()
+{
+    return incrementKnob.getValue();
+}
+
 double WavetableLfoSettings::getDepth()
 {
     return depthKnob.getValue();
@@ -97,12 +102,12 @@ int WavetableLfoSettings::getWaveCount()
     return waveCountKnob.getValue();
 }
 
-bool WavetableLfoSettings::isCurrentInterpolationType(WavetableLfoSettings::InterpolationType type)
-{
-    return ((WavetableLfoSettings::InterpolationType)interpolationRadioBox.getValue() == type);
-}
-
 bool WavetableLfoSettings::isWaveCountSlider(Slider* slider)
 {
     return waveCountKnob.isCurrentSlider(slider);
+}
+
+bool WavetableLfoSettings::isRateSlider(Slider* slider)
+{
+    return rateKnob.isCurrentSlider(slider);
 }

@@ -16,7 +16,9 @@ class LFO
 {
 public:
 	LFO() {}
-	~LFO() {}
+	~LFO() {
+        knobPntrs.clear();
+    }
 
     virtual void addTimerListener(Slider::Listener*) = 0;
     virtual void removeTimerListener(Slider::Listener*) = 0;
@@ -49,6 +51,8 @@ public:
             knobPntrs.remove(index, false);
         }
     }
+
+    bool knobPntrsEmpty() { return knobPntrs.isEmpty(); }
 
 private:
     OwnedArray<Knob> knobPntrs;

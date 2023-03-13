@@ -39,7 +39,12 @@ public:
     double getNext();
     // Tools
     void initSamples();
+    bool isTimerSlider(Slider*);
+    bool isEmpty();
+
 private:
+    bool isSetWave = false;
+    float totalPosition = 0;
     TextButton combineButton{ "COMBINE" };
     WavetableLfoCanvas canvas1 {"FIRST WAVE"};
     WavetableLfoCanvas canvas2 {"SECOND WAVE"};
@@ -48,7 +53,8 @@ private:
     WavetableLfoSettings settings;
     Array<float> sampleY;
 
-    int currentPosition = 0;
+    int currentPosition = 0; 
+    float finalSample = 0;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WavetableLFO);
 };

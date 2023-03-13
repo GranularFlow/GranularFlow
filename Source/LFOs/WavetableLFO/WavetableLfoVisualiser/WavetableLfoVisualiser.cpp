@@ -20,7 +20,7 @@ WavetableLfoVisualiser::~WavetableLfoVisualiser()
 
 void WavetableLfoVisualiser::paint(Graphics& g)
 {
-    g.fillAll(C_ANDROID);
+    g.fillAll(C_GRAY);
 
     g.setColour(C_WHITE);
     

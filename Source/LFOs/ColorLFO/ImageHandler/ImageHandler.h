@@ -27,6 +27,7 @@ public:
     void setImage(File);
     void loadImage();
     bool isImageSet();
+    void repaintCanvas();
     // Listeners
     // Get
     float getRed(int, int);
@@ -37,8 +38,11 @@ public:
     int getImageWidth();
     // Set
     void setDirection(LfoSettings::Direction);
+    void setColor(LfoSettings::SelectedColor);
 
 private:
+    Random random;
+    double outputValue = 0;
     int currentX = 1;
     int currentY = 1;
     float phase = 0;

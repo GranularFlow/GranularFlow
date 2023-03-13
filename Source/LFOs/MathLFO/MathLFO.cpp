@@ -52,16 +52,31 @@ void MathLFO::timeCallback()
 {
     if (isValidExpression(expressionString))
     {
-        updateKnobs(getNext());
+        updateKnobs(std::abs(getNext()));
     }    
+}
+
+bool MathLFO::isTimerSlider(Slider* slider)
+{
+    return settings.isRateSlider(slider);
 }
 
 void MathLFO::sliderValueChanged(Slider* slider)
 {
     if (settings.isRateSlider(slider))
-    {     
-        frequency = slider->getValue();
-        calculateDelta();
+    {
+        if (isValidExpression(expressionString))
+        {
+            frequency = slider->getValue();
+            calculateDelta();
+        }
+    }
+    if (settings.isDepthSlider(slider))
+    {
+        if (isValidExpression(expressionString))
+        {
+            initSamples();
+        }
     }
 }
 
@@ -82,7 +97,7 @@ void MathLFO::buttonClicked(Button* button)
 
 void MathLFO::calculateDelta()
 {
-    delta = 2 * PI /(float) 256;
+    delta = (2 * PI * frequency)/(float) 256;
 }
 
 double MathLFO::calculateEquation(double x) {
@@ -118,7 +133,7 @@ double MathLFO::getNext()
 {    
     double output = calculateEquation(angle);
     angle = fmod(angle + delta,(double) 2 * PI);
-    return output;
+    return output * settings.getDepth();
 }
 
 bool MathLFO::isValidExpression(const std::string& expression)

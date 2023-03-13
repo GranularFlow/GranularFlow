@@ -15,7 +15,7 @@ GranularFlowWrapper::GranularFlowWrapper()
     initGui();
     addAllListeners();
     makeWindowsIgnoreClicks();
-    startTimerHz(TIMER_HZ);
+    startTimer(TIMER_TIME);
 }
 
 GranularFlowWrapper::~GranularFlowWrapper()
@@ -111,12 +111,12 @@ void GranularFlowWrapper::paint(Graphics&g)
 
     float thickness = 1;
     int space = 30;
-    int marginY = 50;
+    int marginY = 60;
 
     int winWidth = 320;
     int winHeight = 180;
 
-    int startY = marginY + winHeight * 0.8 ;
+    int startY = marginY + winHeight;
 
     int endY = (W_HEIGHT * 2/(float)3) - 20;
     int center = W_WIDTH/2;
@@ -205,6 +205,27 @@ void GranularFlowWrapper::processBlock(AudioBuffer<float>& buffer, MidiBuffer& m
 
 void GranularFlowWrapper::sliderValueChanged(Slider* slider)
 {
+    if (colorLfo->isTimerSlider(slider))
+    {
+        colorLfoTimer = 0;
+    }
+    else if (bounceLfo->isTimerSlider(slider))
+    {
+        bounceLfoTimer = 0;
+    }
+    else if (mathLfo->isTimerSlider(slider))
+    {
+        mathLfoTimer = 0;
+    }
+    else if (wavetableLfo->isTimerSlider(slider))
+    {
+        wavetableLfoTimer = 0;
+    }
+    else if (bounceLfo->isBallSpeedSlider(slider))
+    {
+        bounceBallSpeed = slider->getValue();
+        bounceBallTimer = 0;
+    }
 }
 
 void GranularFlowWrapper::reseted(ResetButton* button)
@@ -234,7 +255,7 @@ void GranularFlowWrapper::reseted(ResetButton* button)
         repaint();
     }
 
-    if (button == &colorLfoReset)
+    if (button == &colorLfoReset && colorLfo->knobPntrsEmpty())
     {
         lfoWindows[0].deleteAndZero();
         colorLfo.release();
@@ -242,7 +263,7 @@ void GranularFlowWrapper::reseted(ResetButton* button)
         lfoWindows.set(0, new CustomWindow("Color LFO", colorLfo.get()));
         repaint();
     }
-    else if (button == &bounceLfoReset)
+    else if (button == &bounceLfoReset && bounceLfo->knobPntrsEmpty())
     {
         lfoWindows[1].deleteAndZero();
         bounceLfo.release();
@@ -250,7 +271,7 @@ void GranularFlowWrapper::reseted(ResetButton* button)
         lfoWindows.set(1, new CustomWindow("Bounce LFO", bounceLfo.get()));
         repaint();
     }
-    else if (button == &mathLfoReset)
+    else if (button == &mathLfoReset && mathLfo->knobPntrsEmpty())
     {
         lfoWindows[2].deleteAndZero();
         mathLfo.release();
@@ -258,7 +279,7 @@ void GranularFlowWrapper::reseted(ResetButton* button)
         lfoWindows.set(2, new CustomWindow("Math LFO", mathLfo.get()));
         repaint();
     }
-    else if (button == &wavetableLfoReset)
+    else if (button == &wavetableLfoReset && wavetableLfo->knobPntrsEmpty())
     {
         lfoWindows[3].deleteAndZero();
         wavetableLfo.release();
@@ -410,35 +431,49 @@ void GranularFlowWrapper::timerCallback() {
     bounceLfoTimer++;
     mathLfoTimer++;
     wavetableLfoTimer++; 
-    if (processGranular){ granularVisualiserTimer++; }
+
+    granularPlayerTimer++;
+    bounceBallTimer++;
+    colorRepaintTimer++;
     
 
-    if (colorLfoTimer == colorLfo->getTimerHz()) {
-
+    if (colorLfoTimer * TIMER_TIME >= ((1000) / (float)colorLfo->getTimerHz()) && !colorLfo->knobPntrsEmpty() && colorLfo->isImageSet()) {
+        colorLfo->timeCallback();
         colorLfoTimer = 0;
     }
 
-    if (bounceLfoTimer == bounceLfo->getTimerHz()) {
-
+    if (bounceLfoTimer * TIMER_TIME >= ((1000) / (float)bounceLfo->getTimerHz()) && !bounceLfo->knobPntrsEmpty() && bounceLfo->getBallSpeed() != 0) {
+        bounceLfo->timeCallback();
         bounceLfoTimer = 0;
     }
 
-    if (mathLfoTimer == mathLfo->getTimerHz()) {
+    if (mathLfoTimer * TIMER_TIME >= ((1000)/(float) mathLfo->getTimerHz()) && !mathLfo->knobPntrsEmpty()) {
         mathLfo->timeCallback();
         mathLfoTimer = 0;
     }
 
-    if (wavetableLfoTimer == wavetableLfo->getTimerHz()) {
-
+    if (wavetableLfoTimer * TIMER_TIME >= ((1000) / (float)wavetableLfo->getTimerHz()) && !wavetableLfo->knobPntrsEmpty() && !wavetableLfo->isEmpty()){
+        wavetableLfo->timeCallback();
         wavetableLfoTimer = 0;
     }
 
-    if (granularVisualiserTimer == TIMER_HZ * 2)
-    {
+    if (granularPlayerTimer * TIMER_TIME >= ((1000) /(float)30) && processGranular) {
         granularSynth->movePositionCallback();
-        granularVisualiserTimer = 0;
+        granularPlayerTimer = 0;
     }
 
+    if (bounceBallTimer * TIMER_TIME >= ((1000) / (float)bounceBallSpeed) && !bounceLfo->knobPntrsEmpty() && bounceLfo->getBallSpeed() != 0) {
+        bounceLfo->moveBall();
+        bounceBallTimer = 0;
+    }  
+
+    if (colorRepaintTimer * TIMER_TIME >= ((1000) / (float)30) && !colorLfo->knobPntrsEmpty() && colorLfo->isImageSet())
+    {        
+        colorLfo->repaintCanvas();
+        colorRepaintTimer = 0;
+    }
+
+    
 }
 
 void GranularFlowWrapper::removeThisFromAllListeners() {
@@ -548,6 +583,9 @@ void GranularFlowWrapper::addAllListeners() {
     bounceLfo->addTimerListener(this);
     mathLfo->addTimerListener(this);
     wavetableLfo->addTimerListener(this);
+
+    //BallSpeed
+    bounceLfo->addBallSpeedListener(this);
     // ---------------
     // Knobs listeners
     // ---------------
@@ -578,6 +616,8 @@ void GranularFlowWrapper::removeAllListeners()
     bounceLfo->removeTimerListener(this);
     mathLfo->removeTimerListener(this);
     wavetableLfo->removeTimerListener(this);
+    // ball
+    bounceLfo->removeBallSpeedListener(this);
     // ---------------
     // Knobs listeners
     // ---------------

@@ -35,19 +35,32 @@ public:
     // ---LFO TIMER
     void addRateListener(Slider::Listener*);
     void removeRateListener(Slider::Listener*);
+    // Button
+    void addButtonsListener(Button::Listener*);
+    void removeButtonsListener(Button::Listener*);
+    // Sliders
+    void addBallSpeedListener(Slider::Listener*);
+    void removeBallSpeedListener(Slider::Listener*);
     // Getters
     bool isCurrentSelectedCoordinate(Coordinate);
     double getRate();
     double getDepth();
-
-    Knob ballSpeedKnob { "BALL SPEED", C_BILLS, 1, 100, 1, 10, false };
-    Knob rateKnob { "RATE", C_BILLS, 1, 20, 1, 2, false };
-    Knob depthKnob { "DEPTH", C_BILLS, 0, 1, 0.1, 0.5, false };
-    RadioBox coordinateRadioBox { "DIRECTION", C_BARARED, COORDINATE };
-    TextButton clearButton { "CLEAR" };
-    TextButton startButton{ "START" };
+    bool isRateSlider(Slider*);
+    bool isBallSpeedSlider(Slider*);
+    bool isClearButton(Button*);
+    bool isStartButton(Button*);
+    int getBallSpeed();
+    // Set
+    void setBallSpeed(int);
 
 private:
+    Knob ballSpeedKnob{ "BALL SPEED", C_BILLS, 0, 100, 1, 60, false };
+    Knob rateKnob{ "RATE", C_BILLS, 1, 20, 1, 2, false };
+    Knob depthKnob{ "DEPTH", C_BILLS, 0, 1, 0.1, 0.5, false };
+    RadioBox coordinateRadioBox{ "DIRECTION", C_BARARED, COORDINATE };
+    TextButton clearButton{ "CLEAR" };
+    TextButton startButton{ "START" };
+
     OwnedArray<Separator> separators;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BounceSettings);
 };

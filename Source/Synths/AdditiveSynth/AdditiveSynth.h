@@ -44,7 +44,6 @@ public:
     void removeKnobsListener()override;
     
 private:
-    Knob::Listener* knobListener = nullptr;
 
     int activeHarmonics = 0;
     int selectedHarmonic = 0;

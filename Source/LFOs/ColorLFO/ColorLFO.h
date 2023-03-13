@@ -28,18 +28,23 @@ public:
     // Listener
     void buttonClicked(Button*)override;
     // LFO
-    // Listeners
+    // Timer
     void addTimerListener(Slider::Listener*)override;
     void removeTimerListener(Slider::Listener*)override;
     void timeCallback()override;
+    void repaintCanvas();
+    // *******
+    bool isTimerSlider(Slider*);
     // --------
     // Radiobox
     void onValueChange(RadioBox*, int)override;
     // Get
     int getTimerHz();
+    bool isImageSet();
     
 
 private:
+    
     //  -- Settings
     LfoSettings settings;
     //  -- handler

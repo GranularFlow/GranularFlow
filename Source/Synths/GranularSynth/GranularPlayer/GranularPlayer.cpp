@@ -110,29 +110,30 @@ void GranularPlayer::removeGrain()
 
 void GranularPlayer::movePositionCallback()
 {
-    //check if running
-
     if (cursorPosition >= totalSamples) {
         cursorPosition = 0;
     }
-    if (cursorPosition <= 0 ) {
+    if (cursorPosition <= 0) {
         cursorPosition = totalSamples;
     }
 
-    if (settings.isRunningMode(PlayerSettings::RUNNING))
+    if (settings.isGranularMode(PlayerSettings::ORDER) || settings.isGranularMode(PlayerSettings::MIRROR))
     {
-        if (settings.isGranularMode(PlayerSettings::ORDER) || settings.isGranularMode(PlayerSettings::MIRROR))
-        {
-            cursorPosition += 10;
-        }
-        else if (settings.isGranularMode(PlayerSettings::REV_ORDER) || settings.isGranularMode(PlayerSettings::REV_MIRROR))
-        {
-            cursorPosition -= 10;
-        }
+        cursorPosition += 20;
+    }
+    else if (settings.isGranularMode(PlayerSettings::REV_ORDER) || settings.isGranularMode(PlayerSettings::REV_MIRROR))
+    {
+        cursorPosition -= 20;
+    }
         
-        cursor.setCursorPosition(100 * cursorPosition/(float)totalSamples);
-    }  
+    cursor.setCursorPosition(100 * cursorPosition/(float)totalSamples);
+    
+    repaint();
+}
 
+bool GranularPlayer::isCursorMoving()
+{
+    return settings.isRunningMode(PlayerSettings::RUNNING);
 }
 
 int GranularPlayer::getActiveGrains()
@@ -170,7 +171,7 @@ void GranularPlayer::fillNextBuffer(AudioBuffer<float>& toFill, AudioBuffer<floa
 
     if (waitForNextGrain)
     {
-        grainTimer += 1;
+        grainTimer += toFill.getNumSamples();
     }
 
     for (Grain* grain : grains)
@@ -193,11 +194,5 @@ void GranularPlayer::changeTimer(int sampleRateIn)
 
 void GranularPlayer::setKnobsListener(Knob::Listener* knobListenerPntr)
 {
-    settings.grainLengthKnob.setKnobListener(knobListenerPntr);
-    settings.grainPitchKnob.setKnobListener(knobListenerPntr);
-    settings.grainNumKnob.setKnobListener(knobListenerPntr);
-    settings.grainOffsetKnob.setKnobListener(knobListenerPntr);
-
-    settings.volumeKnob.setKnobListener(knobListenerPntr);
-    settings.panKnob.setKnobListener(knobListenerPntr);
+    settings.setKnobsListener(knobListenerPntr);
 }

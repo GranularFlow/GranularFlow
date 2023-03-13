@@ -14,19 +14,12 @@ BounceLFO::BounceLFO()
 {
    addAndMakeVisible(settings);
    addAndMakeVisible(canvas);
-
-   settings.rateKnob.addSliderListener(this);
-   settings.ballSpeedKnob.addSliderListener(this);
-   settings.clearButton.addListener(this);
-   settings.startButton.addListener(this);
+   settings.addButtonsListener(this);
 }
 
 BounceLFO::~BounceLFO()
 {
-    settings.rateKnob.removeSliderListener(this);
-    settings.ballSpeedKnob.removeSliderListener(this);
-    settings.clearButton.removeListener(this);
-    settings.startButton.removeListener(this);
+    settings.removeButtonsListener(this);
 }
 
 
@@ -53,24 +46,27 @@ void BounceLFO::removeTimerListener(Slider::Listener* listener) {
 }
 
 
-void BounceLFO::sliderValueChanged(Slider* slider)
-{    
-    if (settings.ballSpeedKnob.isCurrentSlider(slider))
-    {
-        //TODO canvas.setBallSpeed(slider->getValue());
-    }
+void BounceLFO::moveBall()
+{
+    canvas.moveBall();
 }
 
 void BounceLFO::buttonClicked(Button* button)
 {
-    if (button == & settings.clearButton)
+    if (settings.isClearButton(button))
     {
         canvas.clearLines();
     }
 
-    if (button == &settings.startButton)
+    if (settings.isStartButton(button))
     {
-        settings.ballSpeedKnob.getValue();
+        if (settings.getBallSpeed() != 0)
+        {
+            settings.setBallSpeed(0);
+        }
+        else {
+            settings.setBallSpeed(60);
+        }
     }
 }
 
@@ -87,3 +83,27 @@ void BounceLFO::timeCallback() {
     updateKnobs(getNext());
 }
 
+void BounceLFO::addBallSpeedListener(Slider::Listener* listener)
+{
+    settings.addBallSpeedListener(listener);
+}
+
+void BounceLFO::removeBallSpeedListener(Slider::Listener* listener)
+{
+    settings.removeBallSpeedListener(listener);
+}
+
+bool BounceLFO::isTimerSlider(Slider* slider)
+{
+    return settings.isRateSlider(slider);
+}
+
+bool BounceLFO::isBallSpeedSlider(Slider* slider)
+{
+    return settings.isBallSpeedSlider(slider);
+}
+
+int BounceLFO::getBallSpeed()
+{
+    return settings.getBallSpeed();
+}

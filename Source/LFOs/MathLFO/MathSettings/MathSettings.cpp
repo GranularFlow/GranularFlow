@@ -86,6 +86,11 @@ void MathSettings::removeEnterListener(Button::Listener* listener)
     enterButton.removeListener(listener);
 }
 
+void MathSettings::clickEnterButton()
+{
+    enterButton.triggerClick();
+}
+
 std::string MathSettings::getText()
 {
     return textEditor.getText().toStdString();
@@ -96,9 +101,19 @@ int MathSettings::getRate()
     return rateKnob.getValue();
 }
 
+float MathSettings::getDepth()
+{
+    return depthKnob.getValue();
+}
+
 bool MathSettings::isRateSlider(Slider* slider)
 {
     return rateKnob.isCurrentSlider(slider);
+}
+
+bool MathSettings::isDepthSlider(Slider* slider)
+{
+    return depthKnob.isCurrentSlider(slider);
 }
 
 bool MathSettings::isEnterButton(Button* button)

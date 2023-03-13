@@ -18,7 +18,7 @@
 #include "BounceCanvas/BounceCanvas.h"
 
 
-class BounceLFO : public Component, public LFO, public Button::Listener, public Slider::Listener
+class BounceLFO : public Component, public LFO, public Button::Listener
 {
 public:
     // Class
@@ -32,12 +32,16 @@ public:
     void removeTimerListener(Slider::Listener*)override;
     void timeCallback()override;
     // --------
-
-    void sliderValueChanged(Slider*);
+    void addBallSpeedListener(Slider::Listener*);
+    void removeBallSpeedListener(Slider::Listener*);
+    void moveBall();
     void buttonClicked(Button*);
     // Getters
     double getNext();
     int getTimerHz();
+    bool isTimerSlider(Slider*);
+    bool isBallSpeedSlider(Slider*);
+    int getBallSpeed();
 
 
 private:

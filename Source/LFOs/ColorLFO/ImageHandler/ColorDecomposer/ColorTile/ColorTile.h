@@ -22,7 +22,7 @@ public:
     void setColor(int, Colour);
 
 private:
-    Colour color = Colours::black;
+    Colour color = C_GRAY;
     int colorInt = 255;
 
 };

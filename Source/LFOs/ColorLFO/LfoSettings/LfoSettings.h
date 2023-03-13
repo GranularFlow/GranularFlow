@@ -47,18 +47,24 @@ public:
     // ---Color
     void addColorListener(RadioBox::Listener*);
     void removeColorListener();
+
+    void addButtonsListener(Button::Listener*);
+    void removeButtonsListener(Button::Listener*);
     // Get
     float getRate();
     float getDepth();
     // Tools
     bool isUploadButton(Button*);
+    bool isRateSlider(Slider*);
+    bool isColourRadioBox(RadioBox*);
+    bool isDirectionRadioBox(RadioBox*);
     // Objects
     TextButton& getUploadButton();
     Knob& getRateKnob();
     Knob& getDepthKnob();
 
 private:
-    TextButton uploadButton{ "LOAD" };
+    TextButton uploadButton{ "UPLOAD" };
     // Settings
     RadioBox directionRadioBox{ "DIRECTION", C_BARARED, DIRECTION_MODE };
     Knob rateKnob{ "RATE", C_BILLS, 1, 20, 1, 2, false };

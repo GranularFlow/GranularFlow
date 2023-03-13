@@ -57,7 +57,7 @@ public:
     void removePlayer();
     void selectPlayer(int playerNumber);
 private:
-    Knob::Listener* knobListener = nullptr;
+    
     std::shared_ptr<RingBuffer> ringBufferPntr = nullptr;
     std::unique_ptr<juce::FileChooser> fileChooser = nullptr;
 	

@@ -18,7 +18,7 @@ const int W_WIDTH = 1200;
 const int W_HEIGHT = 700;
 
 // Timer
-const int TIMER_HZ = 30;
+const int TIMER_TIME = 10;
 
 // Component sizes
 const int KNOB_WIDTH = 100;

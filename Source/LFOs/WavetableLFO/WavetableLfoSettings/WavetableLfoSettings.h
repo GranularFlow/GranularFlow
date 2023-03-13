@@ -42,17 +42,20 @@ public:
     // Tools
     // Getters
     double getRate();
+    double getIncrement();
     double getDepth();
     int getWaveCount();
-    bool isCurrentInterpolationType(WavetableLfoSettings::InterpolationType);
     bool isWaveCountSlider(Slider*);
+    bool isRateSlider(Slider*);
+
 
 private:
     // Settings
-    Knob rateKnob{ "RATE", C_SUNFLOWER, 1, 20, 1, 1, false };
+    Knob rateKnob{ "RATE", C_SUNFLOWER, 1, 20, 1, 10, false };
     Knob depthKnob{ "DEPTH", C_SUNFLOWER, 0, 1, 0.1, 0.5, false };
     Knob waveCountKnob{ "WAVE COUNT", C_SUNFLOWER, 2, 10, 2, 6, false };
-    RadioBox interpolationRadioBox{ "ITERPOLATION", C_SUNFLOWER, INTERPOLATION_TYPE };
+    Knob incrementKnob{ "INCREMENT", C_SUNFLOWER, 1, 59, 0.1, 40, false };
+
     // GUI
     Colour guiColour;
     OwnedArray<Separator> separators;

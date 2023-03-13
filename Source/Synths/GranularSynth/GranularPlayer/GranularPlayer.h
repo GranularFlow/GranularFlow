@@ -45,6 +45,7 @@ public:
 	void addGrain(int);
 	void removeGrain();
     // Getters
+	bool isCursorMoving();
 	int getActiveGrains();
 	void fillNextBuffer(AudioBuffer<float>&, AudioBuffer<float>&);
 	void fillNextBuffer(AudioBuffer<float>&, AudioBuffer<float>&, float);

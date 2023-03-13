@@ -18,7 +18,6 @@ GranularSynth::GranularSynth()
     for (int i = 0; i < 3; i++)
     {
         players.add(new GranularPlayer(144000, sampleRate));
-        players.getLast()->setKnobsListener(knobListener);
         addChildComponent(players.getLast());
     }
 
@@ -36,7 +35,6 @@ GranularSynth::~GranularSynth()
 
     fileChooser = nullptr;
     ringBufferPntr = nullptr;
-    knobListener = nullptr;
 }
 
 void GranularSynth::paint(Graphics& g)
@@ -265,7 +263,10 @@ int GranularSynth::getPlayerCount()
 
 void GranularSynth::setKnobsListener(Knob::Listener* listenerPntr)
 {
-    knobListener = listenerPntr;
+    for (GranularPlayer* player : players)
+    {
+        player->setKnobsListener(listenerPntr);
+    }
 }
 
 void GranularSynth::removeKnobsListener()
@@ -279,6 +280,9 @@ void GranularSynth::setWaveCallback() {
 
 void GranularSynth::movePositionCallback() {
     for (GranularPlayer* player : players) {
-        player->movePositionCallback();
+        if (player->isCursorMoving())
+        {
+            player->movePositionCallback();
+        }       
     }
 }

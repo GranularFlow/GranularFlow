@@ -34,16 +34,19 @@ public:
     // ---Enter button
     void addEnterListener(Button::Listener*);
     void removeEnterListener(Button::Listener*);
+    void clickEnterButton();
     // Get
     std::string getText();
     int getRate();
+    float getDepth();
     bool isRateSlider(Slider*);
+    bool isDepthSlider(Slider*);
     bool isEnterButton(Button*);
 
 
 private:    
     Knob rateKnob{ "RATE", C_BILLS, 1, 20, 1, 2, false };
-    Knob depthKnob{ "DEPTH", C_BILLS, 1, 100, 1, 50, false };
+    Knob depthKnob{ "DEPTH", C_BILLS, 0, 1, 0.1, 0.5, false };
     TextEditor textEditor;
     TextButton enterButton{ "ENTER" };
     // GUI

@@ -192,7 +192,7 @@ void WavetableSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& 
     for (int i = 0; i < bufferToFill.getNumSamples(); i++)
     {   
      
-        float totalPosition = fmod((currentPosition * increment), sampleY.size());
+        totalPosition = fmod((currentPosition * increment), sampleY.size());
         if (totalPosition < 0)
         {
             totalPosition = sampleY.size() - fmod(abs(totalPosition), sampleY.size());

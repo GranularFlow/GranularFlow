@@ -54,8 +54,8 @@ void BounceCanvas::mouseDrag(const MouseEvent& e)
     if (mousePositions.indexOf(e.position) == -1)
     {
         mousePositions.add(e.position);
-
     }
+
 }
 
 void BounceCanvas::mouseUp(const MouseEvent& e)
@@ -73,6 +73,7 @@ void BounceCanvas::mouseUp(const MouseEvent& e)
     drawPaths.add(tmpPath);
 
     mousePositions.clear();
+    repaint();
 }
 
 void BounceCanvas::moveBall()
@@ -121,10 +122,12 @@ void BounceCanvas::moveBall()
 
     }
     currentPosition = nextPosition;
+    repaint();
 }
 
 void BounceCanvas::clearLines()
 {
     drawPaths.clear();
     mousePositions.clear();
+    repaint();
 }

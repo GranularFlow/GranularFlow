@@ -31,6 +31,8 @@ public:
     void addTimerListener(Slider::Listener*)override;
     void removeTimerListener(Slider::Listener*)override;
     void timeCallback()override;
+    // *******
+    bool isTimerSlider(Slider*);
     // --------
     void sliderValueChanged(Slider*)override;
     void buttonClicked(Button*)override;
@@ -42,6 +44,7 @@ public:
     void calculateDelta();
     double calculateEquation(double);
     bool isValidExpression(const std::string&);
+
 
 private:
     std::string expressionString = "";

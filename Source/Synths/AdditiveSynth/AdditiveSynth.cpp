@@ -19,7 +19,6 @@ AdditiveSynth::AdditiveSynth()
     for (int i = 0; i < 5; i++)
     {
         harmonics.add(new AdditiveHarmonic());
-        harmonics[i]->setKnobsListener(knobListener);
         addAndMakeVisible(harmonics.getLast());
     }
     harmonics[0]->toFront(true);
@@ -29,7 +28,6 @@ AdditiveSynth::~AdditiveSynth()
 {
     settings.removeListener(this);
     harmonics.clear();
-    knobListener = nullptr;
 }
 
 void AdditiveSynth::paint(Graphics& g)
@@ -127,7 +125,10 @@ void AdditiveSynth::prepareToPlay(float sampleRate, int bufferSize)
 
 void AdditiveSynth::setKnobsListener(Knob::Listener* knobListenerPntr)
 {
-    knobListener = knobListenerPntr;
+    for (AdditiveHarmonic* harmonic : harmonics)
+    {
+        harmonic->setKnobsListener(knobListenerPntr);
+    }
 }
 
 void AdditiveSynth::removeKnobsListener()

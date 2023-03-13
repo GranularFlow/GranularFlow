@@ -17,7 +17,7 @@ ColorDecomposer::ColorDecomposer()
     addAndMakeVisible(redTile);
     addAndMakeVisible(greenTile);
     addAndMakeVisible(blueTile);
-    setRGB(0, 0, 0);
+    setRGB(10, 10, 10);
 }
 
 ColorDecomposer::~ColorDecomposer()
@@ -52,9 +52,16 @@ void ColorDecomposer::resized()
 
 void ColorDecomposer::setRGB(int redIn, int greenIn, int blueIn)
 {
+    if (redIn == 0 && greenIn == 0 && blueIn == 0)
+    {
+        return;
+    }
+
     centerTile.setColor(0, Colour::fromRGB(redIn, greenIn, blueIn));
 
     redTile.setColor(redIn, Colour::fromRGB(redIn, 0, 0));
-    greenTile.setColor(redIn, Colour::fromRGB(0, greenIn, 0));
-    blueTile.setColor(redIn, Colour::fromRGB(0, 0, blueIn));
+    greenTile.setColor(greenIn, Colour::fromRGB(0, greenIn, 0));
+    blueTile.setColor(blueIn, Colour::fromRGB(0, 0, blueIn));
+
+    resized();
 }

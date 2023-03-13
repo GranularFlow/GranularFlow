@@ -61,6 +61,6 @@ private:
     int currentPosition = 0;
     float increment = 1.0;
     float finalSample = 0;
-
+    float totalPosition = 0;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WavetableSynth);
 };

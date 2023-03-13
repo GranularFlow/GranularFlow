@@ -62,17 +62,16 @@ private:
     int bounceLfoTimer = 0;
     int mathLfoTimer = 0;
     int wavetableLfoTimer = 0;
+    // move cursor
+    int granularPlayerTimer = 0;
+    // move ball
+    int bounceBallTimer = 0;
+    // repaint colorLFO
+    int colorRepaintTimer = 0;
 
-    // bounce canvas repaint constantly 33hz;
-    int bounceCanvasTimer = 0; // atleast 33Hz
-    // granular player move cursor constant;
-    int guiRepaintTimer = 0; // 10
-    // granular player move cursor constant IF RINGBUFFER IS ON;
-    int granularVisualiserTimer = 0; // 1Hz
-    // bounce moveBALL = DYNAMIC
-
-
-
+    // Timer speed tracking
+    int bounceBallSpeed = 10;
+    
 
     Path cableWavetable;
     Path cableGranular;

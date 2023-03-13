@@ -194,3 +194,14 @@ void PlayerSettings::setGuiColor(Colour guiColourIn)
     guiColour = guiColourIn;
 }
 
+void PlayerSettings::setKnobsListener(Knob::Listener* knobListenerPntr)
+{
+    grainLengthKnob.setKnobListener(knobListenerPntr);
+    grainPitchKnob.setKnobListener(knobListenerPntr);
+    grainNumKnob.setKnobListener(knobListenerPntr);
+    grainOffsetKnob.setKnobListener(knobListenerPntr);
+
+    volumeKnob.setKnobListener(knobListenerPntr);
+    panKnob.setKnobListener(knobListenerPntr);
+}
+

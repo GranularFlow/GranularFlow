@@ -73,6 +73,7 @@ void WavetableLFO::buttonClicked(Button* button)
         {
             initSamples();
             canvas4.setWaveForm(sampleY);
+            isSetWave = true;
         }
     }
 }
@@ -89,10 +90,8 @@ void WavetableLFO::removeTimerListener(Slider::Listener* listener)
 
 void WavetableLFO::timeCallback()
 {
-    if (sampleY.size() == (settings.getWaveCount() + 3) * 100)
-    {
-        updateKnobs(getNext());
-    }    
+    updateKnobs(getNext());
+  
 }
 
 void WavetableLFO::initSamples()
@@ -175,6 +174,16 @@ void WavetableLFO::initSamples()
     }
 }
 
+bool WavetableLFO::isTimerSlider(Slider* slider)
+{
+    return settings.isRateSlider(slider);
+}
+
+bool WavetableLFO::isEmpty()
+{
+    return !isSetWave;
+}
+
 int WavetableLFO::getTimerHz() {
     return settings.getRate();
 }
@@ -182,7 +191,7 @@ int WavetableLFO::getTimerHz() {
 double WavetableLFO::getNext()
 {
 
-    float totalPosition = fmod((currentPosition), sampleY.size());
+    totalPosition = fmod((currentPosition * settings.getIncrement()), sampleY.size());
 
     if (totalPosition < 0)
     {
@@ -194,9 +203,9 @@ double WavetableLFO::getNext()
         totalPosition = fmod(totalPosition, sampleY.size());
     }
 
-    float finalSample = Utils::interpolateLinear(totalPosition, (int)std::floor(totalPosition) % sampleY.size(), (int)std::ceil(totalPosition + 1) % sampleY.size(), sampleY[(int)std::floor(totalPosition) % sampleY.size()], sampleY[(int)std::ceil(totalPosition + 1) % sampleY.size()]);
+    finalSample = Utils::interpolateLinear(totalPosition, (int)std::floor(totalPosition) % sampleY.size(), (int)std::ceil(totalPosition + 1) % sampleY.size(), sampleY[(int)std::floor(totalPosition) % sampleY.size()], sampleY[(int)std::ceil(totalPosition + 1) % sampleY.size()]);
 
-    currentPosition++;
+    currentPosition += settings.getIncrement();
     finalSample = std::abs(finalSample * settings.getDepth());
     return finalSample;
 }
