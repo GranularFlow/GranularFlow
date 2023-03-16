@@ -40,8 +40,8 @@ void WavetableSynthSettings::paint(Graphics& g)
 
 void WavetableSynthSettings::resized()
 {
-    int sectionWidth = (getWidth() * 0.8) / 6;
-    int sectionHeight = getHeight();
+    //int sectionWidth = (getWidth() * 0.8) / 6; // 153
+    //int sectionHeight = getHeight(); // 225
 
     FlexBox fb{
             FlexBox::Direction::row,
@@ -50,23 +50,19 @@ void WavetableSynthSettings::resized()
             FlexBox::AlignItems::flexStart,
             FlexBox::JustifyContent::spaceAround
     };
-
-    // Second column
-    int tmpheight = sectionHeight;
-    int tmpWidth = 100;
     // addToFb(FlexBox* fb, Component& c, int order, int minWidth, int minHeight);
-    Utils::addToFb(&fb, midiModeRadioBox, 1, tmpWidth, tmpheight);
-    Utils::addToFb(&fb, freqKnob, 3, tmpWidth, tmpheight);
-    Utils::addToFb(&fb, waveCountKnob, 5, tmpWidth, tmpheight);
-    Utils::addToFb(&fb, interpolationRadioBox, 7, tmpWidth, tmpheight);
-    Utils::addToFb(&fb, volumeKnob, 9, tmpWidth, tmpheight);
-    Utils::addToFb(&fb, panKnob, 11, tmpWidth, tmpheight);
+    Utils::addToFb(&fb, midiModeRadioBox, 1, 100, 225);
+    Utils::addToFb(&fb, freqKnob, 3, 100, 225);
+    Utils::addToFb(&fb, waveCountKnob, 5, 100, 225);
+    Utils::addToFb(&fb, interpolationRadioBox, 7, 100, 225);
+    Utils::addToFb(&fb, volumeKnob, 9, 100, 225);
+    Utils::addToFb(&fb, panKnob, 11, 100, 225);
 
 
     // White lines
     for (int i = 0; i < separators.size(); i++)
     {
-        Utils::addToFb(&fb, *separators[i], (i + 1) * 2, 1, tmpheight);        
+        Utils::addToFb(&fb, *separators[i], (i + 1) * 2, 1, 225);        
     }
 
     fb.performLayout(getLocalBounds());

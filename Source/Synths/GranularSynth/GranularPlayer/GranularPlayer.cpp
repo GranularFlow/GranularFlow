@@ -10,16 +10,14 @@
 
 #include "GranularPlayer.h"
 
-GranularPlayer::GranularPlayer(int totalSamplesIn, int sampleRateIn) {
-
+GranularPlayer::GranularPlayer(int totalSamplesIn, int sampleRateIn) 
+{
     totalSamples = totalSamplesIn;
     sampleRate = sampleRateIn;
-
     init();
 }
 
 GranularPlayer::~GranularPlayer() {
-    grains.clear();
 }
 
 void GranularPlayer::paint(Graphics& g) {
@@ -44,6 +42,12 @@ bool GranularPlayer::isCurrentRunningMode(PlayerSettings::RunningMode mode)
 bool GranularPlayer::isCurrentMidiMode(PlayerSettings::MidiMode mode)
 {
     return settings.isMidiMode(mode);
+}
+
+void GranularPlayer::disableCursorMovements()
+{
+    mouseMovable = false;
+    cursor.setMouseMovable(false);
 }
 
 void GranularPlayer::init()
@@ -104,31 +108,31 @@ void GranularPlayer::addGrain(int startPosition) {
     }
 }
 
-void GranularPlayer::removeGrain()
-{
-}
-
 void GranularPlayer::movePositionCallback()
 {
-    if (cursorPosition >= totalSamples) {
-        cursorPosition = 0;
-    }
-    if (cursorPosition <= 0) {
-        cursorPosition = totalSamples;
-    }
-
-    if (settings.isGranularMode(PlayerSettings::ORDER) || settings.isGranularMode(PlayerSettings::MIRROR))
+    if (mouseMovable)
     {
-        cursorPosition += 20;
-    }
-    else if (settings.isGranularMode(PlayerSettings::REV_ORDER) || settings.isGranularMode(PlayerSettings::REV_MIRROR))
-    {
-        cursorPosition -= 20;
-    }
-        
-    cursor.setCursorPosition(100 * cursorPosition/(float)totalSamples);
     
-    repaint();
+        if (cursorPosition >= totalSamples) {
+            cursorPosition = 0;
+        }
+        if (cursorPosition <= 0) {
+            cursorPosition = totalSamples;
+        }
+
+        if (settings.isGranularMode(PlayerSettings::ORDER) || settings.isGranularMode(PlayerSettings::MIRROR))
+        {
+            cursorPosition += 20;
+        }
+        else if (settings.isGranularMode(PlayerSettings::REV_ORDER) || settings.isGranularMode(PlayerSettings::REV_MIRROR))
+        {
+            cursorPosition -= 20;
+        }
+        
+        cursor.setCursorPosition(100 * cursorPosition/(float)totalSamples);
+    
+        repaint();
+    }
 }
 
 bool GranularPlayer::isCursorMoving()

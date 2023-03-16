@@ -12,27 +12,23 @@
 
 AdditiveHarmonicSettings::AdditiveHarmonicSettings()
 {
-    // GUI
-    for (int i = 0; i < 3; i++)
-    {
-        separators.add(new Separator());
-        addAndMakeVisible(separators.getLast());
-    }
-
     // Settings
     addAndMakeVisible(midiModeRadioBox);
     addAndMakeVisible(phaseKnob);
     addAndMakeVisible(freqKnob);
-
     // Master
     addAndMakeVisible(volumeKnob);
     addAndMakeVisible(panKnob);
-
+    // GUI
+    for (int i = 0; i < 4; i++)
+    {
+        separators.add(new Separator());
+        addAndMakeVisible(separators.getLast());
+    }
 }
 
 AdditiveHarmonicSettings::~AdditiveHarmonicSettings()
 {
-    separators.clear();
 }
 
 void AdditiveHarmonicSettings::paint(Graphics& g)
@@ -48,17 +44,17 @@ void AdditiveHarmonicSettings::resized()
             FlexBox::Direction::row,
             FlexBox::Wrap::noWrap,
             FlexBox::AlignContent::center,
-            FlexBox::AlignItems::flexStart,
+            FlexBox::AlignItems::center,
             FlexBox::JustifyContent::spaceAround
     };
 
 
-    int tmp_width = (getWidth() / 8) * 0.9;
-    Utils::addToFb(&fb, midiModeRadioBox, 1, tmp_width, getHeight());
-    Utils::addToFb(&fb, phaseKnob, 3, tmp_width, getHeight());
-    Utils::addToFb(&fb, freqKnob, 5, tmp_width, getHeight());
-    Utils::addToFb(&fb, volumeKnob, 7, tmp_width, getHeight());
-    Utils::addToFb(&fb, panKnob, 9, tmp_width, getHeight());
+    //int tmp_width = (getWidth() / 8) * 0.9; // 128
+    Utils::addToFb(&fb, midiModeRadioBox, 1, 128, getHeight());
+    Utils::addToFb(&fb, phaseKnob, 3, 128, getHeight());
+    Utils::addToFb(&fb, freqKnob, 5, 128, getHeight());
+    Utils::addToFb(&fb, volumeKnob, 7, 128, getHeight());
+    Utils::addToFb(&fb, panKnob, 9, 128, getHeight());
 
     // White lines
     for (int i = 0; i < separators.size(); i++)
@@ -94,6 +90,26 @@ void AdditiveHarmonicSettings::resetDefaultValues()
     panKnob.setDefaultValue();
 }
 
+void AdditiveHarmonicSettings::addFreqSliderListener(Slider::Listener* listener)
+{
+    freqKnob.addSliderListener(listener);
+}
+
+void AdditiveHarmonicSettings::removeFreqSliderListener(Slider::Listener* listener)
+{
+    freqKnob.removeSliderListener(listener);
+}
+
+void AdditiveHarmonicSettings::addPhaseSliderListener(Slider::Listener* listener)
+{
+    phaseKnob.addSliderListener(listener);
+}
+
+void AdditiveHarmonicSettings::removePhaseSliderListener(Slider::Listener* listener)
+{
+    phaseKnob.removeSliderListener(listener);
+}
+
 float AdditiveHarmonicSettings::getPhase()
 {
     return phaseKnob.getValue();
@@ -106,12 +122,12 @@ float AdditiveHarmonicSettings::getFreq()
 
 float AdditiveHarmonicSettings::getVolume()
 {
-    return (float)volumeKnob.getValue() / 100;
+    return volumeKnob.getValue() / 100;
 }
 
 float AdditiveHarmonicSettings::getPan(bool leftChannel)
 {
-    return  1 - abs((int)leftChannel - ((float)panKnob.getValue() / 100));
+    return  1 - abs((int)leftChannel - (panKnob.getValue() / 100.f));
 }
 
 bool AdditiveHarmonicSettings::isCurrentMidiMode(AdditiveHarmonicSettings::MidiMode mode)
@@ -127,14 +143,4 @@ bool AdditiveHarmonicSettings::isPhaseKnob(Slider* slider)
 bool AdditiveHarmonicSettings::isFreqKnob(Slider* slider)
 {
     return freqKnob.isCurrentSlider(slider);
-}
-
-Knob& AdditiveHarmonicSettings::getPhaseKnob()
-{
-    return phaseKnob;
-}
-
-Knob& AdditiveHarmonicSettings::getFreqKnob()
-{
-    return freqKnob;
 }

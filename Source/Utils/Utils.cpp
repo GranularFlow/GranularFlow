@@ -43,36 +43,36 @@ float Utils::samplesToMs(int samplesCount, int sampleRate) {
 }
 
 int Utils::secToSamples(float timeInSec, int sampleRate) {
-    int samples = std::round(sampleRate * timeInSec);
-    return samples;
+    return std::round(sampleRate * timeInSec);
 }
 
 double Utils::degToRad(double phase)
 {
-    return ( (phase * PI) / (double)180);
+    return ((phase * PI) / (double)180);
 }
 
 float Utils::percentToFloat(int percent)
 {
-    return (float)percent/100;
+    return (float)percent / 100;
 }
 
 float Utils::samplesToPercent(int samplePosition, int totalSamples)
 {
-    return (samplePosition/(float) totalSamples) * 100.0;
+    return (samplePosition / (float)totalSamples) * 100.0;
 }
 
 void Utils::addToFb(FlexBox* fb, Component& c, int order, int minWidth,int minHeight) {
-    fb->items.add(FlexItem(c).withMinWidth(minWidth).withMinHeight(minHeight).withMargin(0).withOrder(order));
+    Utils::addToFb(fb, FlexItem(c), order, minWidth, minHeight);
 }
 
 void Utils::addToFb(FlexBox* fb, FlexBox f, int order, int minWidth, int minHeight) {
-    fb->items.add(FlexItem(f).withMinWidth(minWidth).withMinHeight(minHeight).withMargin(0).withOrder(order));
+    Utils::addToFb(fb, FlexItem(f), order, minWidth, minHeight);
 }
 
 void Utils::addToFb(FlexBox* fb, FlexItem i, int order, int minWidth, int minHeight) {
     fb->items.add(i.withMinWidth(minWidth).withMinHeight(minHeight).withMargin(0).withOrder(order));
 }
+
 
 double Utils::interpolateLinear(double x, double x1, double x2, double y1, double y2)
 {
@@ -82,71 +82,106 @@ double Utils::interpolateLinear(double x, double x1, double x2, double y1, doubl
     return y1 + ((x - x1) * ((y2 - y1) / (x2 - x1)));
 }
 
-double Utils::interpolateCubic(double x, Array<float>sampleY)
+double Utils::interpolateCubic(double wantedX, Array<float>sampleY)
 {
-    int n = sampleY.size() - 1;
-    int i = 0;
+    int index = 0;
+    while (index < sampleY.size() - 1 && wantedX > index)
+        ++index;
 
-    // find the segment containing x
-    while (i < n && x > i + 1)
-        i++;
 
-    // calculate the coefficients of the cubic polynomial for the segment
-    double h = i + 1 - i;
-    double t = (x - i) / h;
-    double t2 = t * t;
-    double t3 = t2 * t;
-    double c0 = sampleY[i];
-    double c1 = h * sampleY[i + 1] - h * sampleY[i];
-    double c2 = -2 * h * sampleY[i + 1] + 2 * h * sampleY[i] + 3 * (sampleY[i + 1] - sampleY[i]);
-    double c3 = 1 * h * sampleY[i + 1] - 1 * h * sampleY[i] - 2 * (sampleY[i + 1] - sampleY[i]);
+    double y = Utils::interpolateCubic(wantedX - index, 
+        sampleY[(index - 1 + sampleY.size()) % sampleY.size()],
+        sampleY[(index + sampleY.size()) % sampleY.size()],
+        sampleY[(index + 1 + sampleY.size()) % sampleY.size()],
+        sampleY[(index + 2 + sampleY.size()) % sampleY.size()]
+    );
 
-    return c0 + c1 * t + c2 * t2 + c3 * t3;
+    return y;
+}
+
+double Utils::interpolateCubic(double x, double y0, double y1, double y2, double y3)
+{
+    /*
+        y = a0* x3 + a1 * x2 + a2 * x + a3;
+
+        a0 = y3 - y2 - y0 + y1;
+        a1 = y0 - y1 - a0;
+        a2 = y2 - y0;
+        a3 = y1;
+    */
+    //return y1 + 0.5 * x * (y2 - y0 + x * (2.0 * y0 - 5.0 * y1 + 4.0 * y2 - y3 + x * (3.0 * (y1 - y2) + y3 - y0)));
+    return  (y3 - y2 - y0 + y1) * std::pow(x,3) 
+            + (y0 - y1 - (y3 - y2 - y0 + y1) ) * std::pow(x, 2)
+            + (y2 - y0) * x 
+            + y1;
 }
 
 double Utils::interpolateHermite(double wantedX, Array<float>sampleY)
 {
-    int n = sampleY.size();
+    // ---------------------------------------------------
+    // This is Carmul-rom spline a type of hermite spline
+    // ---------------------------------------------------
 
     // Find the interval containing the wanted x
     int i = 0;
-    while (i < n - 1 && wantedX > i + 1)
+    while (i < sampleY.size() - 1 && wantedX > i + 1)
         i++;
-
+    // ---------------------------------------------------
     // Compute the tangents at the interval endpoints
-    double m0, m1;
+    // ---------------------------------------------------
+
+    // four basis blending functions
+    // p(u) = | 2u^3 - 3u^2 + 1|
+    //        |-2u^3 + 3u^2    |
+    //        |  u^3 - 2u^2 + u|
+    //        |  u^3 - u^2     |
+    // Slopes
+    // p = p0 * StartPoint + p1 * EndPoint + p3 * Tangent1 + p4 * Tangent2
+    // in catmull Tangent = 0.5 * (EndPoint - StartPoint)
+    //
+    //
+
+    // Slopes
+    double m0 = 1;
+    double m1 = 1;
+    double u = wantedX - i;
+
+    double p0 = 2 * pow(u, 3) - 3 * pow(u, 2) + 1;
+    double p1 = pow(u, 3) - 2 * pow(u, 2) + u;
+    double p2 = -2 * pow(u, 3) + 3 * pow(u, 2);
+    double p3 = pow(u, 3) - pow(u, 2);
+
     if (i == 0) {
-        m0 = (sampleY[1] - sampleY[0]) / (1);
-        m1 = (sampleY[2] - sampleY[1]) / (1);
+        // Case: wantedX is first interval
+        m0 = (sampleY[1] - sampleY[0]);
+        m1 = (sampleY[2] - sampleY[1]);
     }
-    else if (i == n - 2) {
-        m0 = (sampleY[n - 2] - sampleY[n - 3]) / ((n - 2) - (n - 3));
-        m1 = (sampleY[n - 1] - sampleY[n - 2]) / ((n - 1) - (n - 2));
+    else if (i == sampleY.size() - 2) {
+        // Case: wantedX is last interval
+        m0 = sampleY[sampleY.size() - 2] - sampleY[sampleY.size() - 3];
+        m1 = sampleY[sampleY.size() - 1] - sampleY[sampleY.size() - 2];
     }
     else {
-        double t = (wantedX - i) / (i + 1 - i);
-        double t2 = t * t;
+        // Case: wantedX is between first and last interval
+        
 
-        double h00 = 2 * t2 * t - 3 * t2 + 1;
-        double h10 = t2 * t - 2 * t2 + t;
-        double h01 = -2 * t2 * t + 3 * t2;
-        double h11 = t2 * t - t2;
-
-        m0 = (h00 * sampleY[i] + h10 * (i + 1 - i) * m0 + h01 * sampleY[i + 1] + h11 * (i + 1 - i) * m1) / (i + 1 - i);
-        m1 = (h00 * sampleY[i + 1] + h10 * (i + 1 - i) * m0 + h01 * sampleY[i + 2] + h11 * (i + 2 - i + 1) * m1) / (i + 1 - i);
+        m0 =  p0 * sampleY[i] 
+            + p1 * m0 
+            + p2 * sampleY[i + 1] 
+            + p3 * m1;        
+        
+        
+        m1 =  p0 * sampleY[i + 1] 
+            + p1 * m0 
+            + p2 * sampleY[i + 2] 
+            + p3 * 3 * m1;
     }
 
-    // Interpolate using the Hermite formula
-    double t = (wantedX - i) / (i + 1 - i);
-    double t2 = t * t;
-    double t3 = t2 * t;
+    return p0 * sampleY[i] 
+         + p1 * m0 
+         + p2 * sampleY[i + 1] 
+         + p3 * m1;
 
-    double h00 = 2 * t3 - 3 * t2 + 1;
-    double h10 = t3 - 2 * t2 + t;
-    double h01 = -2 * t3 + 3 * t2;
-    double h11 = t3 - t2;
-
-    return h00 * sampleY[i] + h10 * (i + 1 - i) * m0 + h01 * sampleY[i + 1] + h11 * (i + 1 - i) * m1;
 }
 
 double Utils::snapToStep(double min, double max, double step, double value)

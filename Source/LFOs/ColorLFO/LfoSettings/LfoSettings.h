@@ -30,47 +30,45 @@ public:
         GREEN,
         BLUE
     };
-
+    // ----------------------------------------
     // Class
     LfoSettings();
     ~LfoSettings();
+    // ----------------------------------------
     // GUI
     void paint(Graphics&)override;
     void resized()override;
+    // ----------------------------------------
     // Listener
-    // ---LFO TIMER
+    // ---LFO Timer
     void addRateListener(Slider::Listener*);
     void removeRateListener(Slider::Listener*);
-    // ---Direction
+    // ---Direction selection
     void addDirectionListener(RadioBox::Listener*);
     void removeDirectionListener();
-    // ---Color
+    // ---Color selection
     void addColorListener(RadioBox::Listener*);
     void removeColorListener();
-
+    // ---Upload button
     void addButtonsListener(Button::Listener*);
     void removeButtonsListener(Button::Listener*);
+    // ----------------------------------------
     // Get
     float getRate();
     float getDepth();
-    // Tools
     bool isUploadButton(Button*);
     bool isRateSlider(Slider*);
     bool isColourRadioBox(RadioBox*);
     bool isDirectionRadioBox(RadioBox*);
-    // Objects
-    TextButton& getUploadButton();
-    Knob& getRateKnob();
-    Knob& getDepthKnob();
-
 private:
-    TextButton uploadButton{ "UPLOAD" };
-    // Settings
+    // ----------------------------------------
     RadioBox directionRadioBox{ "DIRECTION", C_BARARED, DIRECTION_MODE };
     Knob rateKnob{ "RATE", C_BILLS, 1, 20, 1, 2, false };
-    Knob depthKnob{ "DEPTH", C_BILLS, 0, 1, 0.1, 0.5, false };
+    Knob depthKnob{ "DEPTH", C_BILLS, 0, 1, 0.001, 0.5, false };
     RadioBox colorSelectRadioBox{ "SELECTED COLOR", C_BARARED, SELECTED_COLOR };
-    // GUI
+    TextButton uploadButton{ "UPLOAD" };
+    // ----------------------------------------
     OwnedArray<Separator> separators;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LfoSettings);
 };

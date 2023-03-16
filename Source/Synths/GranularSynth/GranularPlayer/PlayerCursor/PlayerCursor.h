@@ -24,33 +24,40 @@ public:
     };
     void setListener(Listener* listenerPntrIn) { listenerPntr = listenerPntrIn; }
     void removeListener() { listenerPntr = nullptr; }
-
+    // ----------------------
     // Class
 	PlayerCursor();
     ~PlayerCursor();
-    void init(float, Colour);
+    // ----------------------
     // GUI
 	void paint(Graphics& g) override;
 	void paintCursor(Graphics& g);
-    void setOpacity(int opacityIn);
+    // ----------------------
     // Listeners
     void mouseDrag(const MouseEvent&) override;
     void mouseDown(const MouseEvent&) override;
-    // Getters
+    // ----------------------
+    // Get
     float getCursorPositionInPixels(float);
     float getCursorPositionInPixels();
     float getCursorPositionInPercent();
     float getCursorPositionInPercent(float);
-    // Setters
+    // ----------------------
+    // Set
+    void setMouseMovable(bool);
 	void setCursorPositionPercent(float);
     void setCursorPosition(float);
     void setCursorPositionPx(float);
 	void setGuiColour(Colour colour);
-
+    // ----------------------
+    // Tools
+    void init(float, Colour);
 private:
-    Listener* listenerPntr = 0;
-    int opacity=100;
-    Colour guiColour;
-	/* How far from start of buffer - x Position in % */
+    /* How far from start of buffer - x Position in % */
     float cursorPosition = 0;
+    bool mouseMovable = true;
+    // ----------------------
+    Listener* listenerPntr = 0;
+    // ----------------------
+    Colour guiColour;
 };

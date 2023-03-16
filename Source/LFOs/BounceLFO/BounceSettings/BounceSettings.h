@@ -23,14 +23,15 @@ public:
         X,
         Y
     };
-
+    // ----------------------------------------
     // Class
     BounceSettings();
     ~BounceSettings();
-
+    // ----------------------------------------
     // GUI
     void paint(Graphics&) override;
     void resized()override;
+    // ----------------------------------------
     // Listeners
     // ---LFO TIMER
     void addRateListener(Slider::Listener*);
@@ -41,26 +42,32 @@ public:
     // Sliders
     void addBallSpeedListener(Slider::Listener*);
     void removeBallSpeedListener(Slider::Listener*);
-    // Getters
-    bool isCurrentSelectedCoordinate(Coordinate);
+    // ----------------------------------------
+    // Get    
+    int getBallSpeed();
     double getRate();
     double getDepth();
+    bool isCurrentSelectedCoordinate(Coordinate);
     bool isRateSlider(Slider*);
     bool isBallSpeedSlider(Slider*);
     bool isClearButton(Button*);
     bool isStartButton(Button*);
-    int getBallSpeed();
+    // ----------------------------------------
     // Set
     void setBallSpeed(int);
-
 private:
-    Knob ballSpeedKnob{ "BALL SPEED", C_BILLS, 0, 100, 1, 60, false };
-    Knob rateKnob{ "RATE", C_BILLS, 1, 20, 1, 2, false };
-    Knob depthKnob{ "DEPTH", C_BILLS, 0, 1, 0.1, 0.5, false };
-    RadioBox coordinateRadioBox{ "DIRECTION", C_BARARED, COORDINATE };
+    // ----------------------------------------
+    // Knobs
+    Knob ballSpeedKnob{ "BALL SPEED", C_BARARED, 0, 100, 1, 60, false };
+    Knob rateKnob{ "RATE", C_MARTINA, 1, 20, 1, 2, false };
+    Knob depthKnob{ "DEPTH", C_RADIANTYELLOW, 0, 1, 0.1, 0.5, false };
+    // ----------------------------------------
+    // Buttons
+    RadioBox coordinateRadioBox{ "DIRECTION", C_ENERGOS, COORDINATE };
     TextButton clearButton{ "CLEAR" };
     TextButton startButton{ "START" };
-
+    // ----------------------------------------
     OwnedArray<Separator> separators;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BounceSettings);
 };

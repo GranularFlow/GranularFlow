@@ -60,13 +60,7 @@ void BounceLFO::buttonClicked(Button* button)
 
     if (settings.isStartButton(button))
     {
-        if (settings.getBallSpeed() != 0)
-        {
-            settings.setBallSpeed(0);
-        }
-        else {
-            settings.setBallSpeed(60);
-        }
+        settings.setBallSpeed(settings.getBallSpeed() == 0 ? 60 : 0);
     }
 }
 

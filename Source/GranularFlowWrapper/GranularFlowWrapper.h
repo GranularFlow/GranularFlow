@@ -27,94 +27,112 @@
 class GranularFlowWrapper : public Component, public Slider::Listener, public ResetButton::Listener, public Knob::Listener, public Timer
 {
 public:
+    // ----------------------
     // Class
     GranularFlowWrapper();
 	~GranularFlowWrapper();
+    // ----------------------
     // GUI
     void paintJacks(Graphics&, int, int, int);
     void paintCables(Graphics&, int, int, int, int, int, int);
     void paint(Graphics&)override;
     void resized();
+    // ----------------------
     // Process
     void prepareToPlay(float, int);
     void processBlock(AudioBuffer<float>&, MidiBuffer&);
+    // ----------------------
     // Listeners
     void sliderValueChanged(Slider*)override;
     void reseted(ResetButton*)override;
     void setKnobToLfo(Knob*, int)override;
     void removeKnobFromLfo(Knob*, int)override;
     void timerCallback()override;
+    // ----------------------
     // Tools
     void initGui();
     void makeWindowsIgnoreClicks();
     // -- LISTENERS
     void addAllListeners();
     void removeAllListeners();
-    // ------
+    // ----------------------
     void removeThisFromAllListeners();
     void closeWindows();
     void minimizeWindows();
     void mouseDown(const MouseEvent&);
+    // ----------------------
     /*ADDD ALL KNOBS*/
     void setAllKnobs();
 private:
+    // ----------------------
     int colorLfoTimer = 0;
     int bounceLfoTimer = 0;
     int mathLfoTimer = 0;
     int wavetableLfoTimer = 0;
     // move cursor
     int granularPlayerTimer = 0;
+    int granularSynthVisualiserTimer = 0;
     // move ball
     int bounceBallTimer = 0;
     // repaint colorLFO
     int colorRepaintTimer = 0;
-
     // Timer speed tracking
     int bounceBallSpeed = 10;
-    
-
+    // -------------------------------------------------------
+    // PROCESS
+    // ----------------------
     Path cableWavetable;
     Path cableGranular;
     Path cableAdditive;
-    
-
+    // ----------------------
     bool processWavetable = false;
     bool processGranular = false;
     bool processAdditive = false;
-
+    // ----------------------
+    Path cableColorLfo;
+    Path cableBounceLfo;
+    Path cableMathLfo;
+    Path cableWavetableLfo;
+    // ----------------------
+    bool processColorLfo = false;
+    bool processBounceLfo = false;
+    bool processMathLfo = false;
+    bool processWavetableLfo = false;
+    // -------------------------------------------------------
     // LFOS
     std::unique_ptr<ColorLFO> colorLfo = std::make_unique<ColorLFO>();
     std::unique_ptr<BounceLFO> bounceLfo = std::make_unique<BounceLFO>();
     std::unique_ptr<MathLFO> mathLfo = std::make_unique<MathLFO>();
     std::unique_ptr<WavetableLFO> wavetableLfo = std::make_unique<WavetableLFO>();
-
+    // -------------------------------------
     // Synths
     std::unique_ptr<WavetableSynth> wavetableSynth = std::make_unique<WavetableSynth>();
     std::unique_ptr<GranularSynth> granularSynth = std::make_unique<GranularSynth>();
     std::unique_ptr<AdditiveSynth> additiveSynth = std::make_unique<AdditiveSynth>();
-
-   
     // -------------------------------------
     // GUI ONLY
     Separator topLine;
+    // -------------------------------------
     // Synth
     ResetButton wavetableSynthReset;
     ResetButton granularSynthReset;
     ResetButton additiveSynthReset;
+    // ----------------------
     Component::SafePointer<Component> wavetableSynthBox = new CustomClickableBox(C_MARINE, "WAVETABLE SYNTH", false);
     Component::SafePointer<Component> granularSynthBox = new CustomClickableBox(C_BILLS, "GRANULAR SYNTH", false);
     Component::SafePointer<Component> additiveSynthBox = new CustomClickableBox(C_ANDROID, "ADDITIVE SYNTH", false);
+    // -------------------------------------
     // LFO
     ResetButton colorLfoReset;
     ResetButton bounceLfoReset;
     ResetButton mathLfoReset;
     ResetButton wavetableLfoReset;
-    Component::SafePointer<Component> colorLfoBox = new CustomClickableBox(C_MARINE, "COLOR LFO", true);
-    Component::SafePointer<Component> bounceLfoBox = new CustomClickableBox(C_BILLS, "BOUNCE LFO", true);
-    Component::SafePointer<Component> mathLfoBox = new CustomClickableBox(C_ANDROID, "MATH LFO", true);
-    Component::SafePointer<Component> wavetableLfoBox = new CustomClickableBox(C_ANDROID, "WAVETABLE LFO", true);
+    // ----------------------
+    Component::SafePointer<Component> colorLfoBox = new CustomClickableBox(C_MARINE, "COLOR LFO", false);
+    Component::SafePointer<Component> bounceLfoBox = new CustomClickableBox(C_BILLS, "BOUNCE LFO", false);
+    Component::SafePointer<Component> mathLfoBox = new CustomClickableBox(C_ANDROID, "MATH LFO", false);
+    Component::SafePointer<Component> wavetableLfoBox = new CustomClickableBox(C_ANDROID, "WAVETABLE LFO", false);
     // -------------------------------------
-
     // Abstract non-visible windows that open synths
     Array<Component::SafePointer<CustomWindow>> synthWindows;
     Array<Component::SafePointer<CustomWindow>> lfoWindows;

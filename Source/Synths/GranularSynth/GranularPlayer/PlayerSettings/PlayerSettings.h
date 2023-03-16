@@ -46,19 +46,25 @@ public:
         HANN,
         TRIANGLE
     };
-
+    // ----------------------
     // Class
 	PlayerSettings();
 	~PlayerSettings();
+    // ----------------------
     // GUI
 	void paint(Graphics&) override;
 	void resized();
+    // ----------------------
+    // Listeners
+    void setKnobsListener(Knob::Listener* knobListenerPntr);
+    // ----------------------
     // Tools
     void resetDefaultValues();
     bool isGranularMode(GranularMode);
     bool isRunningMode(RunningMode);
     bool isMidiMode(MidiMode);
     bool isWindowType(WindowType);
+    // ----------------------
     // Getters
     int getNumGrains();
     int getGrainLength();
@@ -68,28 +74,25 @@ public:
     float getPan(int channel);
     PlayerSettings::GranularMode getGranularMode();
     PlayerSettings::WindowType getWindowType();
+    // ----------------------
     // Setters
     void setGuiColor(Colour colour);
-    void setKnobsListener(Knob::Listener* knobListenerPntr);
+
 
 private:
-    // Play style
+    // ----------------------
     RadioBox granularModeRadioBox{ "MODE", C_MARINE, GRANULAR_MODE };
     RadioBox runningModeRadioBox{ "CURSOR", C_LAVENDER, RUNNING_MODE };
     RadioBox midiModeRadioBox{ "MIDI", C_SUNFLOWER, MIDI_MODE };
     RadioBox windowTypeRadioBox{ "WINDOW", C_MEDITERRANEAN, WINDOW_TYPE };
-    // Grains
+    // ----------------------
     Knob grainLengthKnob{ "LENGTH", C_MARTINA, 1, 2000, 1, 1000, true };
     Knob grainPitchKnob{ "PITCH", C_RADIANTYELLOW, 0.1, 1.9, 0.001, 1, true };
     Knob grainNumKnob{ "GRAINS", C_ENERGOS, 1, 30, 1, 2, true };
-    Knob grainOffsetKnob{ "OFFSET", C_BARARED, 256, 10000, 1, 1000, true };
-
-    // Master
-    Knob volumeKnob{ "VOLUME", C_SUNFLOWER, 0, 100, 1, 50, true };
+    Knob grainOffsetKnob{ "OFFSET", C_BARARED, 300, 10000, 10, 1000, true };
+    Knob volumeKnob{ "VOLUME", C_SUNFLOWER, 0, 100, 0.01, 50, true };
     Knob panKnob{ "PAN", C_BILLS, 0, 100, 1, 50, true };
-    // ADSR
-    // GUI
+    // ----------------------
 	Colour guiColour;
     OwnedArray<Separator> separators;
-
 };

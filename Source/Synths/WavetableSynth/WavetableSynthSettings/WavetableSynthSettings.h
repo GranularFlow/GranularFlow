@@ -61,7 +61,7 @@ private:
     Knob freqKnob { "FREQUENCY", C_SUNFLOWER, 20, 8000, 0.001, 400, true };
     Knob waveCountKnob { "WAVE COUNT", C_SUNFLOWER, 2, 10, 2, 6 , true };
     RadioBox interpolationRadioBox { "ITERPOLATION", C_SUNFLOWER, INTERPOLATION_TYPE };
-    Knob volumeKnob { "VOLUME", C_SUNFLOWER, 0, 100, 0.1, 50, true };
+    Knob volumeKnob { "VOLUME", C_SUNFLOWER, 0, 100, 0.01, 50, true };
     Knob panKnob { "PAN", C_BILLS, 0, 100, 0.5, 50, true };
     // GUI
     Colour guiColour;

@@ -26,18 +26,21 @@ void RingBuffer::addBuffer(AudioBuffer<float>& inputBuffer)
     {
         ringBuffer.setSample(0, writePosition, inputBuffer.getSample(0, i));
         ringBuffer.setSample(1, writePosition, inputBuffer.getSample(0, i));
-        writePosition = (writePosition + 1) % maxSamples;
+        writePosition = (writePosition + 1) % BUFFER_SAMPLES;
     }
-}
-
-void RingBuffer::fillBuffer(AudioBuffer<float>& bufferToFill)
-{
-    bufferToFill.addFrom(0, 0, ringBuffer, 0, readPosition, bufferToFill.getNumSamples());
-    bufferToFill.addFrom(1, 0, ringBuffer, 1, readPosition, bufferToFill.getNumSamples());
-    readPosition = (readPosition + bufferToFill.getNumSamples()) % maxSamples;
 }
 
 AudioBuffer<float>& RingBuffer::getBuffer()
 {
     return ringBuffer;
+}
+
+int RingBuffer::getSize()
+{
+    return readPosition;
+}
+
+bool RingBuffer::readyToBeConsumed()
+{
+    return readPosition == 100;
 }

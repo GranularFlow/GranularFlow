@@ -37,16 +37,14 @@ void AdditiveSynth::paint(Graphics& g)
 
 void AdditiveSynth::resized()
 {
-
     settings.setBounds(getLocalBounds().withTrimmedBottom(getHeight() - TOP_BAR_HEIGHT));
-
     // Harmonics
     for (int i = 0; i < harmonics.size(); i++)
     {
         harmonics[i]->setBounds(SETTINGS_SIZE);
     }
     // AudioVisualiser
-    visualiser.setBounds(getLocalBounds().withTrimmedTop(TOP_BAR_HEIGHT).withTrimmedBottom(((getHeight() - TOP_BAR_HEIGHT) / 2) + TOP_BAR_HEIGHT));
+    visualiser.setBounds(getLocalBounds().withTrimmedTop(TOP_BAR_HEIGHT).withTrimmedBottom(SETTINGS_SIZE.getHeight() + 40));
 }
 
 void AdditiveSynth::sliderValueChanged(Slider* slider)
@@ -104,14 +102,17 @@ void AdditiveSynth::selectHarmonic(int harmonicNumber)
 
 void AdditiveSynth::processBlock(AudioBuffer<float>& bufferToFill, juce::MidiBuffer& midiMessages)
 {
-
-
     for (int i = 0; i < activeHarmonics; i++)
     {
         harmonics[i]->processBlock(bufferToFill, midiMessages);
     }
 
-    visualiser.pushBuffer(bufferToFill);
+    counterPush++;
+    if (counterPush == 5)
+    {
+        visualiser.pushBuffer(bufferToFill); 
+        counterPush = 0;
+    }
 }
 
 void AdditiveSynth::prepareToPlay(float sampleRate, int bufferSize)

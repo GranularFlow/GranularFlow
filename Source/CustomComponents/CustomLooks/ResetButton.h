@@ -39,7 +39,7 @@ public:
 
 private:
     Listener* resetPntr = nullptr;
-    Colour bgColor = C_GRAY;
+    Colour bgColor = L_GRAY;
     CustomLook customLook;
     Image buttonImage = ImageFileFormat::loadFrom(BinaryData::reload_png, BinaryData::reload_pngSize);
 };

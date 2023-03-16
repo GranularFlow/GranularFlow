@@ -69,6 +69,6 @@ void ResetButton::mouseDown(const MouseEvent& e)
 
 void ResetButton::mouseUp(const MouseEvent& e)
 {
-    bgColor = C_GRAY;
+    bgColor = L_GRAY;
     repaint();
 }

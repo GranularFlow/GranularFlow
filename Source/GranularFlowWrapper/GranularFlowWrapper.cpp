@@ -91,17 +91,64 @@ void GranularFlowWrapper::paintCables(Graphics& g, int winWidth, int space, int 
     cableAdditive.cubicTo(center + circleRadius, endY - 6, startX + 64, endY + 200, startX - 6, startY);
     cableAdditive.closeSubPath();
 
-    if (processWavetable) { g.setColour(C_BARARED); }
+
+    startX = 286;
+    startY = 550;
+    cableColorLfo.startNewSubPath(startX, startY);
+    cableColorLfo.lineTo(startX, startY + 140);
+    cableColorLfo.lineTo(startX + 12, startY + 140);
+    cableColorLfo.lineTo(startX + 12, startY);
+    cableColorLfo.closeSubPath();
+
+    startX += 206;
+    cableBounceLfo.startNewSubPath(startX, startY);
+    cableBounceLfo.lineTo(startX, startY + 140);
+    cableBounceLfo.lineTo(startX + 12, startY + 140);
+    cableBounceLfo.lineTo(startX + 12, startY);
+    cableBounceLfo.closeSubPath();
+
+    startX += 206;
+    cableMathLfo.startNewSubPath(startX, startY);
+    cableMathLfo.lineTo(startX, startY + 140);
+    cableMathLfo.lineTo(startX + 12, startY + 140);
+    cableMathLfo.lineTo(startX + 12, startY);
+    cableMathLfo.closeSubPath();
+
+    startX += 206;
+    cableWavetableLfo.startNewSubPath(startX, startY);
+    cableWavetableLfo.lineTo(startX, startY + 140);
+    cableWavetableLfo.lineTo(startX + 12, startY + 140);
+    cableWavetableLfo.lineTo(startX + 12, startY);
+    cableWavetableLfo.closeSubPath();
+
+    Colour colorOn = VUT_COLOR.darker(0.1);
+
+    if (processWavetable) { g.setColour(colorOn); }
     else { g.setColour(C_GRAY); }
     g.fillPath(cableWavetable);
 
-    if (processGranular) { g.setColour(C_BARARED); }
+    if (processGranular) { g.setColour(colorOn); }
     else { g.setColour(C_GRAY); }
     g.fillPath(cableGranular);
 
-    if (processAdditive) { g.setColour(C_BARARED); }
+    if (processAdditive) { g.setColour(colorOn); }
     else { g.setColour(C_GRAY); }
     g.fillPath(cableAdditive);
+
+    colorOn = C_ANDROID;
+
+    if (processColorLfo) { g.setColour(colorOn); }
+    else { g.setColour(C_GRAY); }
+    g.fillPath(cableColorLfo);
+    if (processBounceLfo) { g.setColour(colorOn); }
+    else { g.setColour(C_GRAY); }
+    g.fillPath(cableBounceLfo);
+    if (processMathLfo) { g.setColour(colorOn); }
+    else { g.setColour(C_GRAY); }
+    g.fillPath(cableMathLfo);
+    if (processWavetableLfo) { g.setColour(colorOn); }
+    else { g.setColour(C_GRAY); }
+    g.fillPath(cableWavetableLfo);
 }
 
 void GranularFlowWrapper::paint(Graphics&g)
@@ -126,15 +173,16 @@ void GranularFlowWrapper::paint(Graphics&g)
     paintCables(g, winWidth, space, startY, endY, center, circleRadius);
     // Jacks
     paintJacks(g, center, circleRadius, endY);
-
     // Middle Circle
-    g.setColour(C_WHITE);
+    g.setColour(VUT_COLOR.darker(0.1));
     g.fillRoundedRectangle(center - circleRadius, endY - circleRadius, circleRadius*2, circleRadius*2, circleRadius);
 
+    const Image tLogo = ImageFileFormat::loadFrom(BinaryData::t_png, BinaryData::t_pngSize);
+    g.drawImageWithin(tLogo, center-2 - circleRadius/2, endY+5 - circleRadius/2, circleRadius, circleRadius, RectanglePlacement::centred, false);
 
     // LFO Background
     g.setColour(L_GRAY);
-    juce::Rectangle<float> lfoRect = getLocalBounds().withSize(820, 90).withCentre(Point<int>(getWidth() / 2, 640)).toFloat();
+    juce::Rectangle<float> lfoRect = getLocalBounds().withSize(820, 140).withCentre(Point<int>(getWidth() / 2, 620)).toFloat();
     g.drawRoundedRectangle(lfoRect, getHeight() * 0.01, 2);
 }
 
@@ -153,28 +201,24 @@ void GranularFlowWrapper::resized()
     }
 
     // RESET SYNTH
-    wavetableSynthReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(190, 70)));
-    granularSynthReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(600, 70)));
-    additiveSynthReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(1010, 70)));
+    wavetableSynthReset.setBounds(getLocalBounds().withSize(40, 40).withCentre(Point<int>(190, 150)));
+    granularSynthReset.setBounds(getLocalBounds().withSize(40, 40).withCentre(Point<int>(600, 150)));
+    additiveSynthReset.setBounds(getLocalBounds().withSize(40, 40).withCentre(Point<int>(1010, 150)));
     // GUI SYNTH
     wavetableSynthBox->setBounds(getLocalBounds().withSize(320, 180).withCentre(Point<int>(190, 180)));
     granularSynthBox->setBounds(getLocalBounds().withSize(320, 180).withCentre(Point<int>(600, 180)));
     additiveSynthBox->setBounds(getLocalBounds().withSize(320, 180).withCentre(Point<int>(1010, 180)));
-    
-    int marginLeft = 190;
-    int sectionWidth = 820 / 4;
-    int centerSectionY = 640;
-    int sectionHeight = 90;
+
     // RESET LFO
-    colorLfoReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(marginLeft + (sectionWidth/ (float)2), centerSectionY - (sectionHeight/2) - 20)));
-    bounceLfoReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(marginLeft + (sectionWidth * 3/ (float)2), centerSectionY - (sectionHeight / 2) - 20)));
-    mathLfoReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(marginLeft + (sectionWidth * 5/ (float)2), centerSectionY - (sectionHeight / 2) - 20)));
-    wavetableLfoReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(marginLeft + (sectionWidth * 7/ (float)2), centerSectionY - (sectionHeight / 2) - 20)));
+    colorLfoReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(292, 605)));
+    bounceLfoReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(498, 610)));
+    mathLfoReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(704, 600)));
+    wavetableLfoReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(910, 600)));
     //GUI LFO
-    colorLfoBox->setBounds(getLocalBounds().withSize(sectionWidth-20, 70).withCentre(Point<int>(marginLeft + (sectionWidth / (float)2), centerSectionY)));
-    bounceLfoBox->setBounds(getLocalBounds().withSize(sectionWidth - 20, 70).withCentre(Point<int>(marginLeft + (sectionWidth * 3 / (float)2), centerSectionY)));
-    mathLfoBox->setBounds(getLocalBounds().withSize(sectionWidth - 20, 70).withCentre(Point<int>(marginLeft + (sectionWidth * 5 / (float)2), centerSectionY)));
-    wavetableLfoBox->setBounds(getLocalBounds().withSize(sectionWidth - 20, 70).withCentre(Point<int>(marginLeft + (sectionWidth * 7 / (float)2), centerSectionY)));
+    colorLfoBox->setBounds(getLocalBounds().withSize(185, 100).withCentre(Point<int>(292, 620)));
+    bounceLfoBox->setBounds(getLocalBounds().withSize(185, 100).withCentre(Point<int>(498, 620)));
+    mathLfoBox->setBounds(getLocalBounds().withSize(185, 100).withCentre(Point<int>(704, 620)));
+    wavetableLfoBox->setBounds(getLocalBounds().withSize(185, 100).withCentre(Point<int>(910, 620)));
 }
 
 void GranularFlowWrapper::prepareToPlay(float sampleRate, int bufferSize)
@@ -255,7 +299,7 @@ void GranularFlowWrapper::reseted(ResetButton* button)
         repaint();
     }
 
-    if (button == &colorLfoReset && colorLfo->knobPntrsEmpty())
+    if (button == &colorLfoReset && colorLfo->knobPntrsEmpty() && !processColorLfo)
     {
         lfoWindows[0].deleteAndZero();
         colorLfo.release();
@@ -263,7 +307,7 @@ void GranularFlowWrapper::reseted(ResetButton* button)
         lfoWindows.set(0, new CustomWindow("Color LFO", colorLfo.get()));
         repaint();
     }
-    else if (button == &bounceLfoReset && bounceLfo->knobPntrsEmpty())
+    else if (button == &bounceLfoReset && bounceLfo->knobPntrsEmpty() && !processBounceLfo)
     {
         lfoWindows[1].deleteAndZero();
         bounceLfo.release();
@@ -271,7 +315,7 @@ void GranularFlowWrapper::reseted(ResetButton* button)
         lfoWindows.set(1, new CustomWindow("Bounce LFO", bounceLfo.get()));
         repaint();
     }
-    else if (button == &mathLfoReset && mathLfo->knobPntrsEmpty())
+    else if (button == &mathLfoReset && mathLfo->knobPntrsEmpty() && !processMathLfo)
     {
         lfoWindows[2].deleteAndZero();
         mathLfo.release();
@@ -279,7 +323,7 @@ void GranularFlowWrapper::reseted(ResetButton* button)
         lfoWindows.set(2, new CustomWindow("Math LFO", mathLfo.get()));
         repaint();
     }
-    else if (button == &wavetableLfoReset && wavetableLfo->knobPntrsEmpty())
+    else if (button == &wavetableLfoReset && wavetableLfo->knobPntrsEmpty() && !processWavetableLfo)
     {
         lfoWindows[3].deleteAndZero();
         wavetableLfo.release();
@@ -365,22 +409,6 @@ void GranularFlowWrapper::minimizeWindows()
 void GranularFlowWrapper::mouseDown(const MouseEvent& e)
 {
     minimizeWindows();
-    // SYNTH
-    if (wavetableSynthBox->getBounds().contains(e.getPosition()))
-    {        
-        synthWindows[0]->showWindow();
-        synthWindows[0]->toFront(true);
-    }
-    else if (granularSynthBox->getBounds().contains(e.getPosition()))
-    {
-        synthWindows[1]->showWindow();
-        synthWindows[1]->toFront(true);
-    }
-    else if (additiveSynthBox->getBounds().contains(e.getPosition()))
-    {
-        synthWindows[2]->showWindow();
-        synthWindows[2]->toFront(true);
-    }
     // Cables
     if (cableWavetable.contains(e.getPosition().toFloat(), 20.f))
     {
@@ -397,8 +425,43 @@ void GranularFlowWrapper::mouseDown(const MouseEvent& e)
         processAdditive = !processAdditive;
         repaint();
     }
-    // LFO
-    if (colorLfoBox->getBounds().contains(e.getPosition()))
+    else if (cableColorLfo.contains(e.getPosition().toFloat(), 20.f))
+    {
+        processColorLfo = !processColorLfo;
+        repaint();
+    }
+    else if (cableBounceLfo.contains(e.getPosition().toFloat(), 20.f))
+    {
+        processBounceLfo = !processBounceLfo;
+        repaint();
+        }
+    else if (cableMathLfo.contains(e.getPosition().toFloat(), 20.f))
+    {
+        processMathLfo = !processMathLfo;
+        repaint();
+        }
+    else if (cableWavetableLfo.contains(e.getPosition().toFloat(), 20.f))
+    {
+        processWavetableLfo = !processWavetableLfo;
+        repaint();
+        
+    }
+    if (wavetableSynthBox->getBounds().contains(e.getPosition()))
+    {        
+        synthWindows[0]->showWindow();
+        synthWindows[0]->toFront(true);
+    }
+    else if (granularSynthBox->getBounds().contains(e.getPosition()))
+    {
+        synthWindows[1]->showWindow();
+        synthWindows[1]->toFront(true);
+    }
+    else if (additiveSynthBox->getBounds().contains(e.getPosition()))
+    {
+        synthWindows[2]->showWindow();
+        synthWindows[2]->toFront(true);
+    }
+    else if (colorLfoBox->getBounds().contains(e.getPosition()))
     {
         lfoWindows[0]->showWindow();
         lfoWindows[0]->toFront(true);
@@ -418,6 +481,7 @@ void GranularFlowWrapper::mouseDown(const MouseEvent& e)
         lfoWindows[3]->showWindow();
         lfoWindows[3]->toFront(true);
     }
+
 }
 
 void GranularFlowWrapper::setAllKnobs()
@@ -435,24 +499,25 @@ void GranularFlowWrapper::timerCallback() {
     granularPlayerTimer++;
     bounceBallTimer++;
     colorRepaintTimer++;
+    granularSynthVisualiserTimer++;
     
 
-    if (colorLfoTimer * TIMER_TIME >= ((1000) / (float)colorLfo->getTimerHz()) && !colorLfo->knobPntrsEmpty() && colorLfo->isImageSet()) {
+    if (colorLfoTimer * TIMER_TIME >= ((1000) / (float)colorLfo->getTimerHz()) && !colorLfo->knobPntrsEmpty() && colorLfo->isImageSet() && processColorLfo) {
         colorLfo->timeCallback();
         colorLfoTimer = 0;
     }
 
-    if (bounceLfoTimer * TIMER_TIME >= ((1000) / (float)bounceLfo->getTimerHz()) && !bounceLfo->knobPntrsEmpty() && bounceLfo->getBallSpeed() != 0) {
+    if (bounceLfoTimer * TIMER_TIME >= ((1000) / (float)bounceLfo->getTimerHz()) && !bounceLfo->knobPntrsEmpty() && bounceLfo->getBallSpeed() != 0 && processBounceLfo) {
         bounceLfo->timeCallback();
         bounceLfoTimer = 0;
     }
 
-    if (mathLfoTimer * TIMER_TIME >= ((1000)/(float) mathLfo->getTimerHz()) && !mathLfo->knobPntrsEmpty()) {
+    if (mathLfoTimer * TIMER_TIME >= ((1000)/(float) mathLfo->getTimerHz()) && !mathLfo->knobPntrsEmpty() && processMathLfo) {
         mathLfo->timeCallback();
         mathLfoTimer = 0;
     }
 
-    if (wavetableLfoTimer * TIMER_TIME >= ((1000) / (float)wavetableLfo->getTimerHz()) && !wavetableLfo->knobPntrsEmpty() && !wavetableLfo->isEmpty()){
+    if (wavetableLfoTimer * TIMER_TIME >= ((1000) / (float)wavetableLfo->getTimerHz()) && !wavetableLfo->knobPntrsEmpty() && !wavetableLfo->isEmpty() && processWavetableLfo){
         wavetableLfo->timeCallback();
         wavetableLfoTimer = 0;
     }
@@ -460,6 +525,12 @@ void GranularFlowWrapper::timerCallback() {
     if (granularPlayerTimer * TIMER_TIME >= ((1000) /(float)30) && processGranular) {
         granularSynth->movePositionCallback();
         granularPlayerTimer = 0;
+    }
+
+    if (granularSynthVisualiserTimer * TIMER_TIME >= ((1000) / (float)1)  &&  !granularSynth->isFileInput() && processGranular)
+    {
+        granularSynth->setWaveCallback();
+        granularSynthVisualiserTimer = 0;
     }
 
     if (bounceBallTimer * TIMER_TIME >= ((1000) / (float)bounceBallSpeed) && !bounceLfo->knobPntrsEmpty() && bounceLfo->getBallSpeed() != 0) {
@@ -502,24 +573,24 @@ void GranularFlowWrapper::initGui() {
     // -----
     // Separator
     addAndMakeVisible(topLine);
-    // Reset SYNTH
-    addAndMakeVisible(wavetableSynthReset);
-    addAndMakeVisible(granularSynthReset);
-    addAndMakeVisible(additiveSynthReset);
     // Synth squares
     addAndMakeVisible(wavetableSynthBox);
     addAndMakeVisible(granularSynthBox);
     addAndMakeVisible(additiveSynthBox);
-    // Reset LFO
-    addAndMakeVisible(colorLfoReset);
-    addAndMakeVisible(bounceLfoReset);
-    addAndMakeVisible(mathLfoReset);
-    addAndMakeVisible(wavetableLfoReset);
+    // Reset SYNTH
+    addAndMakeVisible(wavetableSynthReset);
+    addAndMakeVisible(granularSynthReset);
+    addAndMakeVisible(additiveSynthReset);
     // Lfo squares
     addAndMakeVisible(colorLfoBox);
     addAndMakeVisible(bounceLfoBox);
     addAndMakeVisible(wavetableLfoBox);
     addAndMakeVisible(mathLfoBox);
+    // Reset LFO
+    addAndMakeVisible(colorLfoReset);
+    addAndMakeVisible(bounceLfoReset);
+    addAndMakeVisible(mathLfoReset);
+    addAndMakeVisible(wavetableLfoReset);
     // -----
     // Non visible process Synths
     // -----

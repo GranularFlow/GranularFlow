@@ -16,6 +16,7 @@ ColorLFO::ColorLFO()
 {
     addAndMakeVisible(settings);    
     addAndMakeVisible(imageHandler);
+    // Listeners
     settings.addDirectionListener(this);
     settings.addColorListener(this);
     settings.addButtonsListener(this);
@@ -36,7 +37,6 @@ void ColorLFO::paint(Graphics& g)
 
 void ColorLFO::resized()
 {
-    //Rectangle<int> settingsBounds = getLocalBounds().withTrimmedTop((getHeight() - 50) * 4 / 5).withTrimmedBottom(10).withTrimmedLeft(getWidth() * 1 / 4).withTrimmedRight(getWidth() * 1 / 4);
     settings.setBounds(SETTINGS_SIZE);
     imageHandler.setBounds(getLocalBounds().withTrimmedTop(60).withTrimmedBottom(SETTINGS_SIZE.getHeight() + 40).withTrimmedLeft(20).withTrimmedRight(20));
 }
@@ -73,8 +73,7 @@ void ColorLFO::onValueChange(RadioBox* radioBox, int selectedButton)
     if (settings.isDirectionRadioBox(radioBox))
     {
         imageHandler.setDirection((LfoSettings::Direction)selectedButton);
-    }
-    
+    }    
 }
 
 int ColorLFO::getTimerHz() {

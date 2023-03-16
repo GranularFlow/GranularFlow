@@ -21,29 +21,35 @@
 class BounceLFO : public Component, public LFO, public Button::Listener
 {
 public:
+    // ----------------------------------------
     // Class
 	BounceLFO();
 	~BounceLFO();
+    // ----------------------------------------
     // GUI
     void paint(Graphics&) override;
     void resized() override;
+    // ----------------------------------------
     // Listeners
+    // --- LFO Timer
     void addTimerListener(Slider::Listener*)override;
     void removeTimerListener(Slider::Listener*)override;
+    // -> CallBack
     void timeCallback()override;
-    // --------
+    // --- Ball Position
     void addBallSpeedListener(Slider::Listener*);
     void removeBallSpeedListener(Slider::Listener*);
     void moveBall();
+    // ----------------------------------------
+    // Buttons
     void buttonClicked(Button*);
-    // Getters
+    // ----------------------------------------
+    // Get
+    int getBallSpeed();
     double getNext();
     int getTimerHz();
     bool isTimerSlider(Slider*);
     bool isBallSpeedSlider(Slider*);
-    int getBallSpeed();
-
-
 private:
     BounceSettings settings;
     BounceCanvas canvas;

@@ -25,36 +25,43 @@ public:
         OFF,
         ON
     };
-
+    // ----------------------
     // Class
 	AdditiveHarmonicSettings();
 	~AdditiveHarmonicSettings();
+    // ----------------------
     // GUI
     void paint(Graphics& graphics) override;
     void resized() override;
-    // Knobs
+    // ----------------------
+    // Listeners
+    // --- Knobs
     void setKnobsListener(Knob::Listener*);
     void removeKnobsListener();
     void resetDefaultValues();
-    // Getters
+    // --- Freq slider
+    void addFreqSliderListener(Slider::Listener*);
+    void removeFreqSliderListener(Slider::Listener*);
+    // --- Phase slider
+    void addPhaseSliderListener(Slider::Listener*);
+    void removePhaseSliderListener(Slider::Listener*);
+    // ----------------------
+    // Get
     float getPhase();
     float getFreq();
     float getVolume();
     float getPan(bool);
     bool isCurrentMidiMode(AdditiveHarmonicSettings::MidiMode);
-    // Get objects
     bool isPhaseKnob(Slider*);
     bool isFreqKnob(Slider*);
-    Knob& getPhaseKnob();
-    Knob& getFreqKnob();
-
 private:
-    Colour guiColour;
-    OwnedArray<Separator> separators;
+    // ----------------------
     // Parameters
     RadioBox midiModeRadioBox{ "MIDI", C_SUNFLOWER, MIDI_MODE };
     Knob phaseKnob{ "PHASE", L_AQUA, 0, 360, 1, 0, true };
     Knob freqKnob{ "FREQUENCY", L_ORANGE, 10, 1000, 1, 440, true };
     Knob volumeKnob{ "VOLUME", C_SUNFLOWER, 0, 100, 1, 50, true };
     Knob panKnob{ "PAN", C_BILLS, 0, 100, 1, 50 , true };
+    // ----------------------
+    OwnedArray<Separator> separators;
 };

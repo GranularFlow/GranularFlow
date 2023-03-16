@@ -20,12 +20,15 @@
 class AdditiveSynth : public Component, public Slider::Listener, public Synth
 {
 public:
+    // ----------------------
     // Class
 	AdditiveSynth();
 	~AdditiveSynth();
+    // ----------------------
     // GUI
     void paint(Graphics&) override;
     void resized()override;
+    // ----------------------
     // Listeners
     void sliderValueChanged(Slider*) override;
     // ----------------------
@@ -40,14 +43,16 @@ public:
     void selectHarmonic(int);    
     // Get
     // Set
-    void setKnobsListener(Knob::Listener*) override;
+    void setKnobsListener(Knob::Listener*)override;
     void removeKnobsListener()override;
     
 private:
-
+    // ----------------------
     int activeHarmonics = 0;
     int selectedHarmonic = 0;
-
+    // ----------------------
+    int counterPush = 0;
+    // ----------------------
     AdditiveSynthSettings settings;
     AdditiveVisualiser visualiser;
     OwnedArray<AdditiveHarmonic> harmonics;

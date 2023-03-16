@@ -46,30 +46,26 @@ void BounceSettings::resized()
             FlexBox::Wrap::noWrap,
             FlexBox::AlignContent::center,
             FlexBox::AlignItems::center,
-            FlexBox::JustifyContent::spaceBetween
+            FlexBox::JustifyContent::spaceAround
     };
 
     int tmpWidth = getWidth() * 1 / 6 * 0.85;
     int tmpHeight = getHeight() * 0.85;
 
-    Utils::addToFb(&fb, ballSpeedKnob, 1, tmpWidth, tmpHeight);
-    Utils::addToFb(&fb, rateKnob, 3, tmpWidth, tmpHeight);
-    Utils::addToFb(&fb, depthKnob, 5, tmpWidth, tmpHeight);
-    Utils::addToFb(&fb, coordinateRadioBox, 7, tmpWidth, tmpHeight);
-    Utils::addToFb(&fb, clearButton, 8, tmpWidth, 60);
-    Utils::addToFb(&fb, startButton, 9, tmpWidth, 60);
-    
-
-    
-
-    // White lines
+    /*Array<Component&> items;
+    items.add(ballSpeedKnob, rateKnob,depthKnob, coordinateRadioBox, clearButton, startButton);
+    Utils::addMultipleToFb(&fb, items, tmpWidth, tmpHeight, 1, true);
+    items.clear();
+    items.add(clearButton, startButton);
+    Utils::addMultipleToFb(&fb, items, tmpWidth, 60, 9, true);
+    */
+    // Separators
     for (int i = 0; i < separators.size(); i++)
     {
-        fb.items.add(FlexItem(*separators[i]).withMinWidth(1).withHeight(tmpHeight).withOrder((i + 1) * 2));
+        Utils::addToFb(&fb, *separators[i], (i + 1) * 2, 1, getHeight());
     }
 
     fb.performLayout(getLocalBounds().withTrimmedLeft(15).withTrimmedRight(15));
-
 }
 
 void BounceSettings::addRateListener(Slider::Listener* listener)

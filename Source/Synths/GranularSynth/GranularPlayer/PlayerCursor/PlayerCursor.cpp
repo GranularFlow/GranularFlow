@@ -28,7 +28,7 @@ void PlayerCursor::paint(Graphics& g) {
 }
 
 void PlayerCursor::paintCursor(Graphics& g) {
-    g.setColour(guiColour.darker( 1 - (opacity / (float) 100) ));
+    g.setColour(guiColour);
     //Cursor
     g.fillRect(cursorPosition - 1.0, 0.0, 2.0, getHeight() - CURSOR_BALL_RADIUS);
     // Ball, put Y to 2,25x radius, so that there is paddingfrom top and bottom
@@ -36,12 +36,6 @@ void PlayerCursor::paintCursor(Graphics& g) {
                   (float)getHeight() - (CURSOR_BALL_RADIUS * 2.25),
                   (float)CURSOR_BALL_RADIUS * 2, 
                   (float)CURSOR_BALL_RADIUS * 2);
-}
-
-void PlayerCursor::setOpacity(int opacityIn)
-{
-    opacity = opacityIn;
-    repaint();
 }
 
 float PlayerCursor::getCursorPositionInPixels(float cursorPositionPercent) {
@@ -60,6 +54,11 @@ float PlayerCursor::getCursorPositionInPercent() {
     return (cursorPosition * (float)100) / (float)getWidth();
 }
 
+void PlayerCursor::setMouseMovable(bool mouseMovableIn)
+{
+    mouseMovable = mouseMovableIn;
+}
+
 void PlayerCursor::setCursorPositionPercent(float cursorPositionIn)
 {
     setCursorPositionPx(getCursorPositionInPixels(cursorPositionIn));
@@ -71,16 +70,19 @@ void PlayerCursor::setCursorPosition(float cursorPositionIn) {
 
 void PlayerCursor::setCursorPositionPx(float cursorPositionIn)
 {
-    cursorPosition = cursorPositionIn;
-    
-    if (listenerPntr != nullptr)
+    if (mouseMovable)
     {
-        if (!listenerPntr->isCurrentRunningMode(PlayerSettings::RUNNING))
+        cursorPosition = cursorPositionIn;
+    
+        if (listenerPntr != nullptr)
         {
-            listenerPntr->onCursorPositionChange(getCursorPositionInPercent(cursorPosition));
-        }        
+            if (!listenerPntr->isCurrentRunningMode(PlayerSettings::RUNNING))
+            {
+                listenerPntr->onCursorPositionChange(getCursorPositionInPercent(cursorPosition));
+            }        
+        }
+        repaint();
     }
-    repaint();   
 }
 
 void PlayerCursor::setGuiColour(Colour colourIn)

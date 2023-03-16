@@ -27,7 +27,7 @@ void CustomClickableBox::paint(Graphics& g)
     int width = getWidth();
     int height = getHeight();
 
-    Rectangle<int> boxSize = getLocalBounds().withSize(width * 0.8, height * 0.3).withCentre(Point<int>(width / 2, (height * 0.75)));
+    Rectangle<int> boxSize = getLocalBounds().withSize(width, height * 0.3f).withCentre(Point<int>(width / 2, height - (height * 0.3f)/(float)2.f));
 
     if (fullSize)
     {
@@ -38,7 +38,7 @@ void CustomClickableBox::paint(Graphics& g)
         g.setColour(L_GRAY);
     }
     
-    g.fillRoundedRectangle(getLocalBounds().withSizeKeepingCentre(width * 0.8, height * 0.8).toFloat(), cornerSize);
+    g.fillRoundedRectangle(getLocalBounds().withSizeKeepingCentre(width, height).toFloat(), cornerSize);
     g.setColour(color);
 
     Path path;
@@ -64,7 +64,7 @@ void CustomClickableBox::paint(Graphics& g)
     }
     else
     {
-        g.setFont(Font("Oswald", boxSize.getHeight() * 0.65, 0));
+        g.setFont(Font("Oswald", boxSize.getHeight() * 0.8, 0));
         g.drawFittedText(text, boxSize, Justification::centred, 1);
     }    
 }

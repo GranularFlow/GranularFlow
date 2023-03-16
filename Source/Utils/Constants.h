@@ -10,12 +10,14 @@
 
 #pragma once
 
-#include <vector>
 #include <JuceHeader.h>
 
 //
 const int W_WIDTH = 1200;
 const int W_HEIGHT = 700;
+
+const int BUFFER_SAMPLES = 240000;
+
 
 // Timer
 const int TIMER_TIME = 10;
@@ -68,7 +70,7 @@ const Colour C_TRANSPARENT = Colour::fromRGBA(0, 0, 0, 0);
 const Colour M_DARK = Colour::fromRGBA(0, 0, 0, 50);
 const Colour M_LIGHT = Colour::fromRGBA(255, 255, 255, 50);
 const Colour M_T_LIGHT = Colour::fromRGBA(255, 255, 255, 25);
-
+const Colour VUT_COLOR = Colour::fromRGBA(229, 0, 43, 255);
 // Light colours
 const Colour L_GREEN = Colour::fromRGB(170, 212, 0);
 const Colour L_AQUA = Colour::fromRGB(121, 186, 175);

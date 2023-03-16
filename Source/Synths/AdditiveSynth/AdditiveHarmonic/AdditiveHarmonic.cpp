@@ -12,15 +12,15 @@
 
 AdditiveHarmonic::AdditiveHarmonic()
 {
-    settings.getPhaseKnob().addSliderListener(this);
-    settings.getFreqKnob().addSliderListener(this);
+    settings.addPhaseSliderListener(this);
+    settings.addFreqSliderListener(this);
     addAndMakeVisible(settings);
 }
 
 AdditiveHarmonic::~AdditiveHarmonic()
 {
-    settings.getPhaseKnob().removeSliderListener(this);
-    settings.getFreqKnob().removeSliderListener(this);
+    settings.removePhaseSliderListener(this);
+    settings.removeFreqSliderListener(this);
     removeKnobsListener();
 }
 
@@ -47,37 +47,21 @@ void AdditiveHarmonic::sliderValueChanged(Slider* slider)
 
 void AdditiveHarmonic::processBlock(AudioBuffer<float>& bufferToFill, juce::MidiBuffer& midiMessages)
 {
-    float* leftChannel = bufferToFill.getWritePointer(0);
-    float* rightChannel = bufferToFill.getWritePointer(1);
-
     if (settings.isCurrentMidiMode(AdditiveHarmonicSettings::MidiMode::ON))
     {
         handleMidi(midiMessages);
-        if (midiNoteOn) {            
-            if (!lastMidiMode)
-            {
-                lastMidiMode = true;
-                angle = 0.0;
-            }
-            for (int i = 0; i < bufferToFill.getNumSamples(); i++)
-            {
-                leftChannel[i] += sin(angle + Utils::degToRad(phase)) * settings.getVolume() * settings.getPan(0);
-                rightChannel[i] += sin(angle + Utils::degToRad(phase)) * settings.getVolume() * settings.getPan(1);
-                angle += delta;
-                angle = fmod(angle, 2 * PI);
-            }
+        if (!midiNoteOn) {
+            return;
         }
     }
-    else
+
+    for (int i = 0; i < bufferToFill.getNumSamples(); i++)
     {
-        for (int i = 0; i < bufferToFill.getNumSamples(); i++)
-        {                    
-            leftChannel[i] += sin(angle + Utils::degToRad(phase)) * settings.getVolume() * settings.getPan(0);
-            rightChannel[i] += sin(angle + Utils::degToRad(phase)) * settings.getVolume() * settings.getPan(1);
-            angle += delta;
-            angle = fmod(angle, 2 * PI);
-        }
-    }
+        bufferToFill.getWritePointer(0)[i] += sin(angle + Utils::degToRad(phase)) * settings.getVolume() * settings.getPan(0);
+        bufferToFill.getWritePointer(1)[i] += sin(angle + Utils::degToRad(phase)) * settings.getVolume() * settings.getPan(1);
+        angle += delta;
+        angle = fmod(angle, 2 * PI);
+    }            
 }
 
 void AdditiveHarmonic::prepareToPlay(float sampleRateIn, int bufferSize)

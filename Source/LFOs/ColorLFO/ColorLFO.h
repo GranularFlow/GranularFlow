@@ -19,35 +19,34 @@
 class ColorLFO : public Component, public LFO, public Button::Listener, public RadioBox::Listener
 {
 public:
+    // ----------------------------------------
     // Class
 	ColorLFO();
 	~ColorLFO();
+    // ----------------------------------------
     // GUI
     void paint(Graphics&)override;
     void resized()override;
-    // Listener
+    // ----------------------------------------
+    // Listeners
+    // --- Button
     void buttonClicked(Button*)override;
     // LFO
-    // Timer
     void addTimerListener(Slider::Listener*)override;
     void removeTimerListener(Slider::Listener*)override;
+    // ------ Callback LFO
     void timeCallback()override;
-    void repaintCanvas();
-    // *******
-    bool isTimerSlider(Slider*);
-    // --------
-    // Radiobox
+    // ------ Callback GUI
+    void repaintCanvas();        
+    // ------ Callback Radiobox change
     void onValueChange(RadioBox*, int)override;
+    // ----------------------------------------
     // Get
     int getTimerHz();
     bool isImageSet();
-    
-
-private:
-    
-    //  -- Settings
+    bool isTimerSlider(Slider*);
+private:    
     LfoSettings settings;
-    //  -- handler
     ImageHandler imageHandler;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ColorLFO);

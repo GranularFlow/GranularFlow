@@ -81,20 +81,20 @@ void PlayerSettings::resized() {
         FlexBox::JustifyContent::spaceAround
     };
 
-    float sectionWidth = (getWidth() * 0.9) / 3;
-    float sectionHeight = getHeight();
+    float sectionWidth = (getWidth() * 0.9) / 3; //345
+    float sectionHeight = getHeight(); // 250
 
-    float tmpHeight = sectionHeight / 2;
-    float tmpWidth = sectionWidth / 2;
-    Utils::addToFb(&tmpFB, granularModeRadioBox, 1, tmpWidth, tmpHeight);
-    Utils::addToFb(&tmpFB, runningModeRadioBox, 2, tmpWidth, tmpHeight);
-    Utils::addToFb(&tmpFB, midiModeRadioBox, 3, tmpWidth, tmpHeight);
-    Utils::addToFb(&tmpFB, windowTypeRadioBox, 4, tmpWidth, tmpHeight);
+    float tmpHeight = sectionHeight / 2; // 125
+    float tmpWidth = sectionWidth / 2; // 172
+    Utils::addToFb(&tmpFB, granularModeRadioBox, 1, 172, 125);
+    Utils::addToFb(&tmpFB, runningModeRadioBox, 2, 172, 125);
+    Utils::addToFb(&tmpFB, midiModeRadioBox, 3, 172, 125);
+    Utils::addToFb(&tmpFB, windowTypeRadioBox, 4, 172, 125);
     // Add column to final flex box    
-    Utils::addToFb(&fb, FlexItem(tmpFB), 1, sectionWidth, sectionHeight);
+    Utils::addToFb(&fb, FlexItem(tmpFB), 1, 345, 250);
 
 
-    tmpHeight = sectionHeight;
+    //tmpHeight = 250;
     sectionWidth = floor((2 /(float) 3) * (getWidth() / (float)6));
     tmpWidth = sectionWidth;
     Utils::addToFb(&tmpFB2, grainLengthKnob, 1, tmpWidth, tmpHeight);

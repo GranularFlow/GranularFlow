@@ -162,6 +162,12 @@ void WavetableSynth::initSamples()
     {
         sampleY.add(canvas3.waveTableSamples[i]);
     }
+
+
+    for (size_t i = 0; i < sampleY.size(); i++)
+    {
+        DBG("x: " << i << " y:" << sampleY[i]);
+    }
 }
 
 void WavetableSynth::prepareToPlay(float sampleRateIn, int bufferSizeIn)

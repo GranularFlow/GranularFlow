@@ -21,27 +21,30 @@
 class GranularSynth : public Synth, public Component, public Slider::Listener, public Button::Listener
 {
 public:
+    // ----------------------
     // Class
 	GranularSynth();
 	~GranularSynth()override;
     // GUI
     void paint(Graphics&) override;
 	void resized();
-    // -----------------
+    // ----------------------
     // ProcessBlock
-    // -----------------
+    // ----------------------
     void prepareToPlay(float, int);
     void processBlock(AudioBuffer<float>&, MidiBuffer&);
-    // -----------------    
+    // ----------------------  
     // Listeners
-    void sliderValueChanged(Slider*) override;
-    void buttonClicked(Button*)override;
-    // Get
-    int getNumTotalSamples();
-    int getPlayerCount();
-    // SYNTH
+    // --- Knobs
     void setKnobsListener(Knob::Listener*)override;
     void removeKnobsListener()override;
+    void sliderValueChanged(Slider*) override;
+    void buttonClicked(Button*)override;
+    // ----------------------
+    // Get
+    int getPlayerCount();
+    bool isFileInput();
+    // ----------------------
     // Tools
     void movePositionCallback();
     void setWaveCallback();
@@ -51,28 +54,33 @@ public:
     void loadAudioFromFile(File);
     void loadAudioIntoSamples();    
     // ---Init
+    void disableCursorMovements();
     void showPlayers();
     void clearAudioSamples();
     void addNewPlayer();
     void removePlayer();
-    void selectPlayer(int playerNumber);
+    void selectPlayer(int);
 private:
-    
-    std::shared_ptr<RingBuffer> ringBufferPntr = nullptr;
-    std::unique_ptr<juce::FileChooser> fileChooser = nullptr;
-	
+    // ----------------------
+    // Players load
     int activePlayers = 0;
     int selectedPlayer = 0;
-
+    // ----------------------
+    std::shared_ptr<RingBuffer> ringBufferPtr = nullptr;
+    std::unique_ptr<juce::FileChooser> fileChooser = nullptr;
+    // ----------------------
     GranularSettings topSettings;  
     GranularVisualiser visualiser;
     OwnedArray<GranularPlayer> players;
-    AudioBuffer<float> audioSamples {2, 144000 };
-
+    // ----------------------    
+    AudioBuffer<float> audioSamples {2, BUFFER_SAMPLES };
+    // ----------------------
+    // MIDI
     double increment = 1;
     int lastMidiNote = 255;
-    float sampleRate = 48000;
-    bool waveFormWasSet = false;
     bool midiNoteOn = false;
+    // ----------------------
+    // Waveform load
+    bool waveFormWasSet = false;    
     bool inputFromFile = true;
 };

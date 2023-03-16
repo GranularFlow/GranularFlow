@@ -46,26 +46,19 @@ void LfoSettings::resized()
             FlexBox::JustifyContent::spaceAround
     };
     
-    int tmpWidth = getWidth() * 1/5 * 0.85;
-    int tmpHeight = getHeight() * 0.85;
-
-    Utils::addToFb(&fb, directionRadioBox, 1, tmpWidth, tmpHeight);
-    Utils::addToFb(&fb, rateKnob, 3, tmpWidth, tmpHeight);
-    Utils::addToFb(&fb, depthKnob, 5, tmpWidth, tmpHeight );
-    Utils::addToFb(&fb, colorSelectRadioBox, 7, tmpWidth, tmpHeight);
-    Utils::addToFb(&fb, uploadButton, 9, tmpWidth / 2, tmpHeight/2);
-
-
-
-
+    //int tmpWidth = getWidth() * 1/5 * 0.85; //195
+    //int tmpHeight = getHeight() * 0.85; //191
+    Utils::addToFb(&fb, directionRadioBox, 1, 195, 191);
+    Utils::addToFb(&fb, rateKnob, 3, 195, 191);
+    Utils::addToFb(&fb, depthKnob, 5, 195, 191);
+    Utils::addToFb(&fb, colorSelectRadioBox, 7, 195, 191);
+    Utils::addToFb(&fb, uploadButton, 9, 98, 96);
     // White lines
     for (int i = 0; i < separators.size(); i++)
     {
-        fb.items.add(FlexItem(*separators[i]).withMinWidth(1).withHeight(tmpHeight).withOrder((i + 1) * 2));
+        fb.items.add(FlexItem(*separators[i]).withMinWidth(1).withHeight(191).withOrder((i + 1) * 2));
     }
-
     fb.performLayout(getLocalBounds());
-
 }
 
 void LfoSettings::addRateListener(Slider::Listener* listener)
@@ -126,21 +119,6 @@ bool LfoSettings::isColourRadioBox(RadioBox* box)
 bool LfoSettings::isDirectionRadioBox(RadioBox* box)
 {
     return box == &directionRadioBox;
-}
-
-TextButton& LfoSettings::getUploadButton()
-{
-    return uploadButton;
-}
-
-Knob& LfoSettings::getRateKnob()
-{
-    return rateKnob;
-}
-
-Knob& LfoSettings::getDepthKnob()
-{
-    return depthKnob;
 }
 
 float LfoSettings::getRate()

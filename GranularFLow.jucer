@@ -24,6 +24,8 @@
           <FILE id="GTHD9G" name="ResetButton.cpp" compile="1" resource="0" file="Source/CustomComponents/CustomLooks/ResetButton.cpp"/>
           <FILE id="hdhS4i" name="ResetButton.h" compile="0" resource="0" file="Source/CustomComponents/CustomLooks/ResetButton.h"/>
           <FILE id="jcivON" name="Separator.h" compile="0" resource="0" file="Source/CustomComponents/CustomLooks/Separator.h"/>
+          <FILE id="mivG6i" name="TxtButton.cpp" compile="1" resource="0" file="Source/CustomComponents/CustomLooks/TxtButton.cpp"/>
+          <FILE id="zHS73w" name="TxtButton.h" compile="0" resource="0" file="Source/CustomComponents/CustomLooks/TxtButton.h"/>
         </GROUP>
         <GROUP id="{01624925-A93A-351D-869B-C1CE9D27BE35}" name="CustomWindow">
           <FILE id="jPm01E" name="CustomWindow.cpp" compile="1" resource="0"
@@ -33,6 +35,7 @@
         <GROUP id="{5515478B-6641-21C1-82E2-09D3E84EDF58}" name="Images">
           <FILE id="ZJdWmk" name="logo250.png" compile="0" resource="1" file="Source/CustomComponents/Images/logo250.png"/>
           <FILE id="ZD0PDe" name="reload.png" compile="0" resource="1" file="Source/CustomComponents/Images/reload.png"/>
+          <FILE id="SkO4Nr" name="t.png" compile="0" resource="1" file="Source/CustomComponents/Images/t.png"/>
         </GROUP>
       </GROUP>
       <GROUP id="{8B1E364F-F129-5066-2214-6EBCF7C77EFB}" name="GranularFlowWrapper">

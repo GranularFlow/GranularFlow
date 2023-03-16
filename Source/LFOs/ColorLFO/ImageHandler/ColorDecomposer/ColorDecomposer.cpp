@@ -41,13 +41,13 @@ void ColorDecomposer::resized()
     };
 
     // Second column
-    int tmp_height = (getHeight() * 1 / 3) * 0.85;
-    int tmp_width = (getWidth() / 3) * 0.85;
-    Utils::addToFb(&fb, redTile,1, tmp_width, tmp_height);
-    Utils::addToFb(&fb, greenTile, 1, tmp_width, tmp_height);
-    Utils::addToFb(&fb, blueTile, 1, tmp_width, tmp_height);
-
-    fb.performLayout(getLocalBounds().withTrimmedTop(getHeight() * 2 / 3).withTrimmedRight(25).withTrimmedLeft(25));
+    //int tmp_height = (getHeight() * 1 / 3) * 0.85; // 100
+    //int tmp_width = (getWidth() / 3) * 0.85; // 70
+    Utils::addToFb(&fb, redTile,1, 70, 100);
+    Utils::addToFb(&fb, greenTile, 1, 70, 100);
+    Utils::addToFb(&fb, blueTile, 1, 70, 100);
+    // top getHeight() * 2 / 3 = 231
+    fb.performLayout(getLocalBounds().withTrimmedTop(231).withTrimmedRight(25).withTrimmedLeft(25));
 }
 
 void ColorDecomposer::setRGB(int redIn, int greenIn, int blueIn)

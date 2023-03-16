@@ -23,7 +23,7 @@ void BounceCanvas::paint(Graphics& g)
 {
     g.fillAll(C_GRAY);
     g.setColour(C_WHITE);
-    g.fillRoundedRectangle(currentPosition.x - correctionPosition.x, currentPosition.y - correctionPosition.y, radius, radius, correctionPosition.x);
+    g.fillRoundedRectangle(currentPosition.x - 10, currentPosition.y - 10, 20, 20, 10);
 
     g.setColour(C_WHITE);
 
@@ -33,19 +33,13 @@ void BounceCanvas::paint(Graphics& g)
     }
 
     // Green colision dot
-    /*g.setColour(C_ANDROID);
-    g.fillRoundedRectangle(colision.x - 2.f, colision.y - 2.f, 4.f, 4.f, 2.f);*/    
+    //g.setColour(C_ANDROID);
+    //g.fillRect(colision.x - 2.f, colision.y - 2.f, 4.f, 4.f);   
 }
 
 double BounceCanvas::getOutput(bool getX)
 {
-
-    if (getX)
-    {
-        return currentPosition.getX() / (double)getWidth();
-    }
-    return currentPosition.getY() / (double)getHeight();
-
+    return getX ? (currentPosition.getX() / (double)getWidth()) : (currentPosition.getY() / (double)getHeight());
 }
 
 void BounceCanvas::mouseDrag(const MouseEvent& e)
@@ -71,7 +65,6 @@ void BounceCanvas::mouseUp(const MouseEvent& e)
     }
 
     drawPaths.add(tmpPath);
-
     mousePositions.clear();
     repaint();
 }
@@ -79,15 +72,15 @@ void BounceCanvas::mouseUp(const MouseEvent& e)
 void BounceCanvas::moveBall()
 {
 
-    auto nextPosition = currentPosition + positionVector;
+    nextPosition = currentPosition + positionVector;
 
-    if (nextPosition.x < correctionPosition.x || nextPosition.x + correctionPosition.x > (float) getWidth())
+    // Walls
+    if (nextPosition.x < 10 || nextPosition.x + 10 > (float) getWidth())
     {
         positionVector.x = -positionVector.x;
         nextPosition.x = currentPosition.x + positionVector.x;
     }
-
-    if (nextPosition.y < correctionPosition.y || nextPosition.y + correctionPosition.y > (float) getHeight())
+    if (nextPosition.y < 10 || nextPosition.y + 10 > (float) getHeight())
     {
         positionVector.y = -positionVector.y;
         nextPosition.y = currentPosition.y + positionVector.y;
@@ -96,30 +89,21 @@ void BounceCanvas::moveBall()
 
     for (Path tmpPath : drawPaths)
     {
-        Line<float> tmpNextPlus;
-        Line<float> tmpNextMinus;
-
         // X
-        tmpNextPlus = Line<float>(nextPosition, nextPosition + Point<float>(1.f, 0) + correctionPosition);
-        tmpNextMinus = Line<float>(nextPosition, nextPosition - Point<float>(1.f, 0) - correctionPosition);
-
-        if (tmpPath.intersectsLine(tmpNextPlus, 0) || tmpPath.intersectsLine(tmpNextMinus, 0))
+        if (tmpPath.intersectsLine(Line<float>(nextPosition, nextPosition + Point<float>(11.f, 10)), 0) ||
+            tmpPath.intersectsLine(Line<float>(nextPosition, nextPosition - Point<float>(11.f, 10)), 0))
         {
             colision = nextPosition;
             positionVector.x = -positionVector.x;
         }
 
         // Y
-        tmpNextPlus = Line<float>(nextPosition, nextPosition + Point<float>(0, 1.f) + correctionPosition) ;
-        tmpNextMinus = Line<float>(nextPosition, nextPosition - Point<float>(0, 1.f) - correctionPosition);
-
-        if (tmpPath.intersectsLine(tmpNextPlus, 0) || tmpPath.intersectsLine(tmpNextMinus, 0))
+        if (tmpPath.intersectsLine(Line<float>(nextPosition, nextPosition + Point<float>(10, 11.f)), 0) ||
+            tmpPath.intersectsLine(Line<float>(nextPosition, nextPosition - Point<float>(10, 11.f)), 0))
         {
             colision = nextPosition;
             positionVector.y = -positionVector.y;
-
         }
-
     }
     currentPosition = nextPosition;
     repaint();
