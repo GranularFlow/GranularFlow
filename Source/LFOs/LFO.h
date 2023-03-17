@@ -5,44 +5,19 @@
 class LFO
 {
 public:
-	LFO() {}
-	~LFO() {
-        knobPntrs.clear();
-    }
+    LFO();
+    ~LFO();
 
     virtual void addTimerListener(Slider::Listener*) = 0;
     virtual void removeTimerListener(Slider::Listener*) = 0;
-
     virtual void timeCallback() = 0;
-    void updateKnobs(double value) {
-        for (Knob* knob : knobPntrs)
-        {
-            if (knob != nullptr)
-            {
-                knob->setLfoValue(value);
-            }
-        }
-    }
+
+    void updateKnobs(double value);
     // Listener
-    void addKnobToListeners(Knob* knobPntrIn) { knobPntrs.add(knobPntrIn); }
-    void removeKnobFromListeners(Knob* knobPntrIn) {
-        int index = -666;
-
-        for (int i = 0; i < knobPntrs.size(); i++)
-        {
-            if (knobPntrs[i] == knobPntrIn)
-            {
-                index = i;
-            }
-        }
-
-        if (index != -666)
-        {
-            knobPntrs.remove(index, false);
-        }
-    }
+    void addKnobToListeners(Knob* knobPntrIn);
+    void removeKnobFromListeners(Knob* knobPntrIn);
     // -----------------------
-    bool knobPntrsEmpty() { return knobPntrs.isEmpty(); }
+    bool knobPntrsEmpty();
 
 private:
     OwnedArray<Knob> knobPntrs;

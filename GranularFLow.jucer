@@ -123,6 +123,7 @@
                 file="Source/LFOs/WavetableLFO/WavetableLFO.cpp"/>
           <FILE id="rn75cv" name="WavetableLFO.h" compile="0" resource="0" file="Source/LFOs/WavetableLFO/WavetableLFO.h"/>
         </GROUP>
+        <FILE id="UHTkkX" name="LFO.cpp" compile="1" resource="0" file="Source/LFOs/LFO.cpp"/>
         <FILE id="WTTuzj" name="LFO.h" compile="0" resource="0" file="Source/LFOs/LFO.h"/>
       </GROUP>
       <GROUP id="{04FC5FE7-279D-331B-354E-BA8DEC8D6699}" name="Synths">

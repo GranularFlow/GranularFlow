@@ -36,11 +36,12 @@ public:
     // -----------------------
     // Tools
     void initSamples();
+    void calculateIncrement();
     // -----------------------
 private:
-    int currentPosition = 0;
+    float currentPosition = 0;
     float finalSample = 0;
-    float totalPosition = 0;
+    float increment = 0;
     bool isSetWave = false;
     // -----------------------
     TextButton combineButton{ "COMBINE" };

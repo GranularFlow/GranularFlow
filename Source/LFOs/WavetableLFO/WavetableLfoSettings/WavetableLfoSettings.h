@@ -33,7 +33,6 @@ public:
     // Tools
     // Getters
     double getRate();
-    double getIncrement();
     double getDepth();
     int getWaveCount();
     bool isWaveCountSlider(Slider*);
@@ -42,10 +41,9 @@ public:
 
 private:
     // Settings
-    Knob rateKnob{ "RATE", C_MARINE, 0.1, 20, 0.1, 10, false };
-    Knob depthKnob{ "DEPTH", C_RADIANTYELLOW, 0, 1, 0.1, 0.5, false };
+    Knob rateKnob{ "RATE", C_SUNFLOWER, 0.1, 99, 0.01, 1, false };
+    Knob depthKnob{ "DEPTH", C_RADIANTYELLOW, 0.1, 1, 0.01, 0.5, false };
     Knob waveCountKnob{ "WAVE COUNT", C_ENERGOS, 2, 10, 2, 6, false };
-    Knob incrementKnob{ "INCREMENT", C_BARARED, 1, 59, 0.1, 40, false };
 
     // GUI
     Colour guiColour;

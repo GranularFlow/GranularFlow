@@ -11,7 +11,7 @@ BounceSettings::BounceSettings()
     addAndMakeVisible(startButton);
 
 
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 5; i++)
     {
         separators.add(new Separator());
         addAndMakeVisible(separators.getLast());
@@ -42,8 +42,9 @@ void BounceSettings::resized()
     Utils::addToFb(&fb, ballSpeedKnob, 1, 110, getHeight());
     Utils::addToFb(&fb, rateKnob, 3, 110, getHeight());
     Utils::addToFb(&fb, depthKnob, 5, 110, getHeight());
-    Utils::addToFb(&fb, clearButton, 7, 95, 60);
-    Utils::addToFb(&fb, startButton, 9, 95, 60);
+    Utils::addToFb(&fb, coordinateRadioBox, 7, 110, getHeight());
+    Utils::addToFb(&fb, clearButton, 9, 95, 60);
+    Utils::addToFb(&fb, startButton, 11, 95, 60);
 
     // Separators
     for (int i = 0; i < separators.size(); i++)

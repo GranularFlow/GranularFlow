@@ -55,7 +55,7 @@ private:
     RadioBox directionRadioBox{ "DIRECTION", C_MARTINA, DIRECTION_MODE };
     RadioBox colorSelectRadioBox{ "SELECTED COLOR", C_ENERGOS, SELECTED_COLOR };
     // ----------------------------------------
-    Knob rateKnob{ "RATE", C_SUNFLOWER, 0.1, 20, 1, 2, false };
+    Knob rateKnob{ "RATE", C_SUNFLOWER, 0.1, 49, 0.01, 1, false };
     Knob depthKnob{ "DEPTH", C_BILLS, 0, 1, 0.001, 0.5, false };
     // ----------------------------------------
     TextButton uploadButton{ "UPLOAD" };

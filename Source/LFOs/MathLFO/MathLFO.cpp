@@ -54,8 +54,7 @@ void MathLFO::buttonClicked(Button* button)
         if (isValidExpression(settings.getText()))
         {
             index = 0;
-            int sampleCount = 100;
-            initSamples(settings.getText(), sampleCount);
+            initSamples(settings.getText(), 100);
         }
     }
 }
@@ -78,9 +77,7 @@ void MathLFO::initSamples(std::string expressionString, int sampleCount)
     {
         x = i * 0.1f;
         parser.compile(expressionString, expr);
-        double val = 0.5f * sin(expr.value()) + 0.5f;
-        DBG(val);
-        samples.add(val);
+        samples.add(0.5f * sin(expr.value()) + 0.5f);
     }
 
     visualiser.setSamples(samples);
@@ -94,7 +91,7 @@ float MathLFO::getTimerHz() {
 double MathLFO::getNext()
 {    
     value = samples[index] * settings.getDepth();
-    index = std::fmod(index + 1, (float)samples.size());
+    index = std::fmod(index + (settings.getRate() * samples.size() /Utils::msToHz(TIMER_MS)), (float)samples.size());
     return value;
 }
 

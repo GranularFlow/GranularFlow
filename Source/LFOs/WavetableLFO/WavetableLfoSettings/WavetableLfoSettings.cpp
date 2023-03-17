@@ -6,7 +6,12 @@ WavetableLfoSettings::WavetableLfoSettings()
     addAndMakeVisible(depthKnob);
     addAndMakeVisible(rateKnob);
     addAndMakeVisible(waveCountKnob);
-    addAndMakeVisible(incrementKnob);
+
+    for (int i = 0; i < 2; i++)
+    {
+        separators.add(new Separator());
+        addAndMakeVisible(separators.getLast());
+    }
 }
 
 WavetableLfoSettings::~WavetableLfoSettings()
@@ -37,10 +42,9 @@ void WavetableLfoSettings::resized()
     Utils::addToFb(&fb, rateKnob, 1, 110, 225);
     Utils::addToFb(&fb, depthKnob, 3, 110, 225);
     Utils::addToFb(&fb, waveCountKnob, 5, 110, 225);
-    Utils::addToFb(&fb, incrementKnob, 7, 110, 225);
 
     // White lines
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < separators.size(); i++)
     {
         Utils::addToFb(&fb, *separators[i], (i + 1) * 2, 2, getWidth());
     }
@@ -73,11 +77,6 @@ void WavetableLfoSettings::removeWaveCountListener(Slider::Listener* listener)
 double WavetableLfoSettings::getRate()
 {
     return rateKnob.getValue();
-}
-
-double WavetableLfoSettings::getIncrement()
-{
-    return incrementKnob.getValue();
 }
 
 double WavetableLfoSettings::getDepth()

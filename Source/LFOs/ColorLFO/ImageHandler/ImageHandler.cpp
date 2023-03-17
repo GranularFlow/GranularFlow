@@ -70,8 +70,7 @@ void ImageHandler::repaintCanvas() {
 double ImageHandler::getNext()
 {     
     if (direction == LfoSettings::RANDOM)
-    {
-        
+    {        
         currentX = random.nextInt((getWidth() / 2) - 20);
         currentY = random.nextInt(getHeight() - 20);
     }

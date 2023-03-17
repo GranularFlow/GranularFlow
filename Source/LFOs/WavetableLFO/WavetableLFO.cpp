@@ -57,6 +57,7 @@ void WavetableLFO::buttonClicked(Button* button)
             canvas3.waveTableSamples.size() > 0)
         {
             initSamples();
+            calculateIncrement();
             canvas4.setWaveForm(sampleY);
             isSetWave = true;
         }
@@ -169,28 +170,21 @@ bool WavetableLFO::isEmpty()
     return !isSetWave;
 }
 
+void WavetableLFO::calculateIncrement()
+{
+    increment = settings.getRate() * sampleY.size() / Utils::msToHz(TIMER_MS);
+}
+
 int WavetableLFO::getTimerHz() {
     return settings.getRate();
 }
 
 double WavetableLFO::getNext()
 {
-    // TODO: use wavetable code
-    totalPosition = fmod((currentPosition * settings.getIncrement()), sampleY.size());
 
-    if (totalPosition < 0)
-    {
-        totalPosition = sampleY.size() - fmod(abs(totalPosition), sampleY.size());
-    }
+    finalSample = Utils::interpolateLinear(currentPosition, (int)currentPosition % sampleY.size(), ((int)currentPosition + 1) % sampleY.size(),
+        sampleY[(int)currentPosition % sampleY.size()], sampleY[((int)currentPosition + 1) % sampleY.size()]) * 0.5f * settings.getDepth() + 0.5f;;
 
-    if (totalPosition > sampleY.size() || totalPosition + 2 > sampleY.size())
-    {
-        totalPosition = fmod(totalPosition, sampleY.size());
-    }
-
-    finalSample = Utils::interpolateLinear(totalPosition, (int)std::floor(totalPosition) % sampleY.size(), (int)std::ceil(totalPosition + 1) % sampleY.size(), sampleY[(int)std::floor(totalPosition) % sampleY.size()], sampleY[(int)std::ceil(totalPosition + 1) % sampleY.size()]);
-
-    currentPosition += settings.getIncrement();
-    finalSample = std::abs(finalSample * settings.getDepth());
+    currentPosition = fmod((currentPosition + increment), sampleY.size());
     return finalSample;
 }

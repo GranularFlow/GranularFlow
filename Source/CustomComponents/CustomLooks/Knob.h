@@ -17,13 +17,20 @@ public:
 
     void setKnobListener(Knob::Listener* knobListenerPntrIn)
     { 
-        knobListenerPntr = knobListenerPntrIn; 
+        if (knobListenerPntrIn!= nullptr)
+        {
+            knobListenerPntr = knobListenerPntrIn;
+        }
     }
 
     void removeKnobListener() 
     { 
-        comboBox->setSelectedId(1);
-        knobListenerPntr = nullptr;
+        if (knobListenerPntr != nullptr)
+        {
+            knobListenerPntr->removeKnobFromLfo(this, lastSelectedLFO);
+            lastSelectedLFO = 0;
+            knobListenerPntr = nullptr;
+        }     
     }
     // ----------------------
     Listener* knobListenerPntr = nullptr;
@@ -65,4 +72,5 @@ private:
     std::unique_ptr<ComboBox> comboBox;
     // ---------------------- 
     Slider slider{ Slider::SliderStyle::RotaryHorizontalDrag, Slider::TextEntryBoxPosition::TextBoxBelow };
+
 };

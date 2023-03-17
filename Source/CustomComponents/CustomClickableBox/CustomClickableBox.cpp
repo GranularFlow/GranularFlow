@@ -39,8 +39,7 @@ void CustomClickableBox::paint(Graphics& g)
 
     g.setColour(C_WHITE);
 
-   
-    // TODO TEXT DRAW
+
     if (fullSize)
     {
         g.setFont(Font("Oswald", getHeight() * 0.4, 0));

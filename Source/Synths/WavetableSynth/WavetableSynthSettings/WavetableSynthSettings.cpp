@@ -81,10 +81,6 @@ void WavetableSynthSettings::setKnobsListener(Knob::Listener* knobListenerPntr)
 
 void WavetableSynthSettings::removeKnobsListener()
 {
-    freqKnob.removeKnobListener();
-    waveCountKnob.removeKnobListener();
-    volumeKnob.removeKnobListener();
-    panKnob.removeKnobListener();
 }
 
 

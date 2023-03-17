@@ -11,7 +11,23 @@ GranularFlowWrapper::GranularFlowWrapper()
 GranularFlowWrapper::~GranularFlowWrapper()
 {
     removeThisFromAllListeners();
+    // Clean non-visible synths and lfos FIRST
+    // MUST CLOSE
+    closeWindows();
+    // clean boxes
     
+    // MUST DELETE
+    //SYNTH
+    delete wavetableSynthBox;
+    delete granularSynthBox;
+    delete additiveSynthBox;
+    //LFO
+    delete colorLfoBox;
+    delete bounceLfoBox;
+    delete wavetableLfoBox;
+    delete mathLfoBox;
+
+    // MUST DELETE AFTER CLICKABLE WINDOWS
     // Delete synths that are inside boxes
     //SYNTH
     wavetableSynth.release();
@@ -22,20 +38,6 @@ GranularFlowWrapper::~GranularFlowWrapper()
     bounceLfo.release();
     mathLfo.release();
     wavetableLfo.release();
-
-    // Clean non-visible synths and lfos
-    closeWindows();
-
-    // clean boxes
-    //SYNTH
-    delete wavetableSynthBox;
-    delete granularSynthBox;
-    delete additiveSynthBox;
-    //LFO
-    delete colorLfoBox;
-    delete bounceLfoBox;
-    delete wavetableLfoBox;
-    delete mathLfoBox;
 }
 
 void GranularFlowWrapper::paintJacks(Graphics& g, int center, int circleRadius, int endY)
@@ -460,62 +462,57 @@ void GranularFlowWrapper::setAllKnobs()
 
 void GranularFlowWrapper::timerCallback() 
 {
-    // TODO: 20x za sekundu cele, ne po 1/20s krok
-
     colorLfoTimer++;
     bounceLfoTimer++;
     mathLfoTimer++;
     wavetableLfoTimer++; 
-
+    // gui
     granularPlayerTimer++;
     bounceBallTimer++;
     colorRepaintTimer++;
     granularSynthVisualiserTimer++;
-    
-    
 
-    if (colorLfoTimer * TIMER_MS >= Utils::msToHz(colorLfo->getTimerHz()) && !colorLfo->knobPntrsEmpty() && colorLfo->isImageSet() && processColorLfo) {
+    if (colorLfoTimer * TIMER_MS >= Utils::hzToMs(colorLfo->getTimerHz()) && !colorLfo->knobPntrsEmpty() && colorLfo->isImageSet() && processColorLfo) {
         colorLfo->timeCallback();
         colorLfoTimer = 0;
     }
 
-    if (bounceLfoTimer * TIMER_MS >= Utils::msToHz(bounceLfo->getTimerHz()) && !bounceLfo->knobPntrsEmpty() && bounceLfo->getBallSpeed() != 0 && processBounceLfo) {
+    if (bounceLfoTimer * TIMER_MS >= Utils::hzToMs(bounceLfo->getTimerHz()) && !bounceLfo->knobPntrsEmpty() && bounceLfo->getBallSpeed() != 0 && processBounceLfo) {
         bounceLfo->timeCallback();
         bounceLfoTimer = 0;
     }
 
-    if (mathLfoTimer * TIMER_MS >= Utils::msToHz(mathLfo->getTimerHz()) && !mathLfo->knobPntrsEmpty() && processMathLfo && mathLfo->isValidExpression()) {
+    if (mathLfoTimer * TIMER_MS >= Utils::hzToMs(mathLfo->getTimerHz()) && !mathLfo->knobPntrsEmpty() && processMathLfo && mathLfo->isValidExpression()) {
         mathLfo->timeCallback();
         mathLfoTimer = 0;
     }
 
-    if (wavetableLfoTimer * TIMER_MS >= Utils::msToHz(wavetableLfo->getTimerHz()) && !wavetableLfo->knobPntrsEmpty() && !wavetableLfo->isEmpty() && processWavetableLfo) {
+    if (wavetableLfoTimer * TIMER_MS >= Utils::hzToMs(wavetableLfo->getTimerHz()) && !wavetableLfo->knobPntrsEmpty() && !wavetableLfo->isEmpty() && processWavetableLfo) {
         wavetableLfo->timeCallback();
         wavetableLfoTimer = 0;
     }
     //  GUI
-    if (colorRepaintTimer * TIMER_MS >= Utils::msToHz(30) && !colorLfo->knobPntrsEmpty() && colorLfo->isImageSet())
+    if (colorRepaintTimer * TIMER_MS >= Utils::hzToMs(30) && !colorLfo->knobPntrsEmpty() && colorLfo->isImageSet())
     {
         colorLfo->repaintCanvas();
         colorRepaintTimer = 0;
     }
     
-    if (granularPlayerTimer * TIMER_MS >= Utils::msToHz(30) && processGranular) {
+    if (granularPlayerTimer * TIMER_MS >= Utils::hzToMs(30) && processGranular) {
         granularSynth->movePositionCallback();
         granularPlayerTimer = 0;
     }
 
-    if (granularSynthVisualiserTimer * TIMER_MS >= Utils::msToHz(1) && !granularSynth->isFileInput() && processGranular)
+    if (granularSynthVisualiserTimer * TIMER_MS >= Utils::hzToMs(1) && !granularSynth->isFileInput() && processGranular)
     {
         granularSynth->setWaveCallback();
         granularSynthVisualiserTimer = 0;
     }
 
-    if (bounceBallTimer * TIMER_MS >= Utils::msToHz(bounceBallSpeed) && !bounceLfo->knobPntrsEmpty() && bounceLfo->getBallSpeed() != 0) {
+    if (bounceBallTimer * TIMER_MS >= Utils::hzToMs(bounceBallSpeed) && !bounceLfo->knobPntrsEmpty() && bounceLfo->getBallSpeed() != 0 && processBounceLfo) {
         bounceLfo->moveBall();
         bounceBallTimer = 0;
-    }
-    
+    }    
 }
 
 void GranularFlowWrapper::removeThisFromAllListeners() {

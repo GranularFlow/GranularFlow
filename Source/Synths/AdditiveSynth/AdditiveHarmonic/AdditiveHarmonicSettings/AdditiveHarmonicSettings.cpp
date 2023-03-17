@@ -65,10 +65,6 @@ void AdditiveHarmonicSettings::setKnobsListener(Knob::Listener* knobListenerPntr
 
 void AdditiveHarmonicSettings::removeKnobsListener()
 {
-    phaseKnob.removeKnobListener();
-    freqKnob.removeKnobListener();
-    volumeKnob.removeKnobListener();
-    panKnob.removeKnobListener();
 }
 
 void AdditiveHarmonicSettings::resetDefaultValues()

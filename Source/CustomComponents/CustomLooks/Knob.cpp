@@ -28,14 +28,14 @@ Knob::Knob(String nameIn, Colour guiColorIn, float startRangIn, float endRangeIn
     comboBox->addItem("Math", 4);
     comboBox->addItem("Wavetable", 5);
     comboBox->addListener(this);
-    comboBox->setSelectedItemIndex(0, NotificationType::dontSendNotification);    
+    comboBox->setSelectedItemIndex(0, NotificationType::sendNotification);    
 }
 
 Knob::~Knob()
-{
-    knobListenerPntr = nullptr;
+{    
     setLookAndFeel(nullptr);
     comboBox->setLookAndFeel(nullptr);
+    removeKnobListener();
 }
 
 void Knob::paint(Graphics& g)
@@ -82,16 +82,19 @@ void Knob::comboBoxChanged(ComboBox* box)
     {
         if (box->getSelectedId() == 1)
         {
-            knobListenerPntr->removeKnobFromLfo(this, lastSelectedLFO);
-            lastSelectedLFO = 0;
-            slider.setVisible(true);
+            if (lastSelectedLFO != 0 || lastSelectedLFO != 1)
+            {
+                knobListenerPntr->removeKnobFromLfo(this, lastSelectedLFO);
+                lastSelectedLFO = 0;
+                slider.setVisible(true);
+            }
         }
         else
-        {
-            slider.setVisible(false);
+        {            
             knobListenerPntr->removeKnobFromLfo(this, lastSelectedLFO);
             knobListenerPntr->setKnobToLfo(this, box->getSelectedId());
             lastSelectedLFO = box->getSelectedId();
+            slider.setVisible(false);
         }
     }
 }

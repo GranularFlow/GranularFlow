@@ -16,6 +16,7 @@ ColorLFO::~ColorLFO()
     settings.removeDirectionListener();
     settings.removeColorListener();
     settings.removeButtonsListener(this);
+
 }
 
 void ColorLFO::paint(Graphics& g)

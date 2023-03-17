@@ -190,20 +190,19 @@ void WavetableSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& 
     {   
      
         
-        totalPosition = currentPosition;
 
         if (wavetableSettings.isCurrentInterpolationType(WavetableSynthSettings::LINEAR))
         {
-           finalSample = Utils::interpolateLinear((int)totalPosition, (int)std::floor(totalPosition) % sampleY.size(), (int)std::ceil(totalPosition + 1) % sampleY.size(), sampleY[(int)std::floor(totalPosition) % sampleY.size()], sampleY[(int)std::ceil(totalPosition + 1) % sampleY.size()]);
+           finalSample = Utils::interpolateLinear(currentPosition, (int)currentPosition % sampleY.size(), ((int)currentPosition + 1) % sampleY.size(), sampleY[(int)currentPosition % sampleY.size()], sampleY[((int)currentPosition + 1) % sampleY.size()]);
 
         }
         else if (wavetableSettings.isCurrentInterpolationType(WavetableSynthSettings::CUBIC))
         {
-            finalSample = Utils::interpolateCubic(totalPosition, sampleY);
+            finalSample = Utils::interpolateCubic(currentPosition, sampleY);
         }
         else if (wavetableSettings.isCurrentInterpolationType(WavetableSynthSettings::HERMITE))
         {
-            finalSample = Utils::interpolateHermite(totalPosition, sampleY);
+            finalSample = Utils::interpolateHermite(currentPosition, sampleY);
         }         
 
         if (abs(finalSample) >= 0.9999f)

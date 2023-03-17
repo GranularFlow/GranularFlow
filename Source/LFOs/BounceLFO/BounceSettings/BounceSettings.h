@@ -48,8 +48,8 @@ public:
 private:
     // ----------------------------------------
     // Knobs
-    Knob ballSpeedKnob{ "BALL SPEED", C_MARTINA, 0, 100, 1, 60, false };
-    Knob rateKnob{ "RATE", C_SUNFLOWER, 0.1, 20, 0.1, 2, false };
+    Knob ballSpeedKnob{ "BALL SPEED", C_MARTINA, 0, 200, 1, 50, false };
+    Knob rateKnob{ "RATE", C_SUNFLOWER, 0.1, 49, 0.01, 1, false };
     Knob depthKnob{ "DEPTH", C_BILLS, 0, 1, 0.001, 0.5, false };
     // ----------------------------------------
     // Buttons
