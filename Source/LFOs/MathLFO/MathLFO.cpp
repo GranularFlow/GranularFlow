@@ -20,7 +20,7 @@ void MathLFO::paint(Graphics& g)
 
 void MathLFO::resized()
 {
-    settings.setBounds(SETTINGS_SIZE);
+    settings.setBounds(SETTINGS_SIZE.withSizeKeepingCentre(750,220));
     visualiser.setBounds(getLocalBounds().withTrimmedLeft(25).withTrimmedRight(25).withTrimmedTop(TOP_BAR_HEIGHT + 10).withTrimmedBottom(SETTINGS_SIZE.getHeight() + 20));
 }
 

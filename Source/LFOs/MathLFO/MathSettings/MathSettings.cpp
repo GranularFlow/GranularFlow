@@ -29,10 +29,10 @@ void MathSettings::resized()
             FlexBox::JustifyContent::spaceAround
     };
 
-    Utils::addToFb(&fb, rateKnob, 1, 195, 191);
-    Utils::addToFb(&fb, depthKnob, 3, 195, 191);
-    Utils::addToFb(&fb, textEditor, 5, 300, 50);
-    Utils::addToFb(&fb, enterButton, 7, 195, 50);
+    Utils::addToFb(&fb, rateKnob, 1, 110, 191);
+    Utils::addToFb(&fb, depthKnob, 3, 110, 191);
+    Utils::addToFb(&fb, textEditor, 5, 300, 60);
+    Utils::addToFb(&fb, enterButton, 7, 80, 60);
 
     for (int i = 0; i < 2; i++)
     {

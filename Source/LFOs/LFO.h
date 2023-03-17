@@ -41,7 +41,7 @@ public:
             knobPntrs.remove(index, false);
         }
     }
-
+    // -----------------------
     bool knobPntrsEmpty() { return knobPntrs.isEmpty(); }
 
 private:

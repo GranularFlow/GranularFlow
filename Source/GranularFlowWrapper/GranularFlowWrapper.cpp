@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    Wrapper.cpp
-    Created: 21 Feb 2023 3:43:03pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "GranularFlowWrapper.h"
 
 GranularFlowWrapper::GranularFlowWrapper()

@@ -26,7 +26,7 @@ void ColorLFO::paint(Graphics& g)
 
 void ColorLFO::resized()
 {
-    settings.setBounds(SETTINGS_SIZE);
+    settings.setBounds(SETTINGS_SIZE.withSizeKeepingCentre(750,225));
     imageHandler.setBounds(getLocalBounds().withTrimmedTop(60).withTrimmedBottom(SETTINGS_SIZE.getHeight() + 40).withTrimmedLeft(20).withTrimmedRight(20));
 }
 

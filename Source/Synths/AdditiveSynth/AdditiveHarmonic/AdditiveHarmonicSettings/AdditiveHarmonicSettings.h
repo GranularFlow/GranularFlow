@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    AdditiveHarmonicsSettings.h
-    Created: 1 Feb 2023 10:20:17pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <JuceHeader.h>
 #include "../../../../Utils/Constants.h"
@@ -57,11 +47,11 @@ public:
 private:
     // ----------------------
     // Parameters
-    RadioBox midiModeRadioBox{ "MIDI", C_SUNFLOWER, MIDI_MODE };
-    Knob phaseKnob{ "PHASE", L_AQUA, 0, 360, 1, 0, true };
-    Knob freqKnob{ "FREQUENCY", L_ORANGE, 10, 1000, 1, 440, true };
-    Knob volumeKnob{ "VOLUME", C_SUNFLOWER, 0, 100, 1, 50, true };
-    Knob panKnob{ "PAN", C_BILLS, 0, 100, 1, 50 , true };
+    RadioBox midiModeRadioBox{ "MIDI", C_CIRCUMMORBITAL, MIDI_MODE };
+    Knob phaseKnob{ "PHASE", C_BARARED, 0, 360, 1, 0, true };
+    Knob freqKnob{ "FREQUENCY", C_MARTINA, 10, 1000, 0.001, 440, true };
+    Knob volumeKnob{ "VOLUME", C_RADIANTYELLOW, 0, 100, 0.01, 50, true };
+    Knob panKnob{ "PAN", C_ENERGOS, 0, 100, 1, 50 , true };
     // ----------------------
     OwnedArray<Separator> separators;
 };

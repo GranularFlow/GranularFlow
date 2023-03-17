@@ -110,7 +110,7 @@ void GranularSynth::sliderValueChanged(Slider* slider)
             removePlayer();
         }
         
-        topSettings.getPlayerSelectNum().setValue(val, sendNotification);
+        topSettings.setPlayerNum(val);
     }
     else if(topSettings.isPlayerSelectSlider(slider))
     {        

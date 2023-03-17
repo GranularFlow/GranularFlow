@@ -38,11 +38,11 @@ void LfoSettings::resized()
     
     //int tmpWidth = getWidth() * 1/5 * 0.85; //195
     //int tmpHeight = getHeight() * 0.85; //191
-    Utils::addToFb(&fb, directionRadioBox, 1, 195, 191);
-    Utils::addToFb(&fb, rateKnob, 3, 195, 191);
-    Utils::addToFb(&fb, depthKnob, 5, 195, 191);
-    Utils::addToFb(&fb, colorSelectRadioBox, 7, 195, 191);
-    Utils::addToFb(&fb, uploadButton, 9, 98, 96);
+    Utils::addToFb(&fb, directionRadioBox, 1, 110, 191);
+    Utils::addToFb(&fb, rateKnob, 3, 110, 191);
+    Utils::addToFb(&fb, depthKnob, 5, 110, 191);
+    Utils::addToFb(&fb, colorSelectRadioBox, 7, 110, 191);
+    Utils::addToFb(&fb, uploadButton, 9, 80, 60);
     // White lines
     for (int i = 0; i < separators.size(); i++)
     {

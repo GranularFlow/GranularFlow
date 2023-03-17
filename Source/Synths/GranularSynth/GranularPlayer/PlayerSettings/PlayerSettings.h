@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    PlayerSettings.h
-    Created: 31 Oct 2022 6:05:49pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #pragma once
 
 #include <JuceHeader.h>
@@ -83,7 +73,7 @@ private:
     // ----------------------
     RadioBox granularModeRadioBox{ "MODE", C_MARINE, GRANULAR_MODE };
     RadioBox runningModeRadioBox{ "CURSOR", C_LAVENDER_ROSE, RUNNING_MODE };
-    RadioBox midiModeRadioBox{ "MIDI", C_SUNFLOWER, MIDI_MODE };
+    RadioBox midiModeRadioBox{ "MIDI", C_CIRCUMMORBITAL, MIDI_MODE };
     RadioBox windowTypeRadioBox{ "WINDOW", C_MEDITERRANEAN, WINDOW_TYPE };
     // ----------------------
     Knob grainLengthKnob{ "LENGTH", C_MARTINA, 1, 2000, 1, 1000, true };

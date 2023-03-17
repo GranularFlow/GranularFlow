@@ -1,12 +1,3 @@
-/*
-  ==============================================================================
-
-    AdditiveSettings.cpp
-    Created: 1 Feb 2023 10:10:45pm
-    Author:  honza
-
-  ==============================================================================
-*/
 #include <JuceHeader.h>
 #include "AdditiveSynthSettings.h"
 

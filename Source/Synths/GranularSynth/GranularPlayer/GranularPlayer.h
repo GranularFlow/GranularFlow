@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    GranularPlayer.h
-    Created: 30 Oct 2022 4:54:37pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <JuceHeader.h>
 #include "../../../Utils/Constants.h"
@@ -16,12 +6,6 @@
 #include "Grain/Grain.h"
 
 
-/*
-  ==============================================================================
-	This class acts like a container for granular cursor
-  ==============================================================================
-
-*/
 class GranularPlayer : public Component, public PlayerCursor::Listener
 {
 public:

@@ -1,11 +1,3 @@
-/*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin editor.
-
-  ==============================================================================
-*/
-
 #pragma once
 
 #include <JuceHeader.h>
@@ -15,9 +7,11 @@
 class GranularFLowAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
+    // -----------------------
     // Class
     GranularFLowAudioProcessorEditor (GranularFLowAudioProcessor&);
     ~GranularFLowAudioProcessorEditor() override;
+    // -----------------------
     // GUI
     void paint (juce::Graphics&) override;
     void resized() override;

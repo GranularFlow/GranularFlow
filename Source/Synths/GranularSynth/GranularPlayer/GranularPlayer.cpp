@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    GranularPlayer.cpp
-    Created: 30 Oct 2022 4:54:30pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "GranularPlayer.h"
 
 GranularPlayer::GranularPlayer(int totalSamplesIn, int sampleRateIn) 

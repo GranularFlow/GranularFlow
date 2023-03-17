@@ -20,10 +20,8 @@ void BounceLFO::paint(Graphics& g)
 
 void BounceLFO::resized()
 {
-    Rectangle<int> settingsBounds = getLocalBounds().withTrimmedTop((getHeight() - 50) * 4 / 5).withTrimmedBottom(10).withTrimmedLeft(getWidth() * 1 / 4).withTrimmedRight(getWidth() * 1 / 4);
-
-    settings.setBounds(settingsBounds);
-    canvas.setBounds(getLocalBounds().withTrimmedTop(90).withTrimmedBottom(settingsBounds.getHeight() + 40).withTrimmedLeft(200).withTrimmedRight(200));
+    settings.setBounds(SETTINGS_SIZE.withSizeKeepingCentre(750, 200));
+    canvas.setBounds(getLocalBounds().withTrimmedTop(TOP_BAR_HEIGHT + 10).withTrimmedBottom(SETTINGS_SIZE.getHeight() + 20).withTrimmedLeft(100).withTrimmedRight(100));
 }
 
 void BounceLFO::addTimerListener(Slider::Listener* listener) {

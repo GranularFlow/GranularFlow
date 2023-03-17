@@ -39,7 +39,7 @@ public:
 
 private:
     // -----------------------
-    Knob rateKnob{ "RATE", C_BILLS, 1, 20, 1, 2, false };
+    Knob rateKnob{ "RATE", C_SUNFLOWER, 1, 20, 1, 2, false };
     Knob depthKnob{ "DEPTH", C_BILLS, 0, 1, 0.1, 0.5, false };
     // -----------------------
     TextEditor textEditor;

@@ -34,17 +34,15 @@ void WavetableLfoSettings::resized()
 
     // Second column
     int tmp_height = sectionHeight;
-    int tmp_width = 100;
-    fb.items.add(FlexItem(rateKnob).withOrder(1).withMinWidth(tmp_width).withMinHeight(tmp_height));
-    fb.items.add(FlexItem(depthKnob).withOrder(3).withMinWidth(tmp_width).withMinHeight(tmp_height));
-    fb.items.add(FlexItem(waveCountKnob).withOrder(5).withMinWidth(tmp_width).withMinHeight(tmp_height));
-    fb.items.add(FlexItem(incrementKnob).withOrder(5).withMinWidth(tmp_width).withMinHeight(tmp_height));
-
+    Utils::addToFb(&fb, rateKnob, 1, 110, 225);
+    Utils::addToFb(&fb, depthKnob, 3, 110, 225);
+    Utils::addToFb(&fb, waveCountKnob, 5, 110, 225);
+    Utils::addToFb(&fb, incrementKnob, 7, 110, 225);
 
     // White lines
     for (int i = 0; i < 3; i++)
     {
-        fb.items.add(FlexItem(*separators[i]).withMinWidth(1).withHeight(sectionHeight).withOrder((i + 1) * 2));
+        Utils::addToFb(&fb, *separators[i], (i + 1) * 2, 2, getWidth());
     }
 
     fb.performLayout(getLocalBounds());

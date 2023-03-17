@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    PlayerSettings.cpp
-    Created: 31 Oct 2022 6:06:57pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "PlayerSettings.h"
 
 
@@ -195,7 +185,6 @@ void PlayerSettings::setKnobsListener(Knob::Listener* knobListenerPntr)
     grainPitchKnob.setKnobListener(knobListenerPntr);
     grainNumKnob.setKnobListener(knobListenerPntr);
     grainOffsetKnob.setKnobListener(knobListenerPntr);
-
     volumeKnob.setKnobListener(knobListenerPntr);
     panKnob.setKnobListener(knobListenerPntr);
 }

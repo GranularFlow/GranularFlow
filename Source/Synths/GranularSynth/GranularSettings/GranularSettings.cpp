@@ -1,17 +1,7 @@
-/*
-  ==============================================================================
-
-    GranularSettings.cpp
-    Created: 18 Nov 2022 12:48:24pm
-    Author:  honza
-
-  ==============================================================================
-*/
 
 #include <JuceHeader.h>
 #include "GranularSettings.h"
 
-//==============================================================================
 GranularSettings::GranularSettings()
 {
     addAndMakeVisible(openBufferButton);
@@ -21,8 +11,7 @@ GranularSettings::GranularSettings()
 }
 
 GranularSettings::~GranularSettings()
-{
-   
+{    
 }
 
 void GranularSettings::enablePlayers()
@@ -56,16 +45,6 @@ bool GranularSettings::isOpenAudioButton(Button* button)
 bool GranularSettings::isOpenBufferButton(Button* button)
 {
     return  button == &openBufferButton;
-}
-
-NumberSelect& GranularSettings::getPlayerCountNum()
-{
-    return playerCountNum;
-}
-
-NumberSelect& GranularSettings::getPlayerSelectNum()
-{
-    return playerSelectNum;
 }
 
 Button& GranularSettings::getOpenBufferButton()
@@ -127,5 +106,10 @@ void GranularSettings::removeSliderListener(Slider::Listener* listener)
 int GranularSettings::getPlayerCount()
 {
     return playerCountNum.getValue();
+}
+
+void GranularSettings::setPlayerNum(float val)
+{
+    playerSelectNum.setValue(val, sendNotification);
 }
 

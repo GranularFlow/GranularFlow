@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    BounceSettings.h
-    Created: 16 Feb 2023 7:29:50pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <JuceHeader.h>
 #include "../../../Utils/Constants.h"
@@ -58,9 +48,9 @@ public:
 private:
     // ----------------------------------------
     // Knobs
-    Knob ballSpeedKnob{ "BALL SPEED", C_BARARED, 0, 100, 1, 60, false };
-    Knob rateKnob{ "RATE", C_MARTINA, 1, 20, 1, 2, false };
-    Knob depthKnob{ "DEPTH", C_RADIANTYELLOW, 0, 1, 0.1, 0.5, false };
+    Knob ballSpeedKnob{ "BALL SPEED", C_MARTINA, 0, 100, 1, 60, false };
+    Knob rateKnob{ "RATE", C_SUNFLOWER, 0.1, 20, 0.1, 2, false };
+    Knob depthKnob{ "DEPTH", C_BILLS, 0, 1, 0.001, 0.5, false };
     // ----------------------------------------
     // Buttons
     RadioBox coordinateRadioBox{ "DIRECTION", C_ENERGOS, COORDINATE };

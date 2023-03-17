@@ -39,14 +39,11 @@ void BounceSettings::resized()
             FlexBox::JustifyContent::spaceAround
     };
 
-    int tmpWidth = getWidth() * 1 / 6 * 0.85;
-    int tmpHeight = getHeight() * 0.85;
-
-    Utils::addToFb(&fb, ballSpeedKnob, 1, tmpWidth, tmpHeight);
-    Utils::addToFb(&fb, rateKnob, 3, tmpWidth, tmpHeight);
-    Utils::addToFb(&fb, depthKnob, 5, tmpWidth, tmpHeight);
-    Utils::addToFb(&fb, clearButton, 7, tmpWidth, tmpHeight);
-    Utils::addToFb(&fb, startButton, 9, tmpWidth, tmpHeight);
+    Utils::addToFb(&fb, ballSpeedKnob, 1, 110, getHeight());
+    Utils::addToFb(&fb, rateKnob, 3, 110, getHeight());
+    Utils::addToFb(&fb, depthKnob, 5, 110, getHeight());
+    Utils::addToFb(&fb, clearButton, 7, 95, 60);
+    Utils::addToFb(&fb, startButton, 9, 95, 60);
 
     // Separators
     for (int i = 0; i < separators.size(); i++)

@@ -43,12 +43,7 @@ void WavetableLFO::resized()
     canvas3.setBounds(getLocalBounds().withTrimmedLeft(margin + (W_WIDTH * 2 / 4)).withTrimmedTop(100).withTrimmedBottom(getHeight() / 2).withTrimmedRight(margin + (W_WIDTH * 1 / 4)));
     canvas4.setBounds(getLocalBounds().withTrimmedLeft(margin + (W_WIDTH * 3 / 4)).withTrimmedTop(100).withTrimmedBottom(getHeight() / 2).withTrimmedRight(margin));
 
-    settings.setBounds(getLocalBounds()
-        .withTrimmedTop((getHeight()* 2/3) * 1.01)
-        .withTrimmedLeft(getWidth() * 0.01)
-        .withTrimmedRight(getWidth() * 0.01)
-        .withTrimmedBottom(getWidth() * 0.01)
-    );
+    settings.setBounds(SETTINGS_SIZE.withSizeKeepingCentre(600, 220));
 }
 
 void WavetableLFO::buttonClicked(Button* button)

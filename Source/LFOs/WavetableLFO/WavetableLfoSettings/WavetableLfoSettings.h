@@ -15,10 +15,11 @@ public:
         CUBIC,
         HERMITE
     };
-
+    // ------------------
     // Class
 	WavetableLfoSettings();
 	~WavetableLfoSettings();
+    // ------------------
     // GUI
     void paint(Graphics& graphics) override;
     void resized() override;
@@ -41,10 +42,10 @@ public:
 
 private:
     // Settings
-    Knob rateKnob{ "RATE", C_SUNFLOWER, 1, 20, 1, 10, false };
-    Knob depthKnob{ "DEPTH", C_SUNFLOWER, 0, 1, 0.1, 0.5, false };
-    Knob waveCountKnob{ "WAVE COUNT", C_SUNFLOWER, 2, 10, 2, 6, false };
-    Knob incrementKnob{ "INCREMENT", C_SUNFLOWER, 1, 59, 0.1, 40, false };
+    Knob rateKnob{ "RATE", C_MARINE, 0.1, 20, 0.1, 10, false };
+    Knob depthKnob{ "DEPTH", C_RADIANTYELLOW, 0, 1, 0.1, 0.5, false };
+    Knob waveCountKnob{ "WAVE COUNT", C_ENERGOS, 2, 10, 2, 6, false };
+    Knob incrementKnob{ "INCREMENT", C_BARARED, 1, 59, 0.1, 40, false };
 
     // GUI
     Colour guiColour;

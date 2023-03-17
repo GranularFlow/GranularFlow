@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    AdditiveVisualiser.cpp
-    Created: 1 Feb 2023 11:15:23pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "AdditiveVisualiser.h"
 
 AdditiveVisualiser::AdditiveVisualiser():AudioVisualiserComponent (2)

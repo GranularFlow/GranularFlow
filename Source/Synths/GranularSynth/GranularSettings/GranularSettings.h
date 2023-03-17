@@ -35,6 +35,9 @@ public:
     // Get
     int getPlayerCount();
     // -----------------------
+    // Set
+    void setPlayerNum(float);
+    // -----------------------
     // Tools
     void enablePlayers();
     bool isPlayerCountSlider(Slider*);
