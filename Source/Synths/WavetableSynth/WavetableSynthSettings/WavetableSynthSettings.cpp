@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    WavetableSynthSettings.cpp
-    Created: 3 Feb 2023 12:46:01pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "WavetableSynthSettings.h"
 
 
@@ -136,9 +126,4 @@ bool WavetableSynthSettings::isWaveCountKnobSlider(Slider* slider)
 bool WavetableSynthSettings::isFreqKnobSlider(Slider* slider)
 {
     return freqKnob.isCurrentSlider(slider);
-}
-
-Knob& WavetableSynthSettings::getWaveCountKnob()
-{
-    return waveCountKnob;
 }

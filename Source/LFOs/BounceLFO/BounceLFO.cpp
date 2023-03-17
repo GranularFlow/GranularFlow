@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    BounceLFO.cpp
-    Created: 16 Feb 2023 7:29:42pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "BounceLFO.h"
 
 BounceLFO::BounceLFO()
@@ -21,7 +11,6 @@ BounceLFO::~BounceLFO()
 {
     settings.removeButtonsListener(this);
 }
-
 
 void BounceLFO::paint(Graphics& g)
 {

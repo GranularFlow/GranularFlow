@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    ColorLFO.h
-    Created: 8 Feb 2023 4:43:34pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <JuceHeader.h>
 #include "../../Utils/Utils.h"
@@ -45,9 +35,11 @@ public:
     int getTimerHz();
     bool isImageSet();
     bool isTimerSlider(Slider*);
+    // ----------------------------------------
 private:    
+    // ----------------------------------------
     LfoSettings settings;
     ImageHandler imageHandler;
-
+    // ----------------------------------------
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ColorLFO);
 };

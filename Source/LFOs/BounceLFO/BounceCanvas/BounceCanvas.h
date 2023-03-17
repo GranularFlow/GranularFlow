@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    BounceCanvas.h
-    Created: 16 Feb 2023 7:29:57pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <JuceHeader.h>
 #include "../../../Utils/Constants.h"
@@ -41,6 +31,6 @@ private:
     Point<float> nextPosition = { 500.0, 200.0 };
     Point<float> positionVector = { 2.0, 2.0 };
     Point<float> colision = { 2.0, 2.0 };
-
+    // ----------------------------------------
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BounceCanvas);
 };

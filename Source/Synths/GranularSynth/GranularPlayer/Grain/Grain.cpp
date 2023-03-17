@@ -1,24 +1,9 @@
-/*
-  ==============================================================================
-
-    Grain.cpp
-    Created: 21 Nov 2022 7:52:09pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "Grain.h"
 
 
-Grain::Grain() {
+Grain::Grain() {}
 
-}
-
-Grain::~Grain()
-{
-    
-}
+Grain::~Grain() {}
 
 int Grain::getCurrentPosition()
 {
@@ -29,6 +14,7 @@ int Grain::getLengthInSamples()
 {
     return lengthInSamples;
 }
+
 bool Grain::isSkipped()
 {
     return toSkip;

@@ -1,16 +1,7 @@
-/*
-  ==============================================================================
-
-    AudioLoad.cpp
-    Created: 17 Nov 2022 4:31:35pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "AudioLoad.h"
 
-AudioLoad::AudioLoad() {
+AudioLoad::AudioLoad() 
+{
 }
 AudioLoad::~AudioLoad()
 {

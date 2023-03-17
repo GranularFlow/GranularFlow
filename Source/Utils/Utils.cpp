@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    Utils.cpp
-    Created: 18 Nov 2022 2:08:09pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "Utils.h"
 
 
@@ -46,6 +36,21 @@ int Utils::secToSamples(float timeInSec, int sampleRate) {
     return std::round(sampleRate * timeInSec);
 }
 
+float Utils::msToHz(float ms)
+{
+    return 1000.f / ms;
+}
+
+float Utils::hzToMs(float hz)
+{
+    return 1000.f / hz;
+}
+
+float Utils::msToS(double ms)
+{
+    return ms / (float)1000;
+}
+
 double Utils::degToRad(double phase)
 {
     return ((phase * PI) / (double)180);
@@ -76,10 +81,7 @@ void Utils::addToFb(FlexBox* fb, FlexItem i, int order, int minWidth, int minHei
 
 double Utils::interpolateLinear(double x, double x1, double x2, double y1, double y2)
 {
-    if ((x2 - x1) == 0) {
-        DBG("x2 " << x2 << " x1" << x1);
-    }
-    return y1 + ((x - x1) * ((y2 - y1) / (x2 - x1)));
+    return y1 + ( (x - x1) * ( (y2 - y1) / (x2 - x1)));
 }
 
 double Utils::interpolateCubic(double wantedX, Array<float>sampleY)

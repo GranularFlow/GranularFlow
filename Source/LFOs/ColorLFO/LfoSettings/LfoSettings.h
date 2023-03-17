@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    LfoSettings.h
-    Created: 8 Feb 2023 6:01:27pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <JuceHeader.h>
 #include "../../../Utils/Constants.h"
@@ -63,12 +53,14 @@ public:
 private:
     // ----------------------------------------
     RadioBox directionRadioBox{ "DIRECTION", C_BARARED, DIRECTION_MODE };
+    RadioBox colorSelectRadioBox{ "SELECTED COLOR", C_BARARED, SELECTED_COLOR };
+    // ----------------------------------------
     Knob rateKnob{ "RATE", C_BILLS, 1, 20, 1, 2, false };
     Knob depthKnob{ "DEPTH", C_BILLS, 0, 1, 0.001, 0.5, false };
-    RadioBox colorSelectRadioBox{ "SELECTED COLOR", C_BARARED, SELECTED_COLOR };
+    // ----------------------------------------
     TextButton uploadButton{ "UPLOAD" };
     // ----------------------------------------
     OwnedArray<Separator> separators;
-
+    // ----------------------------------------
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LfoSettings);
 };

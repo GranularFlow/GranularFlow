@@ -15,7 +15,7 @@ GranularFlowWrapper::GranularFlowWrapper()
     initGui();
     addAllListeners();
     makeWindowsIgnoreClicks();
-    startTimer(TIMER_TIME);
+    startTimer(TIMER_MS);
 }
 
 GranularFlowWrapper::~GranularFlowWrapper()
@@ -57,15 +57,15 @@ void GranularFlowWrapper::paintJacks(Graphics& g, int center, int circleRadius, 
     juce::Rectangle<int> rectL(center - circleRadius - jackWidht + 7, endY - 8, jackWidht, jackHeight);
     Path pathL;
     pathL.addRectangle(rectL.toFloat());
-    pathL.applyTransform(AffineTransform::rotation(-25.0 * MathConstants<double>::pi / 180.0, rectL.getCentre().toFloat().x, rectL.getCentre().toFloat().y));
+    pathL.applyTransform(AffineTransform::rotation(-30.0 * MathConstants<double>::pi / 180.0, rectL.getCentre().toFloat().x, rectL.getCentre().toFloat().y));
     juce::Rectangle<int> rectR(center + circleRadius - 7, endY - 8, jackWidht, jackHeight);
     Path pathR;
     pathR.addRectangle(rectR.toFloat());
-    pathR.applyTransform(AffineTransform::rotation(25.0 * MathConstants<double>::pi / 180.0, rectR.getCentre().toFloat().x, rectR.getCentre().toFloat().y));
+    pathR.applyTransform(AffineTransform::rotation(30.0 * MathConstants<double>::pi / 180.0, rectR.getCentre().toFloat().x, rectR.getCentre().toFloat().y));
 
     g.fillPath(pathL);
     g.fillPath(pathR);
-    g.fillRect(center - jackHeight / 2, endY - circleRadius - jackWidht + 3, jackHeight, jackWidht);
+    g.fillRect(center - jackHeight / 2, endY - circleRadius - jackWidht + 3-20, jackHeight, jackWidht);
 }
 
 void GranularFlowWrapper::paintCables(Graphics& g, int winWidth, int space, int startY, int endY, int center, int circleRadius)
@@ -91,37 +91,16 @@ void GranularFlowWrapper::paintCables(Graphics& g, int winWidth, int space, int 
     cableAdditive.cubicTo(center + circleRadius, endY - 6, startX + 64, endY + 200, startX - 6, startY);
     cableAdditive.closeSubPath();
 
+    //ValueType initialX, ValueType initialY,ValueType width, ValueType height
 
-    startX = 286;
-    startY = 550;
-    cableColorLfo.startNewSubPath(startX, startY);
-    cableColorLfo.lineTo(startX, startY + 140);
-    cableColorLfo.lineTo(startX + 12, startY + 140);
-    cableColorLfo.lineTo(startX + 12, startY);
-    cableColorLfo.closeSubPath();
+    cableColorLfo = juce::Rectangle<float>(278, 540, 30.f, 30.f);
+    cableBounceLfo = juce::Rectangle<float>(484, 540, 30.f, 30.f);
+    cableMathLfo = juce::Rectangle<float>(690, 540, 30.f, 30.f);
+    cableWavetableLfo = juce::Rectangle<float>(896 , 540, 30.f, 30.f);
 
-    startX += 206;
-    cableBounceLfo.startNewSubPath(startX, startY);
-    cableBounceLfo.lineTo(startX, startY + 140);
-    cableBounceLfo.lineTo(startX + 12, startY + 140);
-    cableBounceLfo.lineTo(startX + 12, startY);
-    cableBounceLfo.closeSubPath();
+    //550 az 625
 
-    startX += 206;
-    cableMathLfo.startNewSubPath(startX, startY);
-    cableMathLfo.lineTo(startX, startY + 140);
-    cableMathLfo.lineTo(startX + 12, startY + 140);
-    cableMathLfo.lineTo(startX + 12, startY);
-    cableMathLfo.closeSubPath();
-
-    startX += 206;
-    cableWavetableLfo.startNewSubPath(startX, startY);
-    cableWavetableLfo.lineTo(startX, startY + 140);
-    cableWavetableLfo.lineTo(startX + 12, startY + 140);
-    cableWavetableLfo.lineTo(startX + 12, startY);
-    cableWavetableLfo.closeSubPath();
-
-    Colour colorOn = VUT_COLOR.darker(0.1);
+    Colour colorOn = C_ANDROID;
 
     if (processWavetable) { g.setColour(colorOn); }
     else { g.setColour(C_GRAY); }
@@ -135,20 +114,21 @@ void GranularFlowWrapper::paintCables(Graphics& g, int winWidth, int space, int 
     else { g.setColour(C_GRAY); }
     g.fillPath(cableAdditive);
 
-    colorOn = C_ANDROID;
-
     if (processColorLfo) { g.setColour(colorOn); }
     else { g.setColour(C_GRAY); }
-    g.fillPath(cableColorLfo);
+    g.fillRoundedRectangle(cableColorLfo, cableColorLfo.getHeight()/2.f);
+
     if (processBounceLfo) { g.setColour(colorOn); }
     else { g.setColour(C_GRAY); }
-    g.fillPath(cableBounceLfo);
+    g.fillRoundedRectangle(cableBounceLfo, cableBounceLfo.getHeight() / 2.f);
+
     if (processMathLfo) { g.setColour(colorOn); }
     else { g.setColour(C_GRAY); }
-    g.fillPath(cableMathLfo);
+    g.fillRoundedRectangle(cableMathLfo, cableMathLfo.getHeight() / 2.f);
+
     if (processWavetableLfo) { g.setColour(colorOn); }
     else { g.setColour(C_GRAY); }
-    g.fillPath(cableWavetableLfo);
+    g.fillRoundedRectangle(cableWavetableLfo, cableWavetableLfo.getHeight() / 2.f);
 }
 
 void GranularFlowWrapper::paint(Graphics&g)
@@ -170,19 +150,19 @@ void GranularFlowWrapper::paint(Graphics&g)
     int circleRadius = 60;
 
     // Cables
-    paintCables(g, winWidth, space, startY, endY, center, circleRadius);
+    paintCables(g, winWidth, space, startY, endY + 20, center, circleRadius);
     // Jacks
-    paintJacks(g, center, circleRadius, endY);
+    paintJacks(g, center, circleRadius, endY+20);
     // Middle Circle
-    g.setColour(VUT_COLOR.darker(0.1));
-    g.fillRoundedRectangle(center - circleRadius, endY - circleRadius, circleRadius*2, circleRadius*2, circleRadius);
+    g.setColour(L_GRAY);
+    g.fillRoundedRectangle(center - circleRadius, endY - circleRadius, circleRadius * 2, circleRadius * 2, circleRadius);
 
-    const Image tLogo = ImageFileFormat::loadFrom(BinaryData::t_png, BinaryData::t_pngSize);
-    g.drawImageWithin(tLogo, center-2 - circleRadius/2, endY+5 - circleRadius/2, circleRadius, circleRadius, RectanglePlacement::centred, false);
+    const Image tLogo = ImageFileFormat::loadFrom(BinaryData::wave_png, BinaryData::wave_pngSize);
+    g.drawImageWithin(tLogo, center - 30, endY - 30, circleRadius, circleRadius, RectanglePlacement::centred, false);
 
     // LFO Background
     g.setColour(L_GRAY);
-    juce::Rectangle<float> lfoRect = getLocalBounds().withSize(820, 140).withCentre(Point<int>(getWidth() / 2, 620)).toFloat();
+    juce::Rectangle<float> lfoRect = getLocalBounds().withSize(820, 155).withCentre(Point<int>(getWidth() / 2, 615)).toFloat();
     g.drawRoundedRectangle(lfoRect, getHeight() * 0.01, 2);
 }
 
@@ -201,24 +181,24 @@ void GranularFlowWrapper::resized()
     }
 
     // RESET SYNTH
-    wavetableSynthReset.setBounds(getLocalBounds().withSize(40, 40).withCentre(Point<int>(190, 150)));
-    granularSynthReset.setBounds(getLocalBounds().withSize(40, 40).withCentre(Point<int>(600, 150)));
-    additiveSynthReset.setBounds(getLocalBounds().withSize(40, 40).withCentre(Point<int>(1010, 150)));
+    wavetableSynthReset.setBounds(getLocalBounds().withSize(40, 40).withCentre(Point<int>(190, 110)));
+    granularSynthReset.setBounds(getLocalBounds().withSize(40, 40).withCentre(Point<int>(600, 110)));
+    additiveSynthReset.setBounds(getLocalBounds().withSize(40, 40).withCentre(Point<int>(1010, 110)));
     // GUI SYNTH
     wavetableSynthBox->setBounds(getLocalBounds().withSize(320, 180).withCentre(Point<int>(190, 180)));
     granularSynthBox->setBounds(getLocalBounds().withSize(320, 180).withCentre(Point<int>(600, 180)));
     additiveSynthBox->setBounds(getLocalBounds().withSize(320, 180).withCentre(Point<int>(1010, 180)));
 
     // RESET LFO
-    colorLfoReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(292, 605)));
-    bounceLfoReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(498, 610)));
-    mathLfoReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(704, 600)));
-    wavetableLfoReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(910, 600)));
+    colorLfoReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(292, 595)));
+    bounceLfoReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(498, 595)));
+    mathLfoReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(704, 595)));
+    wavetableLfoReset.setBounds(getLocalBounds().withSize(30, 30).withCentre(Point<int>(910, 595)));
     //GUI LFO
-    colorLfoBox->setBounds(getLocalBounds().withSize(185, 100).withCentre(Point<int>(292, 620)));
-    bounceLfoBox->setBounds(getLocalBounds().withSize(185, 100).withCentre(Point<int>(498, 620)));
-    mathLfoBox->setBounds(getLocalBounds().withSize(185, 100).withCentre(Point<int>(704, 620)));
-    wavetableLfoBox->setBounds(getLocalBounds().withSize(185, 100).withCentre(Point<int>(910, 620)));
+    colorLfoBox->setBounds(getLocalBounds().withSize(185, 105).withCentre(Point<int>(292, 630)));
+    bounceLfoBox->setBounds(getLocalBounds().withSize(185, 105).withCentre(Point<int>(498, 630)));
+    mathLfoBox->setBounds(getLocalBounds().withSize(185, 105).withCentre(Point<int>(704, 630)));
+    wavetableLfoBox->setBounds(getLocalBounds().withSize(185, 105).withCentre(Point<int>(910, 630)));
 }
 
 void GranularFlowWrapper::prepareToPlay(float sampleRate, int bufferSize)
@@ -425,26 +405,25 @@ void GranularFlowWrapper::mouseDown(const MouseEvent& e)
         processAdditive = !processAdditive;
         repaint();
     }
-    else if (cableColorLfo.contains(e.getPosition().toFloat(), 20.f))
+    else if (cableColorLfo.contains(e.getPosition().toFloat()) && !colorLfoBox->getBounds().contains(e.getPosition()))
     {
         processColorLfo = !processColorLfo;
         repaint();
     }
-    else if (cableBounceLfo.contains(e.getPosition().toFloat(), 20.f))
+    else if (cableBounceLfo.contains(e.getPosition().toFloat()) && !bounceLfoBox->getBounds().contains(e.getPosition()))
     {
         processBounceLfo = !processBounceLfo;
         repaint();
-        }
-    else if (cableMathLfo.contains(e.getPosition().toFloat(), 20.f))
+    }
+    else if (cableMathLfo.contains(e.getPosition().toFloat()) && !mathLfoBox->getBounds().contains(e.getPosition()))
     {
         processMathLfo = !processMathLfo;
         repaint();
-        }
-    else if (cableWavetableLfo.contains(e.getPosition().toFloat(), 20.f))
+    }
+    else if (cableWavetableLfo.contains(e.getPosition().toFloat()) && !wavetableLfoBox->getBounds().contains(e.getPosition()))
     {
         processWavetableLfo = !processWavetableLfo;
-        repaint();
-        
+        repaint();        
     }
     if (wavetableSynthBox->getBounds().contains(e.getPosition()))
     {        
@@ -489,7 +468,9 @@ void GranularFlowWrapper::setAllKnobs()
 
 }
 
-void GranularFlowWrapper::timerCallback() {
+void GranularFlowWrapper::timerCallback() 
+{
+    // TODO: 20x za sekundu cele, ne po 1/20s krok
 
     colorLfoTimer++;
     bounceLfoTimer++;
@@ -501,49 +482,49 @@ void GranularFlowWrapper::timerCallback() {
     colorRepaintTimer++;
     granularSynthVisualiserTimer++;
     
+    
 
-    if (colorLfoTimer * TIMER_TIME >= ((1000) / (float)colorLfo->getTimerHz()) && !colorLfo->knobPntrsEmpty() && colorLfo->isImageSet() && processColorLfo) {
+    if (colorLfoTimer * TIMER_MS >= Utils::msToHz(colorLfo->getTimerHz()) && !colorLfo->knobPntrsEmpty() && colorLfo->isImageSet() && processColorLfo) {
         colorLfo->timeCallback();
         colorLfoTimer = 0;
     }
 
-    if (bounceLfoTimer * TIMER_TIME >= ((1000) / (float)bounceLfo->getTimerHz()) && !bounceLfo->knobPntrsEmpty() && bounceLfo->getBallSpeed() != 0 && processBounceLfo) {
+    if (bounceLfoTimer * TIMER_MS >= Utils::msToHz(bounceLfo->getTimerHz()) && !bounceLfo->knobPntrsEmpty() && bounceLfo->getBallSpeed() != 0 && processBounceLfo) {
         bounceLfo->timeCallback();
         bounceLfoTimer = 0;
     }
 
-    if (mathLfoTimer * TIMER_TIME >= ((1000)/(float) mathLfo->getTimerHz()) && !mathLfo->knobPntrsEmpty() && processMathLfo) {
+    if (mathLfoTimer * TIMER_MS >= Utils::msToHz(mathLfo->getTimerHz()) && !mathLfo->knobPntrsEmpty() && processMathLfo && mathLfo->isValidExpression()) {
         mathLfo->timeCallback();
         mathLfoTimer = 0;
     }
 
-    if (wavetableLfoTimer * TIMER_TIME >= ((1000) / (float)wavetableLfo->getTimerHz()) && !wavetableLfo->knobPntrsEmpty() && !wavetableLfo->isEmpty() && processWavetableLfo){
+    if (wavetableLfoTimer * TIMER_MS >= Utils::msToHz(wavetableLfo->getTimerHz()) && !wavetableLfo->knobPntrsEmpty() && !wavetableLfo->isEmpty() && processWavetableLfo) {
         wavetableLfo->timeCallback();
         wavetableLfoTimer = 0;
     }
-
-    if (granularPlayerTimer * TIMER_TIME >= ((1000) /(float)30) && processGranular) {
+    //  GUI
+    if (colorRepaintTimer * TIMER_MS >= Utils::msToHz(30) && !colorLfo->knobPntrsEmpty() && colorLfo->isImageSet())
+    {
+        colorLfo->repaintCanvas();
+        colorRepaintTimer = 0;
+    }
+    
+    if (granularPlayerTimer * TIMER_MS >= Utils::msToHz(30) && processGranular) {
         granularSynth->movePositionCallback();
         granularPlayerTimer = 0;
     }
 
-    if (granularSynthVisualiserTimer * TIMER_TIME >= ((1000) / (float)1)  &&  !granularSynth->isFileInput() && processGranular)
+    if (granularSynthVisualiserTimer * TIMER_MS >= Utils::msToHz(1) && !granularSynth->isFileInput() && processGranular)
     {
         granularSynth->setWaveCallback();
         granularSynthVisualiserTimer = 0;
     }
 
-    if (bounceBallTimer * TIMER_TIME >= ((1000) / (float)bounceBallSpeed) && !bounceLfo->knobPntrsEmpty() && bounceLfo->getBallSpeed() != 0) {
+    if (bounceBallTimer * TIMER_MS >= Utils::msToHz(bounceBallSpeed) && !bounceLfo->knobPntrsEmpty() && bounceLfo->getBallSpeed() != 0) {
         bounceLfo->moveBall();
         bounceBallTimer = 0;
-    }  
-
-    if (colorRepaintTimer * TIMER_TIME >= ((1000) / (float)30) && !colorLfo->knobPntrsEmpty() && colorLfo->isImageSet())
-    {        
-        colorLfo->repaintCanvas();
-        colorRepaintTimer = 0;
     }
-
     
 }
 

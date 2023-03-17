@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    WavetableLFO.cpp
-    Created: 3 Feb 2023 12:45:49pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "WavetableLFO.h"
 
 
@@ -190,7 +180,7 @@ int WavetableLFO::getTimerHz() {
 
 double WavetableLFO::getNext()
 {
-
+    // TODO: use wavetable code
     totalPosition = fmod((currentPosition * settings.getIncrement()), sampleY.size());
 
     if (totalPosition < 0)

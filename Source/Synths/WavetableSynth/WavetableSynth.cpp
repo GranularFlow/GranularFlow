@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    WavetableSynth.cpp
-    Created: 3 Feb 2023 12:45:49pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "WavetableSynth.h"
 
 
@@ -78,13 +68,20 @@ void WavetableSynth::buttonClicked(Button* button)
     }
 }
 
+int WavetableSynth::getTotalSampleCount()
+{
+    return sampleY.size();
+}
+
 void WavetableSynth::calculateIncrement()
 {
-    increment = wavetableSettings.getFreq() / (double)440;
+    increment = wavetableSettings.getFreq() * getTotalSampleCount() /(float) SAMPLE_RATE;
 }
 
 void WavetableSynth::initSamples()
 {
+    currentPosition = 0;
+    sampleY.clear();
     // samples from canvas1 to canvas2
     // canvas 1 samples
     for (int i = 0; i < canvas1.waveTableSamples.size(); i++)
@@ -162,12 +159,6 @@ void WavetableSynth::initSamples()
     {
         sampleY.add(canvas3.waveTableSamples[i]);
     }
-
-
-    for (size_t i = 0; i < sampleY.size(); i++)
-    {
-        DBG("x: " << i << " y:" << sampleY[i]);
-    }
 }
 
 void WavetableSynth::prepareToPlay(float sampleRateIn, int bufferSizeIn)
@@ -198,20 +189,12 @@ void WavetableSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& 
     for (int i = 0; i < bufferToFill.getNumSamples(); i++)
     {   
      
-        totalPosition = fmod((currentPosition * increment), sampleY.size());
-        if (totalPosition < 0)
-        {
-            totalPosition = sampleY.size() - fmod(abs(totalPosition), sampleY.size());
-        }
-
-        if (totalPosition > sampleY.size() || totalPosition + 2 > sampleY.size())
-        {
-            totalPosition = fmod(totalPosition, sampleY.size());
-        }
+        
+        totalPosition = currentPosition;
 
         if (wavetableSettings.isCurrentInterpolationType(WavetableSynthSettings::LINEAR))
         {
-           finalSample = Utils::interpolateLinear(totalPosition, (int)std::floor(totalPosition) % sampleY.size(), (int)std::ceil(totalPosition + 1) % sampleY.size(), sampleY[(int)std::floor(totalPosition) % sampleY.size()], sampleY[(int)std::ceil(totalPosition + 1) % sampleY.size()]);
+           finalSample = Utils::interpolateLinear((int)totalPosition, (int)std::floor(totalPosition) % sampleY.size(), (int)std::ceil(totalPosition + 1) % sampleY.size(), sampleY[(int)std::floor(totalPosition) % sampleY.size()], sampleY[(int)std::ceil(totalPosition + 1) % sampleY.size()]);
 
         }
         else if (wavetableSettings.isCurrentInterpolationType(WavetableSynthSettings::CUBIC))
@@ -231,7 +214,9 @@ void WavetableSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& 
 
         leftChannel[i] += (finalSample * wavetableSettings.getVolume() * wavetableSettings.getPan(0));
         rightChannel[i] += (finalSample * wavetableSettings.getVolume() * wavetableSettings.getPan(1));
-        currentPosition++;
+
+        currentPosition = fmod((currentPosition + increment), sampleY.size());
+        //currentPosition++;
     }   
 }
 
@@ -245,7 +230,7 @@ void WavetableSynth::handleMidi(MidiBuffer& midiMessages)
     {
         midiNoteOn = true;
         lastMidiNote = midiMsg.getNoteNumber();
-        increment = std::powf(2.f, (midiMsg.getNoteNumber() - 69.f) / 12.f);
+        increment = midiMsg.getMidiNoteInHertz(lastMidiNote,440)/(float)440;
     }
     else if (midiMsg.isNoteOff() && midiMsg.getNoteNumber() == lastMidiNote)
     {

@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    WavetableLfoSettings.h
-    Created: 3 Feb 2023 12:46:01pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <JuceHeader.h>
 #include "../../../Utils/Constants.h"

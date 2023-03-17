@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    AdditiveHarmonic.h
-    Created: 1 Feb 2023 11:01:49pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <JuceHeader.h>
 #include "AdditiveHarmonicSettings/AdditiveHarmonicSettings.h"

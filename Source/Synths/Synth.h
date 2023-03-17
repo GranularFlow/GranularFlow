@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    Synth.h
-    Created: 3 Mar 2023 8:00:12pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <JuceHeader.h>
 #include "../CustomComponents/CustomLooks/Knob.h"

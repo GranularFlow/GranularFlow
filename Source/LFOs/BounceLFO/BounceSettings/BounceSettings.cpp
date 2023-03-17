@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    BounceSettings.cpp
-    Created: 16 Feb 2023 7:29:50pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "BounceSettings.h"
 
 
@@ -52,13 +42,12 @@ void BounceSettings::resized()
     int tmpWidth = getWidth() * 1 / 6 * 0.85;
     int tmpHeight = getHeight() * 0.85;
 
-    /*Array<Component&> items;
-    items.add(ballSpeedKnob, rateKnob,depthKnob, coordinateRadioBox, clearButton, startButton);
-    Utils::addMultipleToFb(&fb, items, tmpWidth, tmpHeight, 1, true);
-    items.clear();
-    items.add(clearButton, startButton);
-    Utils::addMultipleToFb(&fb, items, tmpWidth, 60, 9, true);
-    */
+    Utils::addToFb(&fb, ballSpeedKnob, 1, tmpWidth, tmpHeight);
+    Utils::addToFb(&fb, rateKnob, 3, tmpWidth, tmpHeight);
+    Utils::addToFb(&fb, depthKnob, 5, tmpWidth, tmpHeight);
+    Utils::addToFb(&fb, clearButton, 7, tmpWidth, tmpHeight);
+    Utils::addToFb(&fb, startButton, 9, tmpWidth, tmpHeight);
+
     // Separators
     for (int i = 0; i < separators.size(); i++)
     {

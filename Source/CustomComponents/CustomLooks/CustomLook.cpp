@@ -1,18 +1,8 @@
-/*
-  ==============================================================================
-
-    KnobDraw.cpp
-    Created: 22 Nov 2022 10:25:16pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "CustomLook.h"
 
 CustomLook::CustomLook() {}
-CustomLook::~CustomLook() {}
 
+CustomLook::~CustomLook() {}
 
 void CustomLook::drawPopupMenuItem(Graphics& g, const Rectangle<int>& area, const bool isSeparator, const bool isActive, const bool isHighlighted, const bool isTicked, const bool hasSubMenu, const String& text, const String& shortcutKeyText, const Drawable* icon, const Colour* textColourToUse)
 {
@@ -214,7 +204,7 @@ void CustomLook::drawTickBox(Graphics& g, Component& component, float x, float y
     Rectangle<float> tickBounds(x + (w * 0.25 / 2), y + (h * 0.25 / 2), w * 0.75, h * 0.75);
 
     g.setColour(C_VL_GRAY);
-    g.drawEllipse(tickBounds, 2.5f);
+    g.drawEllipse(tickBounds, 1.5f);
 
     if (ticked)
     {

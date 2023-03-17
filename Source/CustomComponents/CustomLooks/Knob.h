@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    RadioBox.h
-    Created: 15 Nov 2022 1:29:12am
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <JuceHeader.h>
 #include "../../Utils/Constants.h"
@@ -35,38 +25,44 @@ public:
         comboBox->setSelectedId(1);
         knobListenerPntr = nullptr;
     }
-
+    // ----------------------
     Listener* knobListenerPntr = nullptr;
     // -----------------------------------
-
     // Class
     Knob(String, Colour, float, float, float, float, bool);
     ~Knob();
+    // ----------------------
     // GUI
     void paint(Graphics&) override;
     void resized() override;    
+    // ----------------------
     // Listeners
     void addSliderListener(Slider::Listener*);
     void removeSliderListener(Slider::Listener*);
+    // --- ComboBox
     void comboBoxChanged(ComboBox*) override;
+    // ----------------------
     // Setters
     void setValue(float);
     void setDefaultValue();
     void setLfoValue(float);
+    // ----------------------
     // Getters
     float getValue();
+    // ----------------------
     // Tools
     bool isCurrentSlider(Slider*);
     Slider& getSlider();
 
 private:
+    // ----------------------
     CustomLook customLook;
-    std::unique_ptr<ComboBox> comboBox;   
-
+    // ----------------------
     String name;
     Colour guiColor;
     int lastSelectedLFO = 0;
-    float defaultValue;
-
+    float defaultValue = 0;
+    std::unique_ptr<ComboBox> comboBox;
+    // ---------------------- 
     Slider slider{ Slider::SliderStyle::RotaryHorizontalDrag, Slider::TextEntryBoxPosition::TextBoxBelow };
 };

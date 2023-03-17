@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    Canvas.cpp
-    Created: 3 Feb 2023 1:46:11pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "WavetableLfoCanvas.h"
 
 WavetableLfoCanvas::WavetableLfoCanvas(String textIn)

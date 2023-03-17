@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    CustomClickableBox.cpp
-    Created: 22 Feb 2023 8:25:22pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "CustomClickableBox.h"
 
 CustomClickableBox::CustomClickableBox(Colour colorIn, String textIn, bool fullSizeIn)
@@ -29,14 +19,8 @@ void CustomClickableBox::paint(Graphics& g)
 
     Rectangle<int> boxSize = getLocalBounds().withSize(width, height * 0.3f).withCentre(Point<int>(width / 2, height - (height * 0.3f)/(float)2.f));
 
-    if (fullSize)
-    {
-        g.setColour(color);
-    }
-    else
-    {
-        g.setColour(L_GRAY);
-    }
+    g.setColour(L_GRAY);
+    if (fullSize){ g.setColour(color); }
     
     g.fillRoundedRectangle(getLocalBounds().withSizeKeepingCentre(width, height).toFloat(), cornerSize);
     g.setColour(color);
@@ -64,7 +48,7 @@ void CustomClickableBox::paint(Graphics& g)
     }
     else
     {
-        g.setFont(Font("Oswald", boxSize.getHeight() * 0.8, 0));
-        g.drawFittedText(text, boxSize, Justification::centred, 1);
+        g.setFont(Font("Oswald", boxSize.getHeight(), 0));
+        g.drawText(text, boxSize, Justification::centred, false);
     }    
 }

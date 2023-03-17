@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    WavetableLfoVisualiser.cpp
-    Created: 5 Feb 2023 2:53:14pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "WavetableLfoVisualiser.h"
 
 WavetableLfoVisualiser::WavetableLfoVisualiser()

@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    Wrapper.h
-    Created: 21 Feb 2023 3:43:03pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <JuceHeader.h>
 #include "../Utils/Constants.h"
@@ -47,7 +37,7 @@ public:
     void reseted(ResetButton*)override;
     void setKnobToLfo(Knob*, int)override;
     void removeKnobFromLfo(Knob*, int)override;
-    void timerCallback()override;
+    void timerCallback();
     // ----------------------
     // Tools
     void initGui();
@@ -69,14 +59,15 @@ private:
     int bounceLfoTimer = 0;
     int mathLfoTimer = 0;
     int wavetableLfoTimer = 0;
-    // move cursor
+    // CursorMovement
     int granularPlayerTimer = 0;
+    // Visualiser repaint
     int granularSynthVisualiserTimer = 0;
-    // move ball
+    // Bounce ball movement
     int bounceBallTimer = 0;
-    // repaint colorLFO
+    // ColorLFO repaint
     int colorRepaintTimer = 0;
-    // Timer speed tracking
+    // Ball speed repaint
     int bounceBallSpeed = 10;
     // -------------------------------------------------------
     // PROCESS
@@ -89,10 +80,10 @@ private:
     bool processGranular = false;
     bool processAdditive = false;
     // ----------------------
-    Path cableColorLfo;
-    Path cableBounceLfo;
-    Path cableMathLfo;
-    Path cableWavetableLfo;
+    juce::Rectangle<float> cableColorLfo;
+    juce::Rectangle<float> cableBounceLfo;
+    juce::Rectangle<float> cableMathLfo;
+    juce::Rectangle<float> cableWavetableLfo;
     // ----------------------
     bool processColorLfo = false;
     bool processBounceLfo = false;
@@ -118,9 +109,9 @@ private:
     ResetButton granularSynthReset;
     ResetButton additiveSynthReset;
     // ----------------------
-    Component::SafePointer<Component> wavetableSynthBox = new CustomClickableBox(C_MARINE, "WAVETABLE SYNTH", false);
-    Component::SafePointer<Component> granularSynthBox = new CustomClickableBox(C_BILLS, "GRANULAR SYNTH", false);
-    Component::SafePointer<Component> additiveSynthBox = new CustomClickableBox(C_ANDROID, "ADDITIVE SYNTH", false);
+    Component::SafePointer<Component> wavetableSynthBox = new CustomClickableBox(C_MARINE, "WAVETABLE", false);
+    Component::SafePointer<Component> granularSynthBox = new CustomClickableBox(C_BILLS, "GRANULAR", false);
+    Component::SafePointer<Component> additiveSynthBox = new CustomClickableBox(C_ANDROID, "ADDITIVE", false);
     // -------------------------------------
     // LFO
     ResetButton colorLfoReset;
@@ -128,10 +119,10 @@ private:
     ResetButton mathLfoReset;
     ResetButton wavetableLfoReset;
     // ----------------------
-    Component::SafePointer<Component> colorLfoBox = new CustomClickableBox(C_MARINE, "COLOR LFO", false);
-    Component::SafePointer<Component> bounceLfoBox = new CustomClickableBox(C_BILLS, "BOUNCE LFO", false);
-    Component::SafePointer<Component> mathLfoBox = new CustomClickableBox(C_ANDROID, "MATH LFO", false);
-    Component::SafePointer<Component> wavetableLfoBox = new CustomClickableBox(C_ANDROID, "WAVETABLE LFO", false);
+    Component::SafePointer<Component> colorLfoBox = new CustomClickableBox(C_ANDROID.darker(0.15), "COLOR", false);
+    Component::SafePointer<Component> bounceLfoBox = new CustomClickableBox(C_SUNFLOWER.darker(0.15), "BOUNCE", false);
+    Component::SafePointer<Component> mathLfoBox = new CustomClickableBox(C_TURKISH_AQUA.brighter(0.15), "MATH", false);
+    Component::SafePointer<Component> wavetableLfoBox = new CustomClickableBox(C_PIGMENT.brighter(0.15), "WAVETABLE", false);
     // -------------------------------------
     // Abstract non-visible windows that open synths
     Array<Component::SafePointer<CustomWindow>> synthWindows;

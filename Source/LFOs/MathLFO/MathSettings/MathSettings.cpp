@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    MathSettings.cpp
-    Created: 20 Feb 2023 9:02:07pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "MathSettings.h"
 
 MathSettings::MathSettings()
@@ -16,10 +6,7 @@ MathSettings::MathSettings()
     addAndMakeVisible(depthKnob);
     addAndMakeVisible(textEditor);
     addAndMakeVisible(enterButton);
-
     textEditor.setJustification(Justification::horizontallyCentred);
-
-    
 }
 
 MathSettings::~MathSettings()
@@ -42,13 +29,10 @@ void MathSettings::resized()
             FlexBox::JustifyContent::spaceAround
     };
 
-    int tmpWidth = getWidth() * 1 / 5 * 0.85;
-    int tmpHeight = getHeight() * 0.85;
-
-    Utils::addToFb(&fb, rateKnob, 1, tmpWidth, tmpHeight);
-    Utils::addToFb(&fb, depthKnob, 3, tmpWidth, tmpHeight);
+    Utils::addToFb(&fb, rateKnob, 1, 195, 191);
+    Utils::addToFb(&fb, depthKnob, 3, 195, 191);
     Utils::addToFb(&fb, textEditor, 5, 300, 50);
-    Utils::addToFb(&fb, enterButton, 7, tmpWidth, 50);
+    Utils::addToFb(&fb, enterButton, 7, 195, 50);
 
     for (int i = 0; i < 2; i++)
     {
@@ -59,7 +43,7 @@ void MathSettings::resized()
     // White lines
     for (int i = 0; i < 2; i++)
     {
-        fb.items.add(FlexItem(*separators[i]).withMinWidth(1).withHeight(tmpHeight).withOrder((i + 1) * 2));
+        fb.items.add(FlexItem(*separators[i]).withMinWidth(1).withHeight(191).withOrder((i + 1) * 2));
     }
 
     fb.performLayout(getLocalBounds());

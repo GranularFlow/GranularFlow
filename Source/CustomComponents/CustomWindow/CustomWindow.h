@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    Window.h
-    Created: 21 Feb 2023 3:50:16pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <JuceHeader.h>
 #include "../../Utils/Constants.h"
@@ -16,12 +6,15 @@
 class CustomWindow : public DocumentWindow
 {
 public:
+    // ----------------
     // Class
     CustomWindow(String, Component*);
-
 	~CustomWindow();
+    // ----------------
+    // Tools
     void showWindow();
     void hideWindow();
     void closeButtonPressed()override;
 private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CustomWindow);
 };

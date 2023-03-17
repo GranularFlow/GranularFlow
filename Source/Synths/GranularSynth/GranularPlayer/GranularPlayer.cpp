@@ -31,7 +31,7 @@ void GranularPlayer::resized()
 
 void GranularPlayer::onCursorPositionChange(int cursorPositionIn)
 {    
-    cursorPosition = (int)(cursorPositionIn * totalSamples/100);
+    cursorPosition = (int)(cursorPositionIn * totalSamples/(float)100.f);
 }
 
 bool GranularPlayer::isCurrentRunningMode(PlayerSettings::RunningMode mode)

@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    LFO.h
-    Created: 1 Mar 2023 8:47:41pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <JuceHeader.h>
 #include "../CustomComponents/CustomLooks/Knob.h"

@@ -81,11 +81,8 @@ void PlayerSettings::resized() {
         FlexBox::JustifyContent::spaceAround
     };
 
-    float sectionWidth = (getWidth() * 0.9) / 3; //345
-    float sectionHeight = getHeight(); // 250
-
-    float tmpHeight = sectionHeight / 2; // 125
-    float tmpWidth = sectionWidth / 2; // 172
+    //float sectionWidth = (getWidth() * 0.9) / 3; //345
+    //float sectionHeight = getHeight(); // 250
     Utils::addToFb(&tmpFB, granularModeRadioBox, 1, 172, 125);
     Utils::addToFb(&tmpFB, runningModeRadioBox, 2, 172, 125);
     Utils::addToFb(&tmpFB, midiModeRadioBox, 3, 172, 125);
@@ -95,26 +92,24 @@ void PlayerSettings::resized() {
 
 
     //tmpHeight = 250;
-    sectionWidth = floor((2 /(float) 3) * (getWidth() / (float)6));
-    tmpWidth = sectionWidth;
-    Utils::addToFb(&tmpFB2, grainLengthKnob, 1, tmpWidth, tmpHeight);
-    Utils::addToFb(&tmpFB2, grainPitchKnob, 2, tmpWidth, tmpHeight);
-    Utils::addToFb(&tmpFB2, grainNumKnob, 3, tmpWidth, tmpHeight);
-    Utils::addToFb(&tmpFB2, grainOffsetKnob, 4, tmpWidth, tmpHeight);
+    Utils::addToFb(&tmpFB2, grainLengthKnob, 1, 125, 250);
+    Utils::addToFb(&tmpFB2, grainPitchKnob, 2, 125, 250);
+    Utils::addToFb(&tmpFB2, grainNumKnob, 3, 125, 250);
+    Utils::addToFb(&tmpFB2, grainOffsetKnob, 4, 125, 250);
 
     
-    Utils::addToFb(&tmpFB3, volumeKnob, 1, tmpWidth, tmpHeight);
-    Utils::addToFb(&tmpFB3, panKnob, 2, tmpWidth, tmpHeight);
+    Utils::addToFb(&tmpFB3, volumeKnob, 1, 125, 250);
+    Utils::addToFb(&tmpFB3, panKnob, 2, 125, 250);
 
     
-    Utils::addToFb(&fb, FlexItem(tmpFB2), 3, sectionWidth * 4, sectionHeight);
-    Utils::addToFb(&fb, FlexItem(tmpFB3), 5, sectionWidth * 2, sectionHeight);
+    Utils::addToFb(&fb, FlexItem(tmpFB2), 3, 500, 250);
+    Utils::addToFb(&fb, FlexItem(tmpFB3), 5, 250, 250);
 
 
     // White lines
     for (int i = 0; i < separators.size(); i++)
     {
-        Utils::addToFb(&fb, *separators[i], (i + 1) * 2, 1, sectionHeight);
+        Utils::addToFb(&fb, *separators[i], (i + 1) * 2, 1, 250);
     }
 
     fb.performLayout(getLocalBounds());

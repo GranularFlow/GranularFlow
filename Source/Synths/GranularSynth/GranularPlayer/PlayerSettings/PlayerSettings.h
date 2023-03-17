@@ -82,7 +82,7 @@ public:
 private:
     // ----------------------
     RadioBox granularModeRadioBox{ "MODE", C_MARINE, GRANULAR_MODE };
-    RadioBox runningModeRadioBox{ "CURSOR", C_LAVENDER, RUNNING_MODE };
+    RadioBox runningModeRadioBox{ "CURSOR", C_LAVENDER_ROSE, RUNNING_MODE };
     RadioBox midiModeRadioBox{ "MIDI", C_SUNFLOWER, MIDI_MODE };
     RadioBox windowTypeRadioBox{ "WINDOW", C_MEDITERRANEAN, WINDOW_TYPE };
     // ----------------------

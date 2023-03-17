@@ -1,27 +1,14 @@
-/*
-  ==============================================================================
-
-    MathLFO.cpp
-    Created: 20 Feb 2023 9:01:58pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "MathLFO.h"
 
 MathLFO::MathLFO()
 {
     addAndMakeVisible(visualiser);
-    addAndMakeVisible(settings);
-
-    settings.addRateListener(this);    
+    addAndMakeVisible(settings);   
     settings.addEnterListener(this);
 }
 
 MathLFO::~MathLFO()
 {
-    settings.removeRateListener(this);
     settings.removeEnterListener(this);
 }
 
@@ -33,9 +20,8 @@ void MathLFO::paint(Graphics& g)
 
 void MathLFO::resized()
 {
-    juce::Rectangle<int> settingsBounds = getLocalBounds().withSize(820, 180).withCentre(Point<int>(getWidth()/2, getHeight() - 110));
-    settings.setBounds(settingsBounds);
-    visualiser.setBounds(getLocalBounds().withSize(1000,400).withCentre(Point<int>(getWidth()/2, 200 + 60 )));
+    settings.setBounds(SETTINGS_SIZE);
+    visualiser.setBounds(getLocalBounds().withTrimmedLeft(25).withTrimmedRight(25).withTrimmedTop(TOP_BAR_HEIGHT + 10).withTrimmedBottom(SETTINGS_SIZE.getHeight() + 20));
 }
 
 void MathLFO::addTimerListener(Slider::Listener* listener)
@@ -50,7 +36,7 @@ void MathLFO::removeTimerListener(Slider::Listener* listener)
 
 void MathLFO::timeCallback()
 {
-    if (isValidExpression(expressionString))
+    if (isValidExpression() && !knobPntrsEmpty())
     {
         updateKnobs(std::abs(getNext()));
     }    
@@ -61,85 +47,68 @@ bool MathLFO::isTimerSlider(Slider* slider)
     return settings.isRateSlider(slider);
 }
 
-void MathLFO::sliderValueChanged(Slider* slider)
-{
-    if (settings.isRateSlider(slider))
-    {
-        if (isValidExpression(expressionString))
-        {
-            frequency = slider->getValue();
-            calculateDelta();
-        }
-    }
-    if (settings.isDepthSlider(slider))
-    {
-        if (isValidExpression(expressionString))
-        {
-            initSamples();
-        }
-    }
-}
-
 void MathLFO::buttonClicked(Button* button)
 {
     if (settings.isEnterButton(button))
     {        
-        std::string tmpExpressionString = settings.getText();
-
-        if (isValidExpression(tmpExpressionString))
+        if (isValidExpression(settings.getText()))
         {
-            calculateDelta();
-            expressionString = tmpExpressionString;
-            initSamples();
+            index = 0;
+            int sampleCount = 100;
+            initSamples(settings.getText(), sampleCount);
         }
     }
 }
 
-void MathLFO::calculateDelta()
+void MathLFO::initSamples(std::string expressionString, int sampleCount)
 {
-    delta = (2 * PI * frequency)/(float) 256;
-}
+    samples.clear();
+    double x = 0;
+    double pi = PI;
 
-double MathLFO::calculateEquation(double x) {
-    // Create expression and variables
     exprtk::parser<double> parser;
     exprtk::expression<double> expr;
     exprtk::symbol_table<double> symbolTable;
 
+    expr.register_symbol_table(symbolTable);
     symbolTable.add_variable("x", x);
-    symbolTable.add_constants();
-    expr.register_symbol_table(symbolTable);   
-    // Parse expression
-    // "sin(x) + 2 * cos(x)";
-    parser.compile(expressionString, expr);
-    return expr.value();
-}
+    symbolTable.add_constant("pi", pi);    
 
-void MathLFO::initSamples()
-{
-    samples.clear();
-    for (int i = 0; i < 256; i++)
+    for (int i = 0; i < sampleCount; i++)
     {
-        samples.add(getNext());
+        x = i * 0.1f;
+        parser.compile(expressionString, expr);
+        double val = 0.5f * sin(expr.value()) + 0.5f;
+        DBG(val);
+        samples.add(val);
     }
+
     visualiser.setSamples(samples);
+    index = 0;
 }
 
-int MathLFO::getTimerHz() {
+float MathLFO::getTimerHz() {
     return settings.getRate();
 }
 
 double MathLFO::getNext()
 {    
-    double output = calculateEquation(angle);
-    angle = fmod(angle + delta,(double) 2 * PI);
-    return output * settings.getDepth();
+    value = samples[index] * settings.getDepth();
+    index = std::fmod(index + 1, (float)samples.size());
+    return value;
+}
+
+bool MathLFO::isValidExpression()
+{
+    return validExp;
 }
 
 bool MathLFO::isValidExpression(const std::string& expression)
 {
+
     if (expression == "")
     {
+        validExp = false;
         return false;
     }
 
@@ -151,5 +120,6 @@ bool MathLFO::isValidExpression(const std::string& expression)
     tmpSymbol.add_variable("x", tmpX);
     tmpExpr.register_symbol_table(tmpSymbol);
 
-    return tmpParser.compile(expression, tmpExpr);
+    validExp = tmpParser.compile(expression, tmpExpr);
+    return validExp;
 }

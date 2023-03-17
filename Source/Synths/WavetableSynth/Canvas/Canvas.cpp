@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    Canvas.cpp
-    Created: 3 Feb 2023 1:46:11pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "Canvas.h"
 
 Canvas::Canvas(String textIn)
@@ -148,22 +138,16 @@ float Canvas::interpolateY(float x, float x1, float y1, float x2, float y2)
 }
 
 void Canvas::mouseUp(const MouseEvent& e)
-{
-    
+{    
     // Interpolate wavetable
     if (xPos.size() != waveTableSampleCount)
     {
         //Has to be defined, because each loop xPos size is larger thus infinite loop
         int size = xPos.size();
-
         for (int i = 1; i <= (waveTableSampleCount - size); i++)
         {
-            // Linear interpolation
-            // y = y1 + (x - x1) * ( y2 - y1) / ( x2 - x1 )
-            //DBG(" Interpolating x:" << xPos.getLast() + sampleDistance);
-            float x = xPos.getLast() + sampleDistance;
-            float y = interpolateY(x, xPos.getLast(), yPos.getLast(), getWidth(), yPos.getLast());
-            addPoint(x, y);
+            addPoint(xPos.getLast() + sampleDistance,
+                Utils::interpolateLinear(xPos.getLast() + sampleDistance, xPos.getLast(), getWidth(), yPos.getLast(), yPos.getLast()));
         }
     }
     convertPointsToAmplitude();
@@ -180,6 +164,5 @@ void Canvas::convertPointsToAmplitude()
 
 float Canvas::yValueToAmplitude(float yVal)
 {
-
     return jlimit(-1.f, 1.f, 1.f - ((2 * yVal) / getHeight()));
 }

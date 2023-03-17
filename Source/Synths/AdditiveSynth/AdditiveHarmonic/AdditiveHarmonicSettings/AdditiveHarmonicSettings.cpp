@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    AdditiveHarmonicsSettings.cpp
-    Created: 1 Feb 2023 10:20:17pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "AdditiveHarmonicSettings.h"
 
 AdditiveHarmonicSettings::AdditiveHarmonicSettings()

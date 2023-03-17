@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    GranularVisualiser.h
-    Created: 31 Oct 2022 10:49:50pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #pragma once
 
 #include <JuceHeader.h>
@@ -17,14 +7,18 @@
 class GranularVisualiser : public Component
 {
 public:
+    // -----------------------
     // Class
     GranularVisualiser();
 	~GranularVisualiser();
+    // -----------------------
     // GUI
     void paint(Graphics& g) override;
+    // -----------------------
     // Callbacks
     void setPntr(std::shared_ptr<RingBuffer>);
     void setWaveCallback();
+    // -----------------------
     // Setters
     void setWaveForm(AudioBuffer<float>&);
 

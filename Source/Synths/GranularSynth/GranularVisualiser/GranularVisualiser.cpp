@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    GranularVisualiser.cpp
-    Created: 31 Oct 2022 10:50:00pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "GranularVisualiser.h"
 
 GranularVisualiser::GranularVisualiser()

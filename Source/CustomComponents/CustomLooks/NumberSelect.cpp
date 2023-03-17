@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    NumberSelect.cpp
-    Created: 18 Nov 2022 2:11:13pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "NumberSelect.h"
 
 NumberSelect::NumberSelect(String nameIn, Colour guiColorIn, int startRangeIn, int endRangeIn, int stepIn, int initialValue)
@@ -75,11 +65,6 @@ void NumberSelect::removeListener(Slider::Listener* listener)
 bool NumberSelect::isCurrentSlider(Slider* currentSlider)
 {
     return currentSlider == &slider;
-}
-
-Slider& NumberSelect::getSlider()
-{
-    return slider;
 }
 
 void NumberSelect::paint(Graphics& g) {

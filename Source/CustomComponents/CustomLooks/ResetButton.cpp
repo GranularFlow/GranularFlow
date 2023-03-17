@@ -1,39 +1,8 @@
-/*
-  ==============================================================================
-
-    ResetButton.cpp
-    Created: 3 Mar 2023 11:52:26pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "ResetButton.h"
-
 
 ResetButton::ResetButton()
 {
-    addAndMakeVisible(reloadButton);
-
-    /*  
-    const bool resizeButtonNowToFitThisImage,
-    const bool rescaleImagesWhenButtonSizeChanges,
-    const bool preserveImageProportions,
-    const Image& normalImage_,
-
-    const float imageOpacityWhenNormal,
-    Colour overlayColourWhenNormal,
-    const Image& overImage_,
-
-    const float imageOpacityWhenOver,
-    Colour overlayColourWhenOver,
-    const Image& downImage_,
-
-    const float imageOpacityWhenDown,
-    Colour overlayColourWhenDown,
-    const float hitTestAlphaThreshold)
-    */
-    
+    addAndMakeVisible(reloadButton);    
 }
 
 ResetButton::~ResetButton()
@@ -52,8 +21,6 @@ void ResetButton::paint(Graphics& g)
 
 void ResetButton::resized()
 {
-    //reloadButton.setBounds(getLocalBounds().withSizeKeepingCentre(30, 30));
-    repaint();
 }
 
 void ResetButton::mouseDown(const MouseEvent& e)
@@ -63,7 +30,6 @@ void ResetButton::mouseDown(const MouseEvent& e)
         bgColor = M_LIGHT;
         repaint();
         resetPntr->reseted(this);
-
     }
 }
 

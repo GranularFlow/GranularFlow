@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    BounceLFO.h
-    Created: 16 Feb 2023 7:29:42pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <JuceHeader.h>
 #include <JuceHeader.h>
@@ -46,12 +36,14 @@ public:
     // ----------------------------------------
     // Get
     int getBallSpeed();
-    double getNext();
     int getTimerHz();
+    double getNext();
     bool isTimerSlider(Slider*);
     bool isBallSpeedSlider(Slider*);
 private:
+    // ----------------------------------------
     BounceSettings settings;
     BounceCanvas canvas;
+    // ----------------------------------------
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BounceLFO);
 };

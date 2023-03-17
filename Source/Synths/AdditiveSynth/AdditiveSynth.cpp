@@ -106,13 +106,9 @@ void AdditiveSynth::processBlock(AudioBuffer<float>& bufferToFill, juce::MidiBuf
     {
         harmonics[i]->processBlock(bufferToFill, midiMessages);
     }
+    // TODO: make less consuming -> use visuaiser 
+    visualiser.pushBuffer(bufferToFill);
 
-    counterPush++;
-    if (counterPush == 5)
-    {
-        visualiser.pushBuffer(bufferToFill); 
-        counterPush = 0;
-    }
 }
 
 void AdditiveSynth::prepareToPlay(float sampleRate, int bufferSize)

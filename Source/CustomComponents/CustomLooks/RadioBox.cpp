@@ -36,10 +36,10 @@ RadioBox::~RadioBox() {
 void RadioBox::paint(Graphics& g) {
 
     g.setColour(guiColor);
-    g.fillRect((getWidth() / 2) / 2, 0, (getWidth() / 2), 5);
+    g.fillRect((getWidth() / 4), 0, (getWidth() / 2), 5);
 
-    g.setColour(Colours::whitesmoke);
-    g.drawFittedText(name, getLocalBounds().withTrimmedTop(10).withTrimmedRight(getWidth() * 0.1).withTrimmedLeft(getWidth() * 0.1), Justification::centredTop, 1);
+    g.setColour(C_SMOKE);
+    g.drawFittedText(name, getLocalBounds().withTrimmedTop(10).withTrimmedRight(getWidth() * 0.05).withTrimmedLeft(getWidth() * 0.05), Justification::centredTop, 1);
 }
 
 void RadioBox::buttonStateChanged(Button* button)

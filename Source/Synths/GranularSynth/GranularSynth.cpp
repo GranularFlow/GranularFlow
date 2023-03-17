@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    GranularSynth.cpp
-    Created: 30 Oct 2022 2:15:25pm
-    Author:  honza
-
-  ==============================================================================
-*/
-
 #include "GranularSynth.h"
 
 GranularSynth::GranularSynth()
@@ -19,7 +9,7 @@ GranularSynth::GranularSynth()
 
     for (int i = 0; i < 3; i++)
     {
-        players.add(new GranularPlayer(144000, 48000));
+        players.add(new GranularPlayer(BUFFER_SAMPLES, SAMPLE_RATE));
         addChildComponent(players.getLast());
     }
 }

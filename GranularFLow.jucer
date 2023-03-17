@@ -35,7 +35,7 @@
         <GROUP id="{5515478B-6641-21C1-82E2-09D3E84EDF58}" name="Images">
           <FILE id="ZJdWmk" name="logo250.png" compile="0" resource="1" file="Source/CustomComponents/Images/logo250.png"/>
           <FILE id="ZD0PDe" name="reload.png" compile="0" resource="1" file="Source/CustomComponents/Images/reload.png"/>
-          <FILE id="SkO4Nr" name="t.png" compile="0" resource="1" file="Source/CustomComponents/Images/t.png"/>
+          <FILE id="R1kJZ0" name="wave.png" compile="0" resource="1" file="Source/CustomComponents/Images/wave.png"/>
         </GROUP>
       </GROUP>
       <GROUP id="{8B1E364F-F129-5066-2214-6EBCF7C77EFB}" name="GranularFlowWrapper">

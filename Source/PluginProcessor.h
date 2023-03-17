@@ -1,23 +1,10 @@
-/*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin processor.
-
-  ==============================================================================
-*/
-
 #pragma once
-
 #include <JuceHeader.h>
-
 #include "Utils/Constants.h"
 #include "Utils/Utils.h"
 #include "GranularFlowWrapper/GranularFlowWrapper.h"
 
 
-//==============================================================================
-/**
-*/
 class GranularFLowAudioProcessor  : public juce::AudioProcessor
                             #if JucePlugin_Enable_ARA
                              , public juce::AudioProcessorARAExtension
