@@ -239,8 +239,8 @@ void GranularFlowWrapper::sliderValueChanged(Slider* slider)
     }
     else if (bounceLfo->isBallSpeedSlider(slider))
     {
-        bounceBallSpeed = slider->getValue();
-        bounceBallTimer = 0;
+        bounceLfoRepaintTimer = slider->getValue();
+        bounceLfoBallMoveTimer = 0;
     }
 }
 
@@ -367,6 +367,7 @@ void GranularFlowWrapper::closeWindows()
 
 void GranularFlowWrapper::minimizeWindows()
 {
+    additiveBoxIsVisible = false;
     for (auto& window : synthWindows)
     {
         window->hideWindow();
@@ -429,6 +430,7 @@ void GranularFlowWrapper::mouseDown(const MouseEvent& e)
     }
     else if (additiveSynthBox->getBounds().contains(e.getPosition()))
     {
+        additiveBoxIsVisible = true;
         synthWindows[2]->showWindow();
         synthWindows[2]->toFront(true);
     }
@@ -468,9 +470,10 @@ void GranularFlowWrapper::timerCallback()
     wavetableLfoTimer++; 
     // gui
     granularPlayerTimer++;
-    bounceBallTimer++;
-    colorRepaintTimer++;
-    granularSynthVisualiserTimer++;
+    bounceLfoBallMoveTimer++;
+    colorLfoRepaintTimer++;
+    granularRepaintTimer++;
+    additiveRepaintTimer++;
 
     if (colorLfoTimer * TIMER_MS >= Utils::hzToMs(colorLfo->getTimerHz()) && !colorLfo->knobPntrsEmpty() && colorLfo->isImageSet() && processColorLfo) {
         colorLfo->timeCallback();
@@ -492,10 +495,10 @@ void GranularFlowWrapper::timerCallback()
         wavetableLfoTimer = 0;
     }
     //  GUI
-    if (colorRepaintTimer * TIMER_MS >= Utils::hzToMs(30) && !colorLfo->knobPntrsEmpty() && colorLfo->isImageSet())
+    if (colorLfoRepaintTimer * TIMER_MS >= Utils::hzToMs(30) && !colorLfo->knobPntrsEmpty() && colorLfo->isImageSet())
     {
         colorLfo->repaintCanvas();
-        colorRepaintTimer = 0;
+        colorLfoRepaintTimer = 0;
     }
     
     if (granularPlayerTimer * TIMER_MS >= Utils::hzToMs(30) && processGranular) {
@@ -503,16 +506,21 @@ void GranularFlowWrapper::timerCallback()
         granularPlayerTimer = 0;
     }
 
-    if (granularSynthVisualiserTimer * TIMER_MS >= Utils::hzToMs(1) && !granularSynth->isFileInput() && processGranular)
+    if (granularRepaintTimer * TIMER_MS >= Utils::hzToMs(1) && !granularSynth->isFileInput() && processGranular)
     {
         granularSynth->setWaveCallback();
-        granularSynthVisualiserTimer = 0;
+        granularRepaintTimer = 0;
     }
 
-    if (bounceBallTimer * TIMER_MS >= Utils::hzToMs(bounceBallSpeed) && !bounceLfo->knobPntrsEmpty() && bounceLfo->getBallSpeed() != 0 && processBounceLfo) {
+    if (bounceLfoBallMoveTimer * TIMER_MS >= Utils::hzToMs(bounceLfoRepaintTimer) && !bounceLfo->knobPntrsEmpty() && bounceLfo->getBallSpeed() != 0 && processBounceLfo) {
         bounceLfo->moveBall();
-        bounceBallTimer = 0;
+        bounceLfoBallMoveTimer = 0;
     }    
+
+    if (additiveRepaintTimer * TIMER_MS >= Utils::hzToMs(1/5) && processAdditive && additiveBoxIsVisible) {
+        additiveSynth->repaintVisualiser();
+        additiveRepaintTimer = 0;
+    }
 }
 
 void GranularFlowWrapper::removeThisFromAllListeners() {

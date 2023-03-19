@@ -31,6 +31,7 @@ public:
     void addNewHarmonic();
     void removeHarmonic();
     void selectHarmonic(int);    
+    void repaintVisualiser();
     // Get
     // Set
     void setKnobsListener(Knob::Listener*)override;

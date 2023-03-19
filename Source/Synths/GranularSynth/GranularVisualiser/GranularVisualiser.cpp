@@ -20,27 +20,19 @@ void GranularVisualiser::paint(Graphics& g) {
         g.setColour(C_WHITE);       
 
         int sampleCount = waveForm.size();
-        float yOffset = (float)getHeight() / (float) 2;
-        int step = std::ceil( (float)sampleCount / (float)getWidth());
-        int index = 0;
+        float yOffset = getHeight() / 2;
+        float step = getWidth() / (float)sampleCount;
+        float index = 0;
 
         Path p;
         p.startNewSubPath(0, yOffset);
 
-        for (int i = 0; i < sampleCount; i+= step) {
-            float y = yOffset + (yOffset * (-waveForm[i])); // 0 ; 200
-            if (y > 200 || y < 0)
-            {
-                y = yOffset;
-            }
+        for (int i = 0; i < sampleCount; i++) {
+            float y = yOffset - (yOffset * waveForm[i]);
             p.lineTo(index, y);
-            //g.drawLine(index, y, index, yOffset, 2.0f); // Draw from peak to middle
-            index++;
-            if (i + step > sampleCount){
-                break;
-            }
+            index += step;
         }
-        g.strokePath(p, PathStrokeType(PathStrokeType::curved), AffineTransform::identity);     
+        g.strokePath(p, PathStrokeType(PathStrokeType::curved), AffineTransform::identity);
         
     }
 }

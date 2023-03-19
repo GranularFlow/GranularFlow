@@ -62,13 +62,16 @@ private:
     // CursorMovement
     int granularPlayerTimer = 0;
     // Visualiser repaint
-    int granularSynthVisualiserTimer = 0;
+    int granularRepaintTimer = 0;
+    // Visualiser repaint
+    int additiveRepaintTimer = 0;
     // Bounce ball movement
-    int bounceBallTimer = 0;
+    int bounceLfoBallMoveTimer = 0;
     // ColorLFO repaint
-    int colorRepaintTimer = 0;
+    int colorLfoRepaintTimer = 0;
     // Ball speed repaint
-    int bounceBallSpeed = 10;
+    int bounceLfoRepaintTimer = 10;
+    
     // -------------------------------------------------------
     // PROCESS
     // ----------------------
@@ -79,6 +82,7 @@ private:
     bool processWavetable = false;
     bool processGranular = false;
     bool processAdditive = false;
+    bool additiveBoxIsVisible = false;
     // ----------------------
     juce::Rectangle<float> cableColorLfo;
     juce::Rectangle<float> cableBounceLfo;

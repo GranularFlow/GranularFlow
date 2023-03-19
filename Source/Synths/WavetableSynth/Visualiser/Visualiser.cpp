@@ -15,21 +15,19 @@ void Visualiser::paint(Graphics& g)
     g.setColour(C_WHITE);
     
     int sampleCount = waveForm.size();
-    float yOffset = (float)getHeight() / (float)2;
-    float step = (float)getWidth() / (float)sampleCount;
-    int index = 0;
+    float yOffset = getHeight() / 2;
+    float step = getWidth() / (float)sampleCount;
+    float index = 0;
 
-    for (int sampleIndex = 0; sampleIndex < sampleCount; sampleIndex++)
-    {
-        int y = yOffset + (yOffset * (-waveForm[sampleIndex]));
+    Path p;
+    p.startNewSubPath(0, yOffset);
 
-        if (y < 0 || y > getHeight())
-        {
-            y = yOffset;
-        }
-
-        g.fillRect((float)step * sampleIndex, (float)y, (float)2, (float)2);
+    for (int i = 0; i < sampleCount; i++) {
+        float y = yOffset - (yOffset * waveForm[i]);
+        p.lineTo(index, y);
+        index += step;
     }
+    g.strokePath(p, PathStrokeType(PathStrokeType::curved), AffineTransform::identity);
 }
 
 void Visualiser::setWaveForm(Array<float> inputArray)

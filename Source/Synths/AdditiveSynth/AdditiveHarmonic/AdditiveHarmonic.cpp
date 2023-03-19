@@ -56,13 +56,12 @@ void AdditiveHarmonic::processBlock(AudioBuffer<float>& bufferToFill, juce::Midi
 
 void AdditiveHarmonic::prepareToPlay(float sampleRateIn, int bufferSize)
 {
-    sampleRate = sampleRateIn;
     calculateDelta();
 }
 
 void AdditiveHarmonic::calculateDelta()
 {
-    delta = (double)2.0 * PI * ((frequency + midiNoteFrequency) / (double)sampleRate);
+    delta = (double)2.0 * PI * ((frequency + midiNoteFrequency) / (double)SAMPLE_RATE);
 }
 
 void AdditiveHarmonic::handleMidi(MidiBuffer& midiMessages)

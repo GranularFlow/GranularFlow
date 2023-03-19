@@ -90,6 +90,11 @@ void AdditiveSynth::selectHarmonic(int harmonicNumber)
     harmonics[harmonicNumber - 1]->toFront(true);
 }
 
+void AdditiveSynth::repaintVisualiser()
+{
+    visualiser.repaintCallBack();
+}
+
 void AdditiveSynth::processBlock(AudioBuffer<float>& bufferToFill, juce::MidiBuffer& midiMessages)
 {
     for (int i = 0; i < activeHarmonics; i++)
@@ -97,13 +102,18 @@ void AdditiveSynth::processBlock(AudioBuffer<float>& bufferToFill, juce::MidiBuf
         harmonics[i]->processBlock(bufferToFill, midiMessages);
     }
     // TODO: make less consuming -> use visuaiser 
-    visualiser.pushBuffer(bufferToFill);
+    counterPush++;
+
+    if (counterPush > 100)
+    {
+        visualiser.setWaveForm(bufferToFill);
+    }
+    
 
 }
 
 void AdditiveSynth::prepareToPlay(float sampleRate, int bufferSize)
 {
-    visualiser.clear();
     for (AdditiveHarmonic* harmonic : harmonics)
     {
         harmonic->prepareToPlay(sampleRate, bufferSize);

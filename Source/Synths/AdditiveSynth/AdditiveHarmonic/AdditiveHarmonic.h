@@ -38,7 +38,6 @@ public:
 private:
     // ----------------------
     // To calculate next sample 
-    int sampleRate = SAMPLE_RATE;
     float frequency = 440.0f;
     double phase = 0;    
     double angle = 0.0;
