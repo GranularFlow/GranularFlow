@@ -18,8 +18,7 @@ public:
     static enum InterpolationType
     {
         LINEAR,
-        CUBIC,
-        HERMITE
+        CUBIC
     };
     // ----------------------
     // Class
@@ -51,7 +50,7 @@ public:
 private:
     // ----------------------
     RadioBox midiModeRadioBox { "MIDI", Colour::fromRGB(87, 88, 187), {"OFF", "ON"} };
-    RadioBox interpolationRadioBox{ "ITERPOLATION", Colour::fromRGB(18, 137, 167), { "LINEAR", "CUBIC", "HERMITE" } };
+    RadioBox interpolationRadioBox{ "ITERPOLATION", Colour::fromRGB(18, 137, 167), { "LINEAR", "CUBIC"} };
     // ----------------------
     Knob freqKnob { "FREQUENCY", Colour::fromRGB(247, 159, 31), 20, 8000, 0.001, 400, true };
     Knob waveCountKnob { "WAVE COUNT", Colour::fromRGB(196, 229, 56), 2, 10, 2, 6 , false };

@@ -8,13 +8,6 @@
 class WavetableLfoSettings : public Component
 {
 public:
- 
-    static enum InterpolationType
-    {
-        LINEAR,
-        CUBIC,
-        HERMITE
-    };
     // ------------------
     // Class
 	WavetableLfoSettings();

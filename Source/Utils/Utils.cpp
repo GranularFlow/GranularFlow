@@ -88,16 +88,6 @@ double Utils::interpolateLinear(double x, double x1, double x2, double y1, doubl
     return y1 + ( (x - x1) * ( (y2 - y1) / (x2 - x1)));
 }
 
-double Utils::interpolateCubic(double wantedX, Array<float>sampleY)
-{
-    return Utils::interpolateCubic(wantedX - ((int)wantedX + 1),
-        sampleY[(((int)wantedX + 1) - 1 + sampleY.size()) % sampleY.size()],
-        sampleY[(((int)wantedX + 1) + sampleY.size()) % sampleY.size()],
-        sampleY[(((int)wantedX + 1) + 1 + sampleY.size()) % sampleY.size()],
-        sampleY[(((int)wantedX + 1) + 2 + sampleY.size()) % sampleY.size()]
-    );
-}
-
 double Utils::interpolateCubic(double x, double y0, double y1, double y2, double y3)
 {
     /*
@@ -115,75 +105,6 @@ double Utils::interpolateCubic(double x, double y0, double y1, double y2, double
             + y1;*/
     // fastest method
     return y1 + x *(-y0 + y2 + x *(2 * y0 - 2 *y1 + y2 - y3 + x *(-y0 + y1 - y2 + y3)));
-}
-
-double Utils::interpolateHermite(double wantX, Array<float>sampleY)
-{
-    // This code is too complex, needed faster way
-    // ---------------------------------------------------
-    // This is Carmul-rom spline a type of hermite spline
-    // ---------------------------------------------------
-
-    // Find the interval containing the wanted x
-    /*int i = 0;
-    while (i < sampleY.size() - 1 && wantX > i + 1)
-        i++;*/
-    // ---------------------------------------------------
-    // Compute the tangents at the interval endpoints
-    // ---------------------------------------------------
-
-    // four basis blending functions
-    // p(u) = | 2u^3 - 3u^2 + 1|
-    //        |-2u^3 + 3u^2    |
-    //        |  u^3 - 2u^2 + u|
-    //        |  u^3 - u^2     |
-    // Slopes
-    // p = p0 * StartPoint + p1 * EndPoint + p3 * Tangent1 + p4 * Tangent2
-    // in catmull Tangent = 0.5 * (EndPoint - StartPoint)
-    //
-    //
-
-    // Slopes
-    double m0 = 1;
-    double m1 = 1;
-    double u = wantX - (int)wantX;
-
-    double p0 = 2 * pow(u, 3) - 3 * pow(u, 2) + 1;
-    double p1 = pow(u, 3) - 2 * pow(u, 2) + u;
-    double p2 = -2 * pow(u, 3) + 3 * pow(u, 2);
-    double p3 = pow(u, 3) - pow(u, 2);
-
-    if ((int)wantX == 0) {
-        // Case: wantedX is first interval
-        m0 = (sampleY[1] - sampleY[0]);
-        m1 = (sampleY[2] - sampleY[1]);
-    }
-    else if ((int)wantX == sampleY.size() - 2) {
-        // Case: wantedX is last interval
-        m0 = sampleY[sampleY.size() - 2] - sampleY[sampleY.size() - 3];
-        m1 = sampleY[sampleY.size() - 1] - sampleY[sampleY.size() - 2];
-    }
-    else {
-        // Case: wantedX is between first and last interval
-        
-
-        m0 =  p0 * sampleY[(int)wantX]
-            + p1 * m0 
-            + p2 * sampleY[(int)wantX + 1]
-            + p3 * m1;        
-        
-        
-        m1 =  p0 * sampleY[(int)wantX + 1]
-            + p1 * m0 
-            + p2 * sampleY[(int)wantX + 2]
-            + p3 * 3 * m1;
-    }
-
-    return p0 * sampleY[(int)wantX]
-         + p1 * m0 
-         + p2 * sampleY[(int)wantX + 1]
-         + p3 * m1;
-
 }
 
 double Utils::snapToStep(double min, double max, double step, double value)

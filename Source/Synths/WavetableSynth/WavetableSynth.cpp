@@ -152,11 +152,7 @@ void WavetableSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& 
                 sampleY[((int)currentPosition + 2 + sampleY.size()) % sampleY.size()],
                 sampleY[((int)currentPosition + 3 + sampleY.size()) % sampleY.size()]
             );
-        }
-        else if (wavetableSettings.isCurrentInterpolationType(WavetableSynthSettings::HERMITE))
-        {
-            finalSample = Utils::interpolateHermite(currentPosition, sampleY);
-        }         
+        }       
 
         if (abs(finalSample) >= 0.9999f)
         {
