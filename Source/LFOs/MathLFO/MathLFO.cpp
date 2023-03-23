@@ -5,6 +5,7 @@ MathLFO::MathLFO()
     addAndMakeVisible(visualiser);
     addAndMakeVisible(settings);   
     settings.addEnterListener(this);
+    setOpaque(true);
 }
 
 MathLFO::~MathLFO()
@@ -14,14 +15,13 @@ MathLFO::~MathLFO()
 
 void MathLFO::paint(Graphics& g)
 {
-    g.fillAll(C_DARK);
-    Utils::paintLogo(g);
+    g.fillAll(Colour::fromRGB(33,33,33));
 }
 
 void MathLFO::resized()
 {
-    settings.setBounds(SETTINGS_SIZE.withSizeKeepingCentre(750,220));
-    visualiser.setBounds(getLocalBounds().withTrimmedLeft(25).withTrimmedRight(25).withTrimmedTop(TOP_BAR_HEIGHT + 10).withTrimmedBottom(SETTINGS_SIZE.getHeight() + 20));
+    settings.setBounds(SETTINGS_SIZE.withSizeKeepingCentre(750, 220));
+    visualiser.setBounds(getLocalBounds().withTrimmedLeft(25).withTrimmedRight(25).withTrimmedTop(60 + 10).withTrimmedBottom(SETTINGS_SIZE.getHeight() + 20));
 }
 
 void MathLFO::addTimerListener(Slider::Listener* listener)

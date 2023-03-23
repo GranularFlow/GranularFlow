@@ -12,6 +12,7 @@ WavetableLFO::WavetableLFO()
 
     combineButton.addListener(this);
     settings.addWaveCountListener(this);
+    setOpaque(true);
 }
 
 WavetableLFO::~WavetableLFO()
@@ -29,7 +30,7 @@ void WavetableLFO::sliderValueChanged(Slider* slider)
 
 void WavetableLFO::paint(Graphics& g)
 {
-    g.fillAll(C_DARK);
+    g.fillAll(Colour::fromRGB(33,33,33));
     Utils::paintLogo(g);
 }
 
@@ -37,11 +38,10 @@ void WavetableLFO::resized()
 {
     combineButton.setBounds(getLocalBounds().withSize(120, 40).withCentre(Point<int>((getWidth() / 2), 30)));
 
-    int margin = 25;
-    canvas1.setBounds(getLocalBounds().withTrimmedLeft(margin).withTrimmedTop(100).withTrimmedBottom(getHeight()/ 2).withTrimmedRight(margin + (W_WIDTH * 3/4)));
-    canvas2.setBounds(getLocalBounds().withTrimmedLeft(margin + (W_WIDTH * 1 / 4)).withTrimmedTop(100).withTrimmedBottom(getHeight() / 2).withTrimmedRight(margin + (W_WIDTH * 2 / 4)));
-    canvas3.setBounds(getLocalBounds().withTrimmedLeft(margin + (W_WIDTH * 2 / 4)).withTrimmedTop(100).withTrimmedBottom(getHeight() / 2).withTrimmedRight(margin + (W_WIDTH * 1 / 4)));
-    canvas4.setBounds(getLocalBounds().withTrimmedLeft(margin + (W_WIDTH * 3 / 4)).withTrimmedTop(100).withTrimmedBottom(getHeight() / 2).withTrimmedRight(margin));
+    canvas1.setBounds(getLocalBounds().withTrimmedLeft(25).withTrimmedTop(100).withTrimmedBottom(getHeight() / 2).withTrimmedRight(925));
+    canvas2.setBounds(getLocalBounds().withTrimmedLeft(325).withTrimmedTop(100).withTrimmedBottom(getHeight() / 2).withTrimmedRight(625));
+    canvas3.setBounds(getLocalBounds().withTrimmedLeft(625).withTrimmedTop(100).withTrimmedBottom(getHeight() / 2).withTrimmedRight(325));
+    canvas4.setBounds(getLocalBounds().withTrimmedLeft(925).withTrimmedTop(100).withTrimmedBottom(getHeight() / 2).withTrimmedRight(25));
 
     settings.setBounds(SETTINGS_SIZE.withSizeKeepingCentre(600, 220));
 }

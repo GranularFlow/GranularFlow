@@ -16,7 +16,7 @@ public:
     void removeListener() { resetPntr = nullptr; }
     // ----------------------
     // Class
-	ResetButton();
+	ResetButton(int, int, int, int);
 	~ResetButton();
     // ----------------------
     // GUI
@@ -24,14 +24,11 @@ public:
     void resized();
     // ----------------------
     // Listeners
-    void mouseDown(const MouseEvent&);
-    void mouseUp(const MouseEvent&);
+    void mouseDown(const MouseEvent&)override;
     // ----------------------    
 private:
     // ----------------------
     Listener* resetPntr = nullptr;
-    // ----------------------
-    Colour bgColor = L_GRAY;
     CustomLook customLook;
     // ----------------------
     ImageButton reloadButton{ "reloadButton" };

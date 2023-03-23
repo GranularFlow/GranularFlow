@@ -6,12 +6,12 @@ CustomLook::~CustomLook() {}
 
 void CustomLook::drawPopupMenuItem(Graphics& g, const Rectangle<int>& area, const bool isSeparator, const bool isActive, const bool isHighlighted, const bool isTicked, const bool hasSubMenu, const String& text, const String& shortcutKeyText, const Drawable* icon, const Colour* textColourToUse)
 {
-    Colour backgroundColour = C_DARK;
-    Colour textColour = C_WHITE;
+    Colour backgroundColour = Colour::fromRGB(33,33,33);
+    Colour textColour = Colours::white;
 
     if (isHighlighted)
     {
-        backgroundColour = M_T_LIGHT;
+        backgroundColour = Colour::fromRGBA(255, 255, 255, 25);
         textColour = Colours::white;
     }
 
@@ -30,7 +30,7 @@ void CustomLook::drawComboBox(Graphics& g, int width, int height, bool isButtonD
 
     
 
-    g.setColour(C_WHITE);
+    g.setColour(Colours::white);
     g.drawRoundedRectangle(boxBounds.toFloat().reduced(0.5f, 0.5f), cornerSize, 1.0f);
 
     Rectangle<int> arrowZone(width - 30, 0, 20, height);
@@ -44,7 +44,7 @@ void CustomLook::drawComboBox(Graphics& g, int width, int height, bool isButtonD
 
 void CustomLook::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, const float rotaryStartAngle, const float rotaryEndAngle, juce::Slider& slider)
 {
-    auto outline = M_DARK;
+    auto outline = Colour::fromRGB(40, 40, 40);
     auto fill = slider.findColour(Slider::rotarySliderFillColourId);
 
     auto bounds = Rectangle<int>(x, y, width, height).toFloat().reduced(10);
@@ -86,23 +86,19 @@ void CustomLook::drawRotarySlider(juce::Graphics& g, int x, int y, int width, in
     Point<float> thumbPoint(bounds.getCentreX() + arcRadius * std::cos(toAngle - MathConstants<float>::halfPi),
         bounds.getCentreY() + arcRadius * std::sin(toAngle - MathConstants<float>::halfPi));
 
-
-
     // Thumb
     juce::Path thumb;
     auto thumbLength = radius * 0.75f;
     auto thumbThickness = 5.0f;
 
-    g.setColour(C_GRAY);
+    g.setColour(Colour::fromRGB(40, 40, 40));
     g.fillEllipse(Rectangle<float>(thumbLength * 2, thumbLength * 2).withCentre(Point<float>(bounds.getCentreX(), bounds.getCentreY())));
 
     thumb.addRoundedRectangle(Rectangle<float>(-thumbThickness / 2, -thumbLength, thumbThickness, thumbLength), 1);
     thumb.applyTransform(juce::AffineTransform::rotation(toAngle).translated(bounds.getCentreX(), bounds.getCentreY()));
 
-    g.setColour(C_SMOKE);
+    g.setColour(Colours::white);
     g.fillPath(thumb);
-
-    
 }
 
 void CustomLook::drawLinearSlider(Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider& slider)
@@ -165,7 +161,7 @@ void CustomLook::drawLinearSlider(Graphics& g, int x, int y, int width, int heig
 
         if (!isTwoVal)
         {
-            g.setColour(C_WHITE);
+            g.setColour(Colours::white);
             g.fillRect(Rectangle<float>(static_cast<float> (thumbWidth), static_cast<float> (thumbWidth*2)).withCentre(isThreeVal ? thumbPoint : maxPoint));
         }
 
@@ -203,7 +199,7 @@ void CustomLook::drawTickBox(Graphics& g, Component& component, float x, float y
     ignoreUnused(isEnabled, shouldDrawButtonAsHighlighted, shouldDrawButtonAsDown);
     Rectangle<float> tickBounds(x + (w * 0.25 / 2), y + (h * 0.25 / 2), w * 0.75, h * 0.75);
 
-    g.setColour(C_VL_GRAY);
+    g.setColour(Colour::fromRGB(118, 118, 118));
     g.drawEllipse(tickBounds, 1.5f);
 
     if (ticked)

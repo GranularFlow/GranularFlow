@@ -18,6 +18,5 @@ public:
     void setWaveForm(AudioBuffer<float>&);
 
 private:
-    bool waveformSet = false;
     Array<float> waveForm;
 };

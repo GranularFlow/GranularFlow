@@ -20,6 +20,8 @@ RadioBox::RadioBox(String nameIn, Colour guiColorIn, Array<String> elementsIn)
         toggleButtons.add(button);
     }
     toggleButtons[0]->setToggleState(true, true);
+
+    setOpaque(true);
 }
 
 RadioBox::~RadioBox() {
@@ -34,18 +36,18 @@ RadioBox::~RadioBox() {
 }
 
 void RadioBox::paint(Graphics& g) {
-
+    g.fillAll(Colour::fromRGB(50, 50, 50));
     g.setColour(guiColor);
     g.fillRect((getWidth() / 4), 0, (getWidth() / 2), 5);
 
-    g.setColour(C_SMOKE);
+    g.setColour(Colours::white);
     g.drawFittedText(name, getLocalBounds().withTrimmedTop(10).withTrimmedRight(getWidth() * 0.05).withTrimmedLeft(getWidth() * 0.05), Justification::centredTop, 1);
 }
 
 void RadioBox::buttonStateChanged(Button* button)
-{
-    const MessageManagerLock mmLock;
-    repaint();
+{   //TODO
+    /*const MessageManagerLock mmLock;
+    repaint();*/
 }
 
 void RadioBox::buttonClicked(Button* button){

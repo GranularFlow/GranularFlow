@@ -29,7 +29,7 @@ private:
     // ----------------------------------------
     Point<float> currentPosition = { 500.0, 200.0 };
     Point<float> nextPosition = { 500.0, 200.0 };
-    Point<float> positionVector = { 2.0, 2.0 };
+    Point<float> positionVector = { 6.0, 6.0 };
     Point<float> colision = { 2.0, 2.0 };
     // ----------------------------------------
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BounceCanvas);

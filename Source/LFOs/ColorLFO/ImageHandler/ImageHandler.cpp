@@ -3,6 +3,7 @@
 ImageHandler::ImageHandler()
 {
     addAndMakeVisible(decomposer);
+    setOpaque(true);
 }
 
 ImageHandler::~ImageHandler()
@@ -11,9 +12,11 @@ ImageHandler::~ImageHandler()
 
 void ImageHandler::paint(Graphics& g)
 {
+    g.fillAll(Colour::fromRGB(33, 33, 33));
     if (isImageSet())
     {
         g.drawImageWithin(image, 0, 10, (getWidth()/2) - 20, getHeight() - 20, juce::RectanglePlacement::centred);
+        setBufferedToImage(true);
     }    
 }
 

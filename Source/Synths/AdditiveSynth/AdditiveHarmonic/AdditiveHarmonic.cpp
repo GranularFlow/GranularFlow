@@ -5,6 +5,8 @@ AdditiveHarmonic::AdditiveHarmonic()
     settings.addPhaseSliderListener(this);
     settings.addFreqSliderListener(this);
     addAndMakeVisible(settings);
+
+    setOpaque(true);
 }
 
 AdditiveHarmonic::~AdditiveHarmonic()
@@ -16,6 +18,7 @@ AdditiveHarmonic::~AdditiveHarmonic()
 
 void AdditiveHarmonic::paint(Graphics& g)
 {
+   // DBG("AdditiveHarmonic::paint");
 }
 
 void AdditiveHarmonic::resized()
@@ -56,12 +59,13 @@ void AdditiveHarmonic::processBlock(AudioBuffer<float>& bufferToFill, juce::Midi
 
 void AdditiveHarmonic::prepareToPlay(float sampleRateIn, int bufferSize)
 {
+    sampleRate = sampleRateIn;
     calculateDelta();
 }
 
 void AdditiveHarmonic::calculateDelta()
 {
-    delta = (double)2.0 * PI * ((frequency + midiNoteFrequency) / (double)SAMPLE_RATE);
+    delta = (double)2.0 * PI * ((frequency) / sampleRate);
 }
 
 void AdditiveHarmonic::handleMidi(MidiBuffer& midiMessages)
@@ -72,15 +76,17 @@ void AdditiveHarmonic::handleMidi(MidiBuffer& midiMessages)
     iter.getNextEvent(midiMsg, midiPos);
     if (midiMsg.isNoteOn() && midiMsg.getNoteNumber() != lastMidiNote)
     {
+        angle = 0;
         midiNoteOn = true;
         lastMidiNote = midiMsg.getNoteNumber();
-        midiNoteFrequency = midiMsg.getMidiNoteInHertz(lastMidiNote, frequency);
+        frequency = midiMsg.getMidiNoteInHertz(lastMidiNote, 440);
     }
     else if (midiMsg.isNoteOff() && midiMsg.getNoteNumber() == lastMidiNote)
     {
+        angle = 0;
         midiNoteOn = false;
         lastMidiNote = -1;
-        midiNoteFrequency = 0.f;
+        frequency = settings.getFreq();
     }
     calculateDelta();
 }

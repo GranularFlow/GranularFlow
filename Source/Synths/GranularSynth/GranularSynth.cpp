@@ -7,11 +7,13 @@ GranularSynth::GranularSynth()
     topSettings.addSliderListener(this);
     topSettings.addButtonListener(this);   
 
+    // Does not matter the sample rate, it gets overwritten later in prepareToPlay
     for (int i = 0; i < 3; i++)
     {
-        players.add(new GranularPlayer(BUFFER_SAMPLES, SAMPLE_RATE));
+        players.add(new GranularPlayer(144000, 48000));
         addChildComponent(players.getLast());
     }
+    setOpaque(true);
 }
 
 GranularSynth::~GranularSynth()
@@ -25,24 +27,13 @@ GranularSynth::~GranularSynth()
 
 void GranularSynth::paint(Graphics& g)
 {
-    // Background
-    g.fillAll(C_DARK);
-    Utils::paintLogo(g);
+    setRepaintsOnMouseActivity(false);
+   // DBG("GranularSynth::paint");
+    g.fillAll(Colour::fromRGB(33,33,33));
 }
 
 void GranularSynth::resized()
 {   
-    // Top GranularSynthSettings
-    topSettings.setBounds(getLocalBounds().withTrimmedBottom(getHeight() - TOP_BAR_HEIGHT));
-
-    // Players
-    for (GranularPlayer* player : players)
-    {
-        player->setBounds(getLocalBounds().withTrimmedTop(TOP_BAR_HEIGHT));
-    }
-
-    // AudioVisualiser
-    visualiser.setBounds(getLocalBounds().withTrimmedTop(TOP_BAR_HEIGHT).withTrimmedBottom(SETTINGS_SIZE.getHeight() + 30 + (CURSOR_BALL_RADIUS * 2.5) ));
 }
 
 void GranularSynth::handleMidi(MidiBuffer& midiMessages)
@@ -68,16 +59,15 @@ void GranularSynth::handleMidi(MidiBuffer& midiMessages)
 void GranularSynth::loadAudioFromFile(File file)
 {   
     AudioLoad audioLoad;
-    audioSamples.setSize(2, BUFFER_SAMPLES);
     // DOCS: The contents of the buffer will initially be undefined, so use clear() to set all the samples to zero.        
     audioSamples.clear();
    
-    audioLoad.fillBuffer(audioSamples, BUFFER_SAMPLES, file);
+    audioLoad.fillBuffer(audioSamples, 144000, file);
     visualiser.setWaveForm(audioSamples);
     waveFormWasSet = true;
 
     audioLoad.clear();
-    showPlayers();
+    players[0]->setVisible(true);
 }
 
 void GranularSynth::loadAudioIntoSamples()
@@ -137,6 +127,7 @@ void GranularSynth::buttonClicked(Button* button)
         topSettings.enablePlayers();
         topSettings.getOpenAudioButton().setVisible(false);
         topSettings.getOpenBufferButton().setVisible(false);
+        disableCursorMovements(false);
     }
     if (topSettings.isOpenBufferButton(button))
     {
@@ -149,29 +140,24 @@ void GranularSynth::buttonClicked(Button* button)
         topSettings.enablePlayers();
         topSettings.getOpenAudioButton().setVisible(false);
         topSettings.getOpenBufferButton().setVisible(false);
-        showPlayers();
-        disableCursorMovements();
+        players[0]->setVisible(true);
+        disableCursorMovements(true);
     }
 }
 
-void GranularSynth::disableCursorMovements()
+void GranularSynth::disableCursorMovements(bool disable)
 {
     for (GranularPlayer* player : players)
     {
-        player->disableCursorMovements();
+        player->disableCursorMovements(disable);
     }
-}
-
-void GranularSynth::showPlayers()
-{
-    players[0]->setVisible(true);
 }
 
 void GranularSynth::prepareToPlay(float sampleRateIn, int bufferSizeIn) {
 
     for (GranularPlayer* player : players)
     {
-        player->changeTimer(sampleRateIn);
+        player->prepareToPlay(sampleRateIn);
     }
 }
 
@@ -190,13 +176,13 @@ void GranularSynth::selectPlayer(int playerNumber)
 
     for (int playerId = 0; playerId < players.size(); playerId++)
     {
-        if (playerId != playerNumber-1)
+        if (playerId == playerNumber-1)
         {
-            players[playerId]->setVisible(false);
+            players[playerId]->setVisible(true);
         }
         else
         {
-            players[playerId]->setVisible(true);
+            players[playerId]->setVisible(false);
         }
     }
 }
@@ -212,7 +198,7 @@ void GranularSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& m
     {
         for (size_t i = 0; i < activePlayers; i++)
         {
-            if (players[i]->isCurrentMidiMode(PlayerSettings::MidiMode::ON))
+            if (players[i]->getMidiMode() == PlayerSettings::MidiMode::ON)
             {
                 handleMidi(midiMessages);
                 if (!midiNoteOn)
@@ -227,7 +213,7 @@ void GranularSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& m
         ringBufferPtr->addBuffer(bufferToFill);
         for (size_t i = 0; i < activePlayers; i++)
         {
-            if (players[i]->isCurrentMidiMode(PlayerSettings::MidiMode::ON))
+            if (players[i]->getMidiMode() == PlayerSettings::MidiMode::ON)
             {
                 handleMidi(midiMessages);
                 if (!midiNoteOn)

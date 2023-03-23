@@ -17,7 +17,7 @@ public:
 	~GranularSynth()override;
     // GUI
     void paint(Graphics&) override;
-	void resized();
+	void resized()override;
     // ----------------------
     // ProcessBlock
     // ----------------------
@@ -44,8 +44,7 @@ public:
     void loadAudioFromFile(File);
     void loadAudioIntoSamples();    
     // ---Init
-    void disableCursorMovements();
-    void showPlayers();
+    void disableCursorMovements(bool);
     void clearAudioSamples();
     void addNewPlayer();
     void removePlayer();
@@ -63,7 +62,7 @@ private:
     GranularVisualiser visualiser;
     OwnedArray<GranularPlayer> players;
     // ----------------------    
-    AudioBuffer<float> audioSamples {2, BUFFER_SAMPLES };
+    AudioBuffer<float> audioSamples {2, 144000 };
     // ----------------------
     // MIDI
     double increment = 1;

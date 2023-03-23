@@ -3,6 +3,7 @@
 Canvas::Canvas(String textIn)
 {
     text = textIn;
+    setOpaque(true);
 }
 
 Canvas::~Canvas()
@@ -11,30 +12,30 @@ Canvas::~Canvas()
 
 void Canvas::paintPath(Graphics& g)
 {
-
+    
     Path path;
     path.startNewSubPath(xPos.getFirst(), yPos.getFirst());
     for (int i = 1; i < xPos.size(); i++)
     {
         path.lineTo(xPos[i], yPos[i]);
     }
-    g.setColour(C_WHITE);
+    g.setColour(Colours::white);
     g.strokePath(path, PathStrokeType(2.0f, PathStrokeType::JointStyle::curved, PathStrokeType::rounded));
 }
 
 void Canvas::paint(Graphics& g)
 {
-    g.fillAll(L_GRAY);
+   // DBG("Canvas::paint");
+    g.fillAll(Colour::fromRGB(50, 50, 50));
 
-    g.setColour(C_WHITE);
+    g.setColour(Colours::white);
     g.drawText(text, getLocalBounds(), Justification::centredTop);
 
     paintPath(g);
 
-    g.setColour(M_DARK);
+    g.setColour(Colour::fromRGB(60, 60, 60));
     g.drawRect(getWidth()/2, 10, 1, getHeight());
     g.drawRect(0, getHeight()/2, getWidth(), 1);
-
 }
 
 void Canvas::mouseDrag(const MouseEvent& e)
@@ -48,7 +49,7 @@ float Canvas::snapToClosestXPoint(float xValue)
     float absMin = fabs(xValue - (sampleDistance * 0));
     int closestPointIndex = 0;
 
-    for (int i = 1; i < waveTableSampleCount; i++)
+    for (int i = 1; i < 100; i++)
     {
         float tmpAbs = fabs(xValue - (sampleDistance * i));
         if (tmpAbs < absMin) {
@@ -68,7 +69,7 @@ void Canvas::addPoint(float newX, float newY)
         newX < 0 ||
         newY > getHeight() ||
         newY < 0 ||
-        xPos.size() == waveTableSampleCount) 
+        xPos.size() == 100) 
     {
         return;
     }
@@ -140,17 +141,18 @@ float Canvas::interpolateY(float x, float x1, float y1, float x2, float y2)
 void Canvas::mouseUp(const MouseEvent& e)
 {    
     // Interpolate wavetable
-    if (xPos.size() != waveTableSampleCount)
+    if (xPos.size() != 100)
     {
         //Has to be defined, because each loop xPos size is larger thus infinite loop
         int size = xPos.size();
-        for (int i = 1; i <= (waveTableSampleCount - size); i++)
+        for (int i = 1; i <= (100 - size); i++)
         {
             addPoint(xPos.getLast() + sampleDistance,
                 Utils::interpolateLinear(xPos.getLast() + sampleDistance, xPos.getLast(), getWidth(), yPos.getLast(), yPos.getLast()));
         }
     }
     convertPointsToAmplitude();
+    setBufferedToImage(true);
 }
 
 void Canvas::convertPointsToAmplitude()

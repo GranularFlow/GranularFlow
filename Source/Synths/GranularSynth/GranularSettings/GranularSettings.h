@@ -53,8 +53,8 @@ private:
     TextButton openBufferButton{ "BUFFER" };
     TextButton openAudioButton{ "FILE" };
     // -----------------------
-    NumberSelect playerCountNum{ "Count", C_BARARED, 0, 3, 1, 0 };
-    NumberSelect playerSelectNum{ "Select", C_MARINE, 0, 3, 1, 0 };
+    NumberSelect playerCountNum{ "Count", Colour::fromRGB(237, 76, 103), 0, 3, 1, 0 };
+    NumberSelect playerSelectNum{ "Select", Colour::fromRGB(0, 168, 255), 0, 3, 1, 0 };
     // -----------------------
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GranularSettings)
 };

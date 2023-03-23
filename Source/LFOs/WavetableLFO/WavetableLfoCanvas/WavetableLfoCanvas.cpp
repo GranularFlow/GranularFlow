@@ -18,20 +18,20 @@ void WavetableLfoCanvas::paintPath(Graphics& g)
     {
         path.lineTo(xPos[i], yPos[i]);
     }
-    g.setColour(C_WHITE);
+    g.setColour(Colours::white);
     g.strokePath(path, PathStrokeType(2.0f, PathStrokeType::JointStyle::curved, PathStrokeType::rounded));
 }
 
 void WavetableLfoCanvas::paint(Graphics& g)
 {
-    g.fillAll(L_GRAY);
+    g.fillAll(Colour::fromRGB(50, 50, 50));
 
-    g.setColour(C_WHITE);
+    g.setColour(Colours::white);
     g.drawText(text, getLocalBounds(), Justification::centredTop);
 
     paintPath(g);
 
-    g.setColour(M_DARK);
+    g.setColour(Colour::fromRGB(128, 124, 124));
     g.drawRect(getWidth()/2, 10, 1, getHeight());
     g.drawRect(0, getHeight()/2, getWidth(), 1);
 

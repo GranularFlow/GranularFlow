@@ -2,7 +2,7 @@
 
 GranularVisualiser::GranularVisualiser()
 {
-    
+    setBounds(0, 60, 1200, 340);
 }
 
 GranularVisualiser::~GranularVisualiser()
@@ -12,28 +12,19 @@ GranularVisualiser::~GranularVisualiser()
 
 void GranularVisualiser::paint(Graphics& g) {
     // Draw outlines
-
-    g.fillAll(G_DARK);
+   // DBG("GranularVisualiser::paint");
+    g.fillAll(Colour::fromRGB(45, 45, 45));
 
     // Draw samples
-    if (waveformSet){
-        g.setColour(C_WHITE);       
-
-        int sampleCount = waveForm.size();
-        float yOffset = getHeight() / 2;
-        float step = getWidth() / (float)sampleCount;
-        float index = 0;
-
-        Path p;
-        p.startNewSubPath(0, yOffset);
-
-        for (int i = 0; i < sampleCount; i++) {
-            float y = yOffset - (yOffset * waveForm[i]);
-            p.lineTo(index, y);
-            index += step;
+    if (waveformSet) {
+        p.startNewSubPath(0, getHeight() / 2);
+        for (int i = 0; i < waveForm.size(); i++) {
+            float y = (getHeight() / 2) - ((getHeight() / 2) * waveForm[i]);
+            p.lineTo((getWidth() / (float)waveForm.size()) * i, y);
         }
+        g.setColour(Colours::white);
         g.strokePath(p, PathStrokeType(PathStrokeType::curved), AffineTransform::identity);
-        
+        p.clear();
     }
 }
 
@@ -46,7 +37,7 @@ void GranularVisualiser::setWaveCallback()
 {
     if (ringBufferPointer != nullptr)
     {
-        setWaveForm(ringBufferPointer->getBuffer());
+        setWaveForm(ringBufferPointer->getBuffer());        
     }
 }
 
@@ -54,13 +45,12 @@ void GranularVisualiser::setWaveForm(AudioBuffer<float>& audioBuffer) {
 
     waveForm.clear();
 
-    const float* leftChannel = audioBuffer.getReadPointer(0);
-    const float* rightChannel = audioBuffer.getReadPointer(1);
-
-    for (int i = 0; i < audioBuffer.getNumSamples(); ++i) {
-        waveForm.add(leftChannel[i] > rightChannel[i] ? leftChannel[i] : rightChannel[i]);
+    for (int i = 0; i < (int)audioBuffer.getNumSamples(); i++) {
+        waveForm.add(audioBuffer.getReadPointer(0)[i] > audioBuffer.getReadPointer(1)[i] ? audioBuffer.getReadPointer(0)[i] : audioBuffer.getReadPointer(1)[i]);
     }
 
     waveformSet = true;
+    
     repaint();
+    setBufferedToImage(true);
 }

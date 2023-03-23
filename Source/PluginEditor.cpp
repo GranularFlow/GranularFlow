@@ -1,23 +1,27 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-GranularFLowAudioProcessorEditor::GranularFLowAudioProcessorEditor (GranularFLowAudioProcessor& p)
+GranularFlowAudioProcessorEditor::GranularFlowAudioProcessorEditor (GranularFlowAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
+   //// DBG("GranularFlowAudioProcessorEditor()");
+
     addAndMakeVisible(audioProcessor.granularFlowWrapper);
-    setSize (W_WIDTH, W_HEIGHT);
+    setSize(1200, 700);
 }
 
-GranularFLowAudioProcessorEditor::~GranularFLowAudioProcessorEditor()
+GranularFlowAudioProcessorEditor::~GranularFlowAudioProcessorEditor()
 {
 }
 
-void GranularFLowAudioProcessorEditor::paint (juce::Graphics& g)
+void GranularFlowAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    Utils::paintLogo(g);
+   // DBG("GranularFlowAudioProcessorEditor::paint");
+    g.fillAll(Colour::fromRGB(33, 33, 33));
 }
 
-void GranularFLowAudioProcessorEditor::resized()
+void GranularFlowAudioProcessorEditor::resized()
 {
-    audioProcessor.granularFlowWrapper.setBounds(getLocalBounds());
+
+   //// DBG("GranularFlowAudioProcessorEditor::resized()");
 }

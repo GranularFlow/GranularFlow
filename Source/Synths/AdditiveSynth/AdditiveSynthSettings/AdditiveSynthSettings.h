@@ -25,6 +25,6 @@ public:
     NumberSelect& getHarmonicSelect();
 
 private:
-    NumberSelect harmonicCount { "Count", L_GREEN, 0, 5, 1, 0 };
-    NumberSelect harmonicSelect { "Selected", L_ORANGE, 0, 5, 1, 0 };
+    NumberSelect harmonicCount { "Count", Colour::fromRGB(170, 212, 0), 0, 5, 1, 0 };
+    NumberSelect harmonicSelect { "Selected", Colour::fromRGB(242, 102, 38), 0, 5, 1, 0 };
 };

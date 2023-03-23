@@ -4,77 +4,57 @@ GranularPlayer::GranularPlayer(int totalSamplesIn, int sampleRateIn)
 {
     totalSamples = totalSamplesIn;
     sampleRate = sampleRateIn;
-    init();
+    addAndMakeVisible(settings);
+
+    cursorPosition = 72000;
+
+    for (int i = 0; i < 20; i++)
+    {
+        grains.add(new Grain());
+    }
+
+    setBounds(0, 60, 1200, 640);
 }
 
 GranularPlayer::~GranularPlayer() {
 }
 
 void GranularPlayer::paint(Graphics& g) {
+  // DBG("GranularPlayer::paint");
+   g.setColour(Colour::fromRGB(196, 229, 56));
+   g.fillRect((int)((cursorPosition / (float)totalSamples) * 1200) - 1.0, 0, 2.0, 340);
 }
 
 void GranularPlayer::resized()
 {
-    cursor.setBounds(getLocalBounds().withTrimmedBottom(SETTINGS_SIZE.getHeight() + 30));
-    settings.setBounds(SETTINGS_SIZE.withCentre(Point<int>(SETTINGS_SIZE.getCentreX(), SETTINGS_SIZE.getCentreY() - TOP_BAR_HEIGHT - 10)).withSizeKeepingCentre(SETTINGS_SIZE.getWidth(), SETTINGS_SIZE.getHeight()+25));
+    settings.setBounds(SETTINGS_SIZE.withCentre(Point<int>(SETTINGS_SIZE.getCentreX(), SETTINGS_SIZE.getCentreY() - 60 - 10)).withSizeKeepingCentre(SETTINGS_SIZE.getWidth(), SETTINGS_SIZE.getHeight()+25));
 }
 
-void GranularPlayer::onCursorPositionChange(int cursorPositionIn)
-{    
-    cursorPosition = (int)(cursorPositionIn * totalSamples/(float)100.f);
-}
-
-bool GranularPlayer::isCurrentRunningMode(PlayerSettings::RunningMode mode)
+void GranularPlayer::mouseDown(const MouseEvent& event)
 {
-    return settings.isRunningMode(mode);
-}
-
-bool GranularPlayer::isCurrentMidiMode(PlayerSettings::MidiMode mode)
-{
-    return settings.isMidiMode(mode);
-}
-
-void GranularPlayer::disableCursorMovements()
-{
-    mouseMovable = false;
-    cursor.setMouseMovable(false);
-}
-
-void GranularPlayer::init()
-{
-    Random& random = Random::getSystemRandom();
-    Colour guiColor = Colour(
-        (int)random.nextInt(255),
-        (int)random.nextInt(255),
-        (int)random.nextInt(255));
-
-    // Cursor
-    cursorPosition = W_WIDTH / 2;
-    cursor.init(50, guiColor);
-
-    // Settings background
-    //settings.setGuiColor(guiColor);    
-
-    // Visibility
-    addAndMakeVisible(cursor);
-    addAndMakeVisible(settings);
-
-    cursor.setListener(this);
-
-    initGrains();
-}
-
-void GranularPlayer::initGrains()
-{
-    for (int i = 0; i < 10; i++)
+    if (event.x <= getWidth() && event.x >= 0)
     {
-        grains.add(new Grain());
+        if (mouseMovable)
+        {
+            cursorPosition = (event.x/1200.f) * totalSamples;
+            repaint(0,0,1200,340);
+
+        }
     }
 }
 
-void GranularPlayer::reset()
+void GranularPlayer::disableCursorMovements(bool disable)
 {
-    init();
+    mouseMovable = !disable;
+}
+
+
+void GranularPlayer::reset()
+{    
+    for (Grain* grain: grains)
+    {
+        grain->setSkip();
+    }
     settings.resetDefaultValues();
 }
 
@@ -86,7 +66,6 @@ void GranularPlayer::addGrain(int startPosition) {
             grain->setNewGrain(
                 startPosition,
                 Utils::msToSamples(settings.getGrainLength(), sampleRate),
-                Utils::msToSamples(settings.getGrainOffset(), sampleRate),
                 settings.getGrainPitch(),
                 settings.getVolume() * settings.getPan(0),
                 settings.getVolume() * settings.getPan(1),
@@ -100,39 +79,31 @@ void GranularPlayer::addGrain(int startPosition) {
 
 void GranularPlayer::movePositionCallback()
 {
-    if (mouseMovable)
-    {
-    
-        if (cursorPosition >= totalSamples) {
-            cursorPosition = 0;
-        }
-        if (cursorPosition <= 0) {
-            cursorPosition = totalSamples;
-        }
-
-        if (settings.isGranularMode(PlayerSettings::ORDER) || settings.isGranularMode(PlayerSettings::MIRROR))
-        {
-            cursorPosition += 20;
-        }
-        else if (settings.isGranularMode(PlayerSettings::REV_ORDER) || settings.isGranularMode(PlayerSettings::REV_MIRROR))
-        {
-            cursorPosition -= 20;
-        }
-        
-        cursor.setCursorPosition(100 * cursorPosition/(float)totalSamples);
-    
-        repaint();
+    if (cursorPosition >= totalSamples) {
+        cursorPosition = 0;
     }
+    if (cursorPosition <= 0) {
+        cursorPosition = totalSamples;
+    }
+
+    if (settings.getMidiMode() == PlayerSettings::GranularMode::ORDER || settings.getMidiMode() == PlayerSettings::GranularMode::MIRROR)
+    {
+        cursorPosition += 25;
+    }
+    else if (settings.getMidiMode() == PlayerSettings::GranularMode::REV_ORDER || settings.getMidiMode() == PlayerSettings::GranularMode::REV_MIRROR)
+    {
+        cursorPosition -= 25;
+    }
+    
 }
 
 bool GranularPlayer::isCursorMoving()
 {
-    return settings.isRunningMode(PlayerSettings::RUNNING);
+    return settings.getRunningMode() == PlayerSettings::RUNNING;
 }
 
 int GranularPlayer::getActiveGrains()
 {
-
     int tmpCount = 0;
     for (Grain* grain : grains)
     {
@@ -177,11 +148,17 @@ void GranularPlayer::fillNextBuffer(AudioBuffer<float>& toFill, AudioBuffer<floa
     }
 }
 
-PlayerCursor* GranularPlayer::getCursor() {
-    return &cursor;
+int GranularPlayer::getCursorPosition()
+{
+    return cursorPosition;
 }
 
-void GranularPlayer::changeTimer(int sampleRateIn)
+PlayerSettings::MidiMode GranularPlayer::getMidiMode()
+{
+    return settings.getMidiMode();
+}
+
+void GranularPlayer::prepareToPlay(int sampleRateIn)
 {
     sampleRate = sampleRateIn;
 }

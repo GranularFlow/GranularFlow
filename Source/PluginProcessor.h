@@ -5,15 +5,15 @@
 #include "GranularFlowWrapper/GranularFlowWrapper.h"
 
 
-class GranularFLowAudioProcessor  : public juce::AudioProcessor
+class GranularFlowAudioProcessor  : public juce::AudioProcessor
                             #if JucePlugin_Enable_ARA
                              , public juce::AudioProcessorARAExtension
                             #endif
 {
 public:
     //==============================================================================
-    GranularFLowAudioProcessor();
-    ~GranularFLowAudioProcessor() override;
+    GranularFlowAudioProcessor();
+    ~GranularFlowAudioProcessor() override;
 
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void processBlock(juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
@@ -53,5 +53,5 @@ public:
 
 private:
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GranularFLowAudioProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GranularFlowAudioProcessor)
 };

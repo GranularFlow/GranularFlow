@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="TNVEjh" name="GranularFlow" projectType="audioplug" displaySplashScreen="1"
-              jucerFormatVersion="1" pluginCharacteristicsValue="pluginWantsMidiIn">
+              jucerFormatVersion="1" pluginCharacteristicsValue="pluginWantsMidiIn"
+              companyWebsite="Jan Kalinic" bundleIdentifier="jkalinic.granularflow"
+              pluginManufacturer="jkalinic" pluginName="GranularFlow" pluginDesc="bakalarskaPrace"
+              pluginManufacturerCode="jkal" aaxIdentifier="jkalinic.aax.granularflow">
   <MAINGROUP id="urxBUK" name="GranularFlow">
     <GROUP id="{DA38D263-644D-11D5-C5D3-5F32BCD6E98A}" name="Source">
       <GROUP id="{5F378F9D-C136-797C-6379-4C82D25309AE}" name="CustomComponents">

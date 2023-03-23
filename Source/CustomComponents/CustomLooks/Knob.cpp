@@ -11,8 +11,8 @@ Knob::Knob(String nameIn, Colour guiColorIn, float startRangIn, float endRangeIn
     slider.setValue(defaultValue, NotificationType::sendNotification);
     slider.setColour(Slider::ColourIds::rotarySliderFillColourId, guiColorIn);
     slider.setColour(Slider::ColourIds::thumbColourId, guiColorIn);
-    slider.setColour(Slider::ColourIds::textBoxBackgroundColourId, C_TRANSPARENT);
-    slider.setColour(Slider::ColourIds::textBoxOutlineColourId, C_TRANSPARENT);
+    slider.setColour(Slider::ColourIds::textBoxBackgroundColourId, Colour::fromRGBA(0, 0, 0, 0));
+    slider.setColour(Slider::ColourIds::textBoxOutlineColourId, Colour::fromRGBA(0, 0, 0, 0));
     addAndMakeVisible(slider);
     comboBox.reset(new ComboBox());
 
@@ -29,6 +29,8 @@ Knob::Knob(String nameIn, Colour guiColorIn, float startRangIn, float endRangeIn
     comboBox->addItem("Wavetable", 5);
     comboBox->addListener(this);
     comboBox->setSelectedItemIndex(0, NotificationType::sendNotification);    
+
+    setOpaque(true);
 }
 
 Knob::~Knob()
@@ -40,17 +42,16 @@ Knob::~Knob()
 
 void Knob::paint(Graphics& g)
 {
-
-        g.setColour(guiColor);
-        g.fillRect(Rectangle<float>(50, 10).withCentre(Point<float>(getWidth() / (float)2.0, 0)));
-        g.setColour(C_SMOKE);
-        g.drawText(name, getLocalBounds().withSize(getWidth(), 20).withCentre(Point<int>(getWidth() / 2, 20)), Justification::centred, false);
-       
+    g.fillAll(Colour::fromRGB(50, 50, 50));
+    g.setColour(guiColor);
+    g.fillRect(Rectangle<float>(50, 10).withCentre(Point<float>(getWidth() / (float)2.0, 0)));
+    g.setColour(Colours::white);
+    g.drawText(name, getLocalBounds().withSize(getWidth(), 20).withCentre(Point<int>(getWidth() / 2, 20)), Justification::centred, false);       
 }
 
 void Knob::resized()
 {    
-    slider.setBounds(getLocalBounds().withSize(KNOB_WIDTH, KNOB_HEIGHT).withCentre(Point<int>(getWidth() / 2, (KNOB_HEIGHT / 2) + 50)));
+    slider.setBounds(getLocalBounds().withSize(100, 120).withCentre(Point<int>(getWidth() / 2, 110)));
     comboBox->setBounds(getLocalBounds().withSize(getWidth() * 0.7, 25).withCentre(Point<int>(getWidth() / 2, getHeight() - 30 )));
 }
 

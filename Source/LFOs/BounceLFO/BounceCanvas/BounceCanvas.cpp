@@ -3,6 +3,7 @@
 
 BounceCanvas::BounceCanvas()
 {
+    setOpaque(true);
 }
 
 BounceCanvas::~BounceCanvas()
@@ -11,11 +12,11 @@ BounceCanvas::~BounceCanvas()
 
 void BounceCanvas::paint(Graphics& g)
 {
-    g.fillAll(C_GRAY);
-    g.setColour(C_WHITE);
+    g.fillAll(Colour::fromRGB(40, 40, 40));
+    g.setColour(Colours::white);
     g.fillRoundedRectangle(currentPosition.x - 10, currentPosition.y - 10, 20, 20, 10);
 
-    g.setColour(C_WHITE);
+    g.setColour(Colours::white);
 
     for (Path tmpPath: drawPaths)
     {
@@ -39,7 +40,7 @@ void BounceCanvas::mouseDrag(const MouseEvent& e)
     {
         mousePositions.add(e.position);
     }
-
+    positionVector = { 0.0, 0.0 };
 }
 
 void BounceCanvas::mouseUp(const MouseEvent& e)

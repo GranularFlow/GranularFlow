@@ -12,6 +12,7 @@ WavetableSynth::WavetableSynth()
 
     combineButton.addListener(this);
     wavetableSettings.addSlidersListener(this);
+    setOpaque(true);
 }
 
 WavetableSynth::~WavetableSynth()
@@ -34,33 +35,31 @@ void WavetableSynth::sliderValueChanged(Slider* slider)
 
 void WavetableSynth::paint(Graphics& g)
 {
-    g.fillAll(C_DARK);
+    g.fillAll(Colour::fromRGB(33,33,33));
 }
 
 void WavetableSynth::resized()
 {
-    combineButton.setBounds(getLocalBounds().withSize(120, 40).withCentre(Point<int>((getWidth()/2), 30)));
+    combineButton.setBounds(getLocalBounds().withSize(120, 40).withCentre(Point<int>(600, 30)));
 
-    int margin = 25;
-    canvas1.setBounds(getLocalBounds().withTrimmedLeft(margin).withTrimmedTop(100).withTrimmedBottom(getHeight()/ 2).withTrimmedRight(margin + (W_WIDTH * 3/4)));
-    canvas2.setBounds(getLocalBounds().withTrimmedLeft(margin + (W_WIDTH * 1 / 4)).withTrimmedTop(100).withTrimmedBottom(getHeight() / 2).withTrimmedRight(margin + (W_WIDTH * 2 / 4)));
-    canvas3.setBounds(getLocalBounds().withTrimmedLeft(margin + (W_WIDTH * 2 / 4)).withTrimmedTop(100).withTrimmedBottom(getHeight() / 2).withTrimmedRight(margin + (W_WIDTH * 1 / 4)));
-    canvas4.setBounds(getLocalBounds().withTrimmedLeft(margin + (W_WIDTH * 3 / 4)).withTrimmedTop(100).withTrimmedBottom(getHeight() / 2).withTrimmedRight(margin));
+    canvas1.setBounds(getLocalBounds().withTrimmedLeft(25).withTrimmedTop(100).withTrimmedBottom(getHeight() / 2).withTrimmedRight(925));
+    canvas2.setBounds(getLocalBounds().withTrimmedLeft(325).withTrimmedTop(100).withTrimmedBottom(getHeight() / 2).withTrimmedRight(625));
+    canvas3.setBounds(getLocalBounds().withTrimmedLeft(625).withTrimmedTop(100).withTrimmedBottom(getHeight() / 2).withTrimmedRight(325));
+    canvas4.setBounds(getLocalBounds().withTrimmedLeft(925).withTrimmedTop(100).withTrimmedBottom(getHeight() / 2).withTrimmedRight(25));
 
     wavetableSettings.setBounds(SETTINGS_SIZE);
-
 }
 
 void WavetableSynth::buttonClicked(Button* button)
 {
     if (button == & combineButton)
-    {
-        sampleY.clear();
+    {       
 
         if (canvas1.waveTableSamples.size() > 0 &&
             canvas2.waveTableSamples.size() > 0 &&
             canvas3.waveTableSamples.size() > 0)
         {
+            sampleY.clear();
             initSamples(); 
             calculateIncrement();
             canvas4.setWaveForm(sampleY);
@@ -75,105 +74,57 @@ int WavetableSynth::getTotalSampleCount()
 
 void WavetableSynth::calculateIncrement()
 {
-    increment = wavetableSettings.getFreq() * getTotalSampleCount() /(float) SAMPLE_RATE;
+    increment = wavetableSettings.getFreq() * getTotalSampleCount() /(float)sampleRate;
 }
 
 void WavetableSynth::initSamples()
 {
     currentPosition = 0;
     sampleY.clear();
+
     // samples from canvas1 to canvas2
     // canvas 1 samples
-    for (int i = 0; i < canvas1.waveTableSamples.size(); i++)
+    for (float sample : canvas1.waveTableSamples)
     {
-        sampleY.add(canvas1.waveTableSamples[i]);
-    }   
-
+        sampleY.add(sample);
+    }
+   
     // split waves between 1-2 && 2-3
-    int semiWaves = wavetableSettings.getWaveCount() / 2;
-
-    Array<Array<float>> samplesForEachWave;
-    for (int sampleIndex = 0; sampleIndex < canvas1.waveTableSamples.size(); sampleIndex++)
+    for (int waveindex = 0; waveindex < wavetableSettings.getWaveCount() / 2; waveindex++)
     {
-        Array<float> onePointEachWave;
-        onePointEachWave.add(canvas1.waveTableSamples[sampleIndex]);
-        for (int waveindex = 0; waveindex < semiWaves; waveindex++)
+        for (int sampleIndex = 0; sampleIndex < 100; sampleIndex++)
         {
-            float y2 = canvas2.waveTableSamples[sampleIndex];
-            float y1 = onePointEachWave.getLast();
-            int x1 = waveindex;
-            int x2 = semiWaves+1;
-            //float y = (y1 + (x - x1) * (y2 - y1) / (x2 - x1));
-            float y = (y1 + (x1+1 - x1) * (y2 - y1) / (x2 - x1));
-
-            onePointEachWave.add(y);
-        }
-        samplesForEachWave.add(onePointEachWave);
-    }
-
-    for (int waveIndex = 0; waveIndex < semiWaves; waveIndex++)
-    {
-        for (int sampleIndex = 0; sampleIndex < samplesForEachWave.size(); sampleIndex++)
-        {
-            sampleY.add(samplesForEachWave[sampleIndex][waveIndex]);
+            sampleY.add(Utils::interpolateLinear(waveindex + 1, waveindex, (wavetableSettings.getWaveCount() / 2) + 1, canvas1.waveTableSamples[sampleIndex], canvas2.waveTableSamples[sampleIndex]));
         }
     }
 
-    // add second wave
-    for (int i = 0; i < canvas2.waveTableSamples.size(); i++)
+    for (float sample : canvas2.waveTableSamples)
     {
-        sampleY.add(canvas2.waveTableSamples[i]);
+        sampleY.add(sample);
     }
 
-    samplesForEachWave.clear();
-    for (int sampleIndex = 0; sampleIndex < canvas2.waveTableSamples.size(); sampleIndex++)
+    for (int waveindex = 0; waveindex < wavetableSettings.getWaveCount() / 2; waveindex++)
     {
-        Array<float> onePointEachWave;
-        onePointEachWave.add(canvas2.waveTableSamples[sampleIndex]);
-        for (int waveindex = 0; waveindex < semiWaves; waveindex++)
+        for (int sampleIndex = 0; sampleIndex < 100; sampleIndex++)
         {
-            float y2 = canvas3.waveTableSamples[sampleIndex];
-            float y1 = onePointEachWave.getLast();
-            int x1 = waveindex;
-            int x2 = semiWaves + 1;
-            
-            //float (float x, float x1, float x2, float y1, float y2
-            float y = Utils::interpolateLinear(x1 + 1, x1, x2, y1, y2);
-
-            onePointEachWave.add(y);
-        }
-        samplesForEachWave.add(onePointEachWave);
-    }
-
-    for (int waveIndex = 0; waveIndex < semiWaves; waveIndex++)
-    {
-        for (int sampleIndex = 0; sampleIndex < samplesForEachWave.size(); sampleIndex++)
-        {
-            sampleY.add(samplesForEachWave[sampleIndex][waveIndex]);
+            sampleY.add(Utils::interpolateLinear(waveindex + 1, waveindex, (wavetableSettings.getWaveCount() / 2) + 1, canvas2.waveTableSamples[sampleIndex], canvas3.waveTableSamples[sampleIndex]));
         }
     }
 
-
-    // add last wave
-    for (int i = 0; i < canvas3.waveTableSamples.size(); i++)
+    for (float sample : canvas3.waveTableSamples)
     {
-        sampleY.add(canvas3.waveTableSamples[i]);
+        sampleY.add(sample);
     }
 }
 
 void WavetableSynth::prepareToPlay(float sampleRateIn, int bufferSizeIn)
 {
     sampleRate = sampleRateIn;
-
+    calculateIncrement();
 }
 
 void WavetableSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& midiMessages)
 {
-    float* leftChannel = bufferToFill.getWritePointer(0);
-    float* rightChannel = bufferToFill.getWritePointer(1);
-
-    
-
     if (sampleY.size() != (wavetableSettings.getWaveCount() + 3) * 100)
     {
         return;
@@ -188,9 +139,6 @@ void WavetableSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& 
     }
     for (int i = 0; i < bufferToFill.getNumSamples(); i++)
     {   
-     
-        
-
         if (wavetableSettings.isCurrentInterpolationType(WavetableSynthSettings::LINEAR))
         {
            finalSample = Utils::interpolateLinear(currentPosition, (int)currentPosition % sampleY.size(), ((int)currentPosition + 1) % sampleY.size(), sampleY[(int)currentPosition % sampleY.size()], sampleY[((int)currentPosition + 1) % sampleY.size()]);
@@ -198,7 +146,12 @@ void WavetableSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& 
         }
         else if (wavetableSettings.isCurrentInterpolationType(WavetableSynthSettings::CUBIC))
         {
-            finalSample = Utils::interpolateCubic(currentPosition, sampleY);
+            finalSample = Utils::interpolateCubic(currentPosition - ((int)currentPosition + 1),
+                sampleY[((int)currentPosition + sampleY.size()) % sampleY.size()],
+                sampleY[((int)currentPosition + 1 + sampleY.size()) % sampleY.size()],
+                sampleY[((int)currentPosition + 2 + sampleY.size()) % sampleY.size()],
+                sampleY[((int)currentPosition + 3 + sampleY.size()) % sampleY.size()]
+            );
         }
         else if (wavetableSettings.isCurrentInterpolationType(WavetableSynthSettings::HERMITE))
         {
@@ -208,11 +161,11 @@ void WavetableSynth::processBlock(AudioBuffer<float>& bufferToFill, MidiBuffer& 
         if (abs(finalSample) >= 0.9999f)
         {
             DBG("crack sample");
-            finalSample = 0;
+            finalSample = 0.5f;
         }
 
-        leftChannel[i] += (finalSample * wavetableSettings.getVolume() * wavetableSettings.getPan(0));
-        rightChannel[i] += (finalSample * wavetableSettings.getVolume() * wavetableSettings.getPan(1));
+        bufferToFill.getWritePointer(0)[i] += (finalSample * wavetableSettings.getVolume() * wavetableSettings.getPan(0));
+        bufferToFill.getWritePointer(1)[i] += (finalSample * wavetableSettings.getVolume() * wavetableSettings.getPan(1));
 
         currentPosition = fmod((currentPosition + increment), sampleY.size());
         //currentPosition++;

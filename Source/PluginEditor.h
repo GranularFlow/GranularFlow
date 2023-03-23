@@ -4,19 +4,19 @@
 #include "PluginProcessor.h"
 
 
-class GranularFLowAudioProcessorEditor  : public juce::AudioProcessorEditor
+class GranularFlowAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
     // -----------------------
     // Class
-    GranularFLowAudioProcessorEditor (GranularFLowAudioProcessor&);
-    ~GranularFLowAudioProcessorEditor() override;
+    GranularFlowAudioProcessorEditor (GranularFlowAudioProcessor&);
+    ~GranularFlowAudioProcessorEditor() override;
     // -----------------------
     // GUI
     void paint (juce::Graphics&) override;
     void resized() override;
 
 private:
-    GranularFLowAudioProcessor& audioProcessor;
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GranularFLowAudioProcessorEditor)
+    GranularFlowAudioProcessor& audioProcessor;
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GranularFlowAudioProcessorEditor)
 };

@@ -4,7 +4,7 @@ CustomWindow::CustomWindow(String windowName, Component* componentIn) : Document
     juce::Colours::lightgrey,
     DocumentWindow::minimiseButton){
     setContentOwned(componentIn, false);
-    centreWithSize(W_WIDTH, W_HEIGHT);
+    setBounds(0, 0, 1200, 700);
 }
 
 CustomWindow::~CustomWindow()

@@ -16,7 +16,7 @@ void RingBuffer::addBuffer(AudioBuffer<float>& inputBuffer)
     {
         ringBuffer.setSample(0, writePosition, inputBuffer.getSample(0, i));
         ringBuffer.setSample(1, writePosition, inputBuffer.getSample(0, i));
-        writePosition = (writePosition + 1) % BUFFER_SAMPLES;
+        writePosition = (writePosition + 1) % 144000;
     }
 }
 

@@ -6,7 +6,7 @@
 #include "Grain/Grain.h"
 
 
-class GranularPlayer : public Component, public PlayerCursor::Listener
+class GranularPlayer : public Component
 {
 public:
 	// ----------------------
@@ -17,10 +17,6 @@ public:
     // GUI
 	void paint(Graphics& g) override;
 	void resized() override;
-	// ------- PlayerCursor
-	void onCursorPositionChange(int) override;
-	bool isCurrentRunningMode(PlayerSettings::RunningMode) override;
-	bool isCurrentMidiMode(PlayerSettings::MidiMode);
 	// ----------------------
 	// Listener 
 	void setKnobsListener(Knob::Listener*);
@@ -31,31 +27,27 @@ public:
 	int getActiveGrains();
 	void fillNextBuffer(AudioBuffer<float>&, AudioBuffer<float>&);
 	void fillNextBuffer(AudioBuffer<float>&, AudioBuffer<float>&, float);
-	PlayerCursor* getCursor();
+	int getCursorPosition();
+	PlayerSettings::MidiMode getMidiMode();
 	// ----------------------
 	// Set
-	void changeTimer(int);
+	void prepareToPlay(int);
 	// ----------------------
 	// Tools
-	void disableCursorMovements();
-	void init();
-	void initGrains();
+	void mouseDown(const MouseEvent&) override;
+	void disableCursorMovements(bool);
 	void reset();
 	void addGrain(int);
 private:
+	bool mouseMovable = true;
 	// ----------------------
 	int totalSamples = 1000;
 	int sampleRate = 48000;
 	// ----------------------
 	int cursorPosition = 0;
-	int cursorTimer = 0;
-	// ----------------------
 	int grainTimer = 0;
 	bool waitForNextGrain = false;
 	// ----------------------
-	bool mouseMovable = true;
-	// ----------------------
 	OwnedArray<Grain> grains;
-	PlayerCursor cursor;
 	PlayerSettings settings;	
 };

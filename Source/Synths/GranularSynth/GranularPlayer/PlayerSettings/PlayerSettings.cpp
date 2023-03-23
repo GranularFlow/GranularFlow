@@ -23,6 +23,7 @@ PlayerSettings::PlayerSettings()
     // Master
     addAndMakeVisible(volumeKnob);
     addAndMakeVisible(panKnob);
+    setOpaque(true);
 }
 
 PlayerSettings::~PlayerSettings()
@@ -32,13 +33,16 @@ PlayerSettings::~PlayerSettings()
 
 void PlayerSettings::paint(Graphics& g) {
     // Settings panel
-    g.setColour(L_GRAY);
-    g.fillRoundedRectangle(getLocalBounds().toFloat(), 30);
+   // DBG("PlayerSettings::paint");
+    g.fillAll(Colour::fromRGB(33, 33, 33));
+
+    g.setColour(Colour::fromRGB(50, 50, 50));
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), 25);
 }
 
 void PlayerSettings::resized() {
 
-
+   // DBG("PlayerSettings::resized");
     FlexBox fb{
             FlexBox::Direction::row,
             FlexBox::Wrap::noWrap,
@@ -102,7 +106,7 @@ void PlayerSettings::resized() {
         Utils::addToFb(&fb, *separators[i], (i + 1) * 2, 1, 250);
     }
 
-    fb.performLayout(getLocalBounds());
+    fb.performLayout(getLocalBounds().withTrimmedLeft(16).withTrimmedRight(16));
 }
 
 int PlayerSettings::getGrainLength()
@@ -113,14 +117,6 @@ int PlayerSettings::getGrainLength()
 int PlayerSettings::getNumGrains()
 {
     return (int)grainNumKnob.getValue();
-}
-
-bool PlayerSettings::isMidiMode(PlayerSettings::MidiMode mode) {
-    return ((PlayerSettings::MidiMode)midiModeRadioBox.getValue() == mode);
-}
-
-bool PlayerSettings::isRunningMode(PlayerSettings::RunningMode mode) {
-    return (PlayerSettings::RunningMode)runningModeRadioBox.getValue() == mode;
 }
 
 void PlayerSettings::resetDefaultValues()
@@ -135,13 +131,6 @@ void PlayerSettings::resetDefaultValues()
     grainOffsetKnob.setDefaultValue();
     volumeKnob.setDefaultValue();
     panKnob.setDefaultValue();
-}
-
-bool PlayerSettings::isGranularMode(PlayerSettings::GranularMode mode) {
-    return (PlayerSettings::GranularMode)granularModeRadioBox.getValue() == mode;
-}
-bool PlayerSettings::isWindowType(PlayerSettings::WindowType mode) {
-    return (PlayerSettings::WindowType)windowTypeRadioBox.getValue() == mode;
 }
 
 float PlayerSettings::getGrainPitch()
@@ -167,6 +156,16 @@ float PlayerSettings::getPan(int channel)
 PlayerSettings::GranularMode PlayerSettings::getGranularMode()
 {
     return (PlayerSettings::GranularMode)granularModeRadioBox.getValue();
+}
+
+PlayerSettings::RunningMode PlayerSettings::getRunningMode()
+{
+    return (PlayerSettings::RunningMode)runningModeRadioBox.getValue();
+}
+
+PlayerSettings::MidiMode PlayerSettings::getMidiMode()
+{
+    return (PlayerSettings::MidiMode)midiModeRadioBox.getValue();
 }
 
 PlayerSettings::WindowType PlayerSettings::getWindowType()

@@ -11,7 +11,6 @@ LFO::~LFO()
     {
         if (knob != nullptr)
         {
-            // SOMEWHERE IS ERROR IN KNOB
             knob = nullptr;
         }
     }
@@ -38,7 +37,6 @@ void LFO::addKnobToListeners(Knob* knobPntrIn)
 void LFO::removeKnobFromListeners(Knob* knobPntrIn)
 {
     int index = -666;
-
     for (int i = 0; i < knobPntrs.size(); i++)
     {
         if (knobPntrs[i] == knobPntrIn)

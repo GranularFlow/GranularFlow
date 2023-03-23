@@ -36,6 +36,7 @@ public:
         HANN,
         TRIANGLE
     };
+
     // ----------------------
     // Class
 	PlayerSettings();
@@ -50,10 +51,6 @@ public:
     // ----------------------
     // Tools
     void resetDefaultValues();
-    bool isGranularMode(GranularMode);
-    bool isRunningMode(RunningMode);
-    bool isMidiMode(MidiMode);
-    bool isWindowType(WindowType);
     // ----------------------
     // Getters
     int getNumGrains();
@@ -63,25 +60,25 @@ public:
     float getVolume();
     float getPan(int channel);
     PlayerSettings::GranularMode getGranularMode();
+    PlayerSettings::RunningMode getRunningMode();
+    PlayerSettings::MidiMode getMidiMode();
     PlayerSettings::WindowType getWindowType();
     // ----------------------
     // Setters
     void setGuiColor(Colour colour);
-
-
 private:
     // ----------------------
-    RadioBox granularModeRadioBox{ "MODE", C_MARINE, GRANULAR_MODE };
-    RadioBox runningModeRadioBox{ "CURSOR", C_LAVENDER_ROSE, RUNNING_MODE };
-    RadioBox midiModeRadioBox{ "MIDI", C_CIRCUMMORBITAL, MIDI_MODE };
-    RadioBox windowTypeRadioBox{ "WINDOW", C_MEDITERRANEAN, WINDOW_TYPE };
+    RadioBox granularModeRadioBox{ "MODE", Colour::fromRGB(0, 168, 255), {"ORDER", "REV.ORDER", "MIRROR", "REV.MIRROR"} };
+    RadioBox runningModeRadioBox{ "CURSOR", Colour::fromRGB(253, 167, 223), {"STATIC", "RUNNING"} };
+    RadioBox midiModeRadioBox{ "MIDI", Colour::fromRGB(87, 88, 187), {"OFF", "ON"} };
+    RadioBox windowTypeRadioBox{ "WINDOW", Colour::fromRGB(18, 137, 167), { "HALF SINE", "HANN", "TRIANGLE"} };
     // ----------------------
-    Knob grainLengthKnob{ "LENGTH", C_MARTINA, 1, 2000, 1, 1000, true };
-    Knob grainPitchKnob{ "PITCH", C_RADIANTYELLOW, 0.1, 1.9, 0.001, 1, true };
-    Knob grainNumKnob{ "GRAINS", C_ENERGOS, 1, 30, 1, 2, true };
-    Knob grainOffsetKnob{ "OFFSET", C_BARARED, 300, 10000, 10, 1000, true };
-    Knob volumeKnob{ "VOLUME", C_SUNFLOWER, 0, 100, 0.01, 50, true };
-    Knob panKnob{ "PAN", C_BILLS, 0, 100, 1, 50, true };
+    Knob grainLengthKnob{ "LENGTH", Colour::fromRGB(18, 203, 196), 1, 2000, 1, 1000, true };
+    Knob grainPitchKnob{ "PITCH", Colour::fromRGB(247, 159, 31), 0.1, 1.9, 0.001, 1, true };
+    Knob grainNumKnob{ "GRAINS", Colour::fromRGB(196, 229, 56), 1, 20, 1, 2, true };
+    Knob grainOffsetKnob{ "OFFSET", Colour::fromRGB(237, 76, 103), 300, 10000, 10, 1000, true };
+    Knob volumeKnob{ "VOLUME", Colour::fromRGB(255, 195, 18), 0, 100, 0.01, 50, true };
+    Knob panKnob{ "PAN", Colour::fromRGB(238, 90, 36), 0, 100, 1, 50, true };
     // ----------------------
 	Colour guiColour;
     OwnedArray<Separator> separators;

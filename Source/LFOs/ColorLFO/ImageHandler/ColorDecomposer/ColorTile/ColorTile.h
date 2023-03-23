@@ -14,7 +14,7 @@ public:
     void setColor(int, Colour);
 
 private:
-    Colour color = C_GRAY;
+    Colour color = Colour::fromRGB(40, 40, 40);
     int colorInt = 255;
 
 };

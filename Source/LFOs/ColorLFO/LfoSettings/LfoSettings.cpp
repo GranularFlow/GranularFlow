@@ -13,6 +13,7 @@ LfoSettings::LfoSettings()
         separators.add(new Separator());
         addAndMakeVisible(separators.getLast());
     }
+    setOpaque(true);
 }
 
 LfoSettings::~LfoSettings()
@@ -22,8 +23,10 @@ LfoSettings::~LfoSettings()
 
 void LfoSettings::paint(Graphics& g)
 {
-    g.setColour(L_GRAY);
-    g.fillRoundedRectangle(getLocalBounds().toFloat(), 30);
+    g.fillAll(Colour::fromRGB(33, 33, 33));
+
+    g.setColour(Colour::fromRGB(50, 50, 50));
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), 25);
 }
 
 void LfoSettings::resized()
@@ -48,7 +51,7 @@ void LfoSettings::resized()
     {
         fb.items.add(FlexItem(*separators[i]).withMinWidth(1).withHeight(191).withOrder((i + 1) * 2));
     }
-    fb.performLayout(getLocalBounds());
+    fb.performLayout(getLocalBounds().withTrimmedLeft(15).withTrimmedRight(15));
 }
 
 void LfoSettings::addRateListener(Slider::Listener* listener)

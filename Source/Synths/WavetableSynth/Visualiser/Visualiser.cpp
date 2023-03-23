@@ -2,6 +2,7 @@
 
 Visualiser::Visualiser()
 {
+    setOpaque(true);
 }
 
 Visualiser::~Visualiser()
@@ -10,24 +11,19 @@ Visualiser::~Visualiser()
 
 void Visualiser::paint(Graphics& g)
 {
-    g.fillAll(M_DARK);
+   // DBG("Visualiser::paint");
+    g.fillAll(Colour::fromRGB(70, 70, 70));
+    g.setColour(Colours::white);
+    if (waveForm.size() > 0)
+    {
+        Path p;
+        p.startNewSubPath(0, (getHeight() / 2.f));
 
-    g.setColour(C_WHITE);
-    
-    int sampleCount = waveForm.size();
-    float yOffset = getHeight() / 2;
-    float step = getWidth() / (float)sampleCount;
-    float index = 0;
-
-    Path p;
-    p.startNewSubPath(0, yOffset);
-
-    for (int i = 0; i < sampleCount; i++) {
-        float y = yOffset - (yOffset * waveForm[i]);
-        p.lineTo(index, y);
-        index += step;
+        for (int i = 0; i < waveForm.size(); i++) {
+            p.lineTo((getWidth() / (float)waveForm.size()) * i, (getHeight()/2.f) * (1 - waveForm[i]));
+        }
+        g.strokePath(p, PathStrokeType(PathStrokeType::curved), AffineTransform::identity);
     }
-    g.strokePath(p, PathStrokeType(PathStrokeType::curved), AffineTransform::identity);
 }
 
 void Visualiser::setWaveForm(Array<float> inputArray)
@@ -35,4 +31,5 @@ void Visualiser::setWaveForm(Array<float> inputArray)
     waveForm.clear();
     waveForm = inputArray;
     repaint();
+    setBufferedToImage(true);
 }

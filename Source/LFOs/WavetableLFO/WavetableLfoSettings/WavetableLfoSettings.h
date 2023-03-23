@@ -41,9 +41,9 @@ public:
 
 private:
     // Settings
-    Knob rateKnob{ "RATE", C_SUNFLOWER, 0.1, 99, 0.01, 1, false };
-    Knob depthKnob{ "DEPTH", C_RADIANTYELLOW, 0.1, 1, 0.01, 0.5, false };
-    Knob waveCountKnob{ "WAVE COUNT", C_ENERGOS, 2, 10, 2, 6, false };
+    Knob rateKnob{ "RATE", Colour::fromRGB(255, 195, 18), 0.1, 99, 0.01, 1, false };
+    Knob depthKnob{ "DEPTH", Colour::fromRGB(247, 159, 31), 0.1, 1, 0.01, 0.5, false };
+    Knob waveCountKnob{ "WAVE COUNT", Colour::fromRGB(196, 229, 56), 2, 10, 2, 6, false };
 
     // GUI
     Colour guiColour;

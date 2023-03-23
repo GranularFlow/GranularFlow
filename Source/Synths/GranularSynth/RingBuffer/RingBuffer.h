@@ -18,8 +18,8 @@ public:
     bool readyToBeConsumed();
 
 private:
-    AudioBuffer<float> ringBuffer { 2, BUFFER_SAMPLES };
-    int writePosition = BUFFER_SAMPLES/2;
+    AudioBuffer<float> ringBuffer { 2, 144000 };
+    int writePosition = 144000/2;
     int readPosition = 0;
 };
 

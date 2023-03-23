@@ -7,6 +7,7 @@ MathSettings::MathSettings()
     addAndMakeVisible(textEditor);
     addAndMakeVisible(enterButton);
     textEditor.setJustification(Justification::horizontallyCentred);
+    setOpaque(true);
 }
 
 MathSettings::~MathSettings()
@@ -15,8 +16,9 @@ MathSettings::~MathSettings()
 
 void MathSettings::paint(Graphics& g)
 {
-    g.setColour(L_GRAY);
-    g.fillRoundedRectangle(getLocalBounds().toFloat(), 30);
+    g.fillAll(Colour::fromRGB(33, 33, 33));
+    g.setColour(Colour::fromRGB(50, 50, 50));
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), 25);
 }
 
 void MathSettings::resized()
@@ -29,8 +31,8 @@ void MathSettings::resized()
             FlexBox::JustifyContent::spaceAround
     };
 
-    Utils::addToFb(&fb, rateKnob, 1, 110, 191);
-    Utils::addToFb(&fb, depthKnob, 3, 110, 191);
+    Utils::addToFb(&fb, rateKnob, 1, 110, 220);
+    Utils::addToFb(&fb, depthKnob, 3, 110, 220);
     Utils::addToFb(&fb, textEditor, 5, 300, 60);
     Utils::addToFb(&fb, enterButton, 7, 80, 60);
 
@@ -41,12 +43,12 @@ void MathSettings::resized()
     }
 
     // White lines
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < separators.size(); i++)
     {
-        fb.items.add(FlexItem(*separators[i]).withMinWidth(1).withHeight(191).withOrder((i + 1) * 2));
+        Utils::addToFb(&fb, *separators[i], (i + 1) * 2, 1, 220);
     }
 
-    fb.performLayout(getLocalBounds());
+    fb.performLayout(getLocalBounds().withTrimmedLeft(15).withTrimmedRight(15));
 
 }
 

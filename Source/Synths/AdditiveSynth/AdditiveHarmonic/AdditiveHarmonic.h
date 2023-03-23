@@ -38,6 +38,7 @@ public:
 private:
     // ----------------------
     // To calculate next sample 
+    double sampleRate = 48000;
     float frequency = 440.0f;
     double phase = 0;    
     double angle = 0.0;
@@ -46,7 +47,6 @@ private:
     // MIDI
     int lastMidiNote = -1;
     bool midiNoteOn = false;
-    float midiNoteFrequency = 0.f;
     // ----------------------
     AdditiveHarmonicSettings settings;
 };

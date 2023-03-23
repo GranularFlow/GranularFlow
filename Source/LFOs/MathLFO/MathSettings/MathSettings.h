@@ -39,8 +39,8 @@ public:
 
 private:
     // -----------------------
-    Knob rateKnob{ "RATE", C_SUNFLOWER, 0.1, 99, 0.01, 1, false };
-    Knob depthKnob{ "DEPTH", C_BILLS, 0.01, 1, 0.001, 0.5, false };
+    Knob rateKnob{ "RATE", Colour::fromRGB(255, 195, 18), 0.1, 99, 0.01, 1, false };
+    Knob depthKnob{ "DEPTH", Colour::fromRGB(238, 90, 36), 0.01, 1, 0.001, 0.5, false };
     // -----------------------
     TextEditor textEditor;
     TextButton enterButton{ "ENTER" };

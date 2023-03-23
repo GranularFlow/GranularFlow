@@ -5,6 +5,7 @@ BounceLFO::BounceLFO()
    addAndMakeVisible(settings);
    addAndMakeVisible(canvas);
    settings.addButtonsListener(this);
+   setOpaque(true);
 }
 
 BounceLFO::~BounceLFO()
@@ -14,14 +15,13 @@ BounceLFO::~BounceLFO()
 
 void BounceLFO::paint(Graphics& g)
 {
-    g.fillAll(C_DARK);
-    Utils::paintLogo(g);
+    g.fillAll(Colour::fromRGB(33,33,33));
 }
 
 void BounceLFO::resized()
 {
     settings.setBounds(SETTINGS_SIZE.withSizeKeepingCentre(750, 200));
-    canvas.setBounds(getLocalBounds().withTrimmedTop(TOP_BAR_HEIGHT + 10).withTrimmedBottom(SETTINGS_SIZE.getHeight() + 20).withTrimmedLeft(100).withTrimmedRight(100));
+    canvas.setBounds(getLocalBounds().withTrimmedTop(60 + 10).withTrimmedBottom(SETTINGS_SIZE.getHeight() + 20).withTrimmedLeft(100).withTrimmedRight(100));
 }
 
 void BounceLFO::addTimerListener(Slider::Listener* listener) {

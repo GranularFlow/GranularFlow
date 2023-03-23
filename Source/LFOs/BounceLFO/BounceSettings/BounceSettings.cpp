@@ -16,7 +16,7 @@ BounceSettings::BounceSettings()
         separators.add(new Separator());
         addAndMakeVisible(separators.getLast());
     }
-
+    setOpaque(true);
 }
 
 BounceSettings::~BounceSettings()
@@ -25,8 +25,9 @@ BounceSettings::~BounceSettings()
 
 void BounceSettings::paint(Graphics& g)
 {
-    g.setColour(L_GRAY);
-    g.fillRoundedRectangle(getLocalBounds().toFloat(), 30);
+    g.fillAll(Colour::fromRGB(33, 33, 33));
+    g.setColour(Colour::fromRGB(50, 50, 50));
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), 25);
 }
 
 void BounceSettings::resized()

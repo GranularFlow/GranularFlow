@@ -11,6 +11,8 @@ AdditiveSynthSettings::AdditiveSynthSettings()
 
     harmonicSelect.setValue(1, dontSendNotification);
     harmonicSelect.setRange(1, harmonicCount.getMaximum(), harmonicCount.getInterval());
+
+    setOpaque(true);
 }
 
 AdditiveSynthSettings::~AdditiveSynthSettings()
@@ -19,6 +21,8 @@ AdditiveSynthSettings::~AdditiveSynthSettings()
 
 void AdditiveSynthSettings::paint(Graphics& g)
 {
+   // DBG("AdditiveSynthSettings::paint");
+    g.fillAll(Colour::fromRGB(33, 33, 33));
 }
 
 void AdditiveSynthSettings::resized()

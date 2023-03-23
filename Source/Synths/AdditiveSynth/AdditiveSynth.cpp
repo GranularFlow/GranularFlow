@@ -12,6 +12,7 @@ AdditiveSynth::AdditiveSynth()
         addAndMakeVisible(harmonics.getLast());
     }
     harmonics[0]->toFront(true);
+    setOpaque(true);
 }
 
 AdditiveSynth::~AdditiveSynth()
@@ -22,19 +23,20 @@ AdditiveSynth::~AdditiveSynth()
 
 void AdditiveSynth::paint(Graphics& g)
 {
-    g.fillAll(C_DARK);
+   // DBG("AdditiveSynth::paint");
+    g.fillAll(Colour::fromRGB(33,33,33));
 }
 
 void AdditiveSynth::resized()
 {
-    settings.setBounds(getLocalBounds().withTrimmedBottom(getHeight() - TOP_BAR_HEIGHT));
+    settings.setBounds(getLocalBounds().withTrimmedBottom(getHeight() - 60));
     // Harmonics
     for (int i = 0; i < harmonics.size(); i++)
     {
         harmonics[i]->setBounds(SETTINGS_SIZE);
     }
     // AudioVisualiser
-    visualiser.setBounds(getLocalBounds().withTrimmedTop(TOP_BAR_HEIGHT).withTrimmedBottom(SETTINGS_SIZE.getHeight() + 40));
+    visualiser.setBounds(getLocalBounds().withTrimmedTop(60).withTrimmedBottom(SETTINGS_SIZE.getHeight() + 40));
 }
 
 void AdditiveSynth::sliderValueChanged(Slider* slider)
@@ -101,15 +103,13 @@ void AdditiveSynth::processBlock(AudioBuffer<float>& bufferToFill, juce::MidiBuf
     {
         harmonics[i]->processBlock(bufferToFill, midiMessages);
     }
-    // TODO: make less consuming -> use visuaiser 
-    counterPush++;
 
+    counterPush++;
     if (counterPush > 100)
     {
         visualiser.setWaveForm(bufferToFill);
+        counterPush = 0;
     }
-    
-
 }
 
 void AdditiveSynth::prepareToPlay(float sampleRate, int bufferSize)

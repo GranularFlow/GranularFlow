@@ -9,6 +9,8 @@ ColorLFO::ColorLFO()
     settings.addDirectionListener(this);
     settings.addColorListener(this);
     settings.addButtonsListener(this);
+
+    setOpaque(true);
 }
 
 ColorLFO::~ColorLFO()
@@ -21,7 +23,7 @@ ColorLFO::~ColorLFO()
 
 void ColorLFO::paint(Graphics& g)
 {
-    g.fillAll(C_DARK);
+    g.fillAll(Colour::fromRGB(33,33,33));
     Utils::paintLogo(g);
 }
 

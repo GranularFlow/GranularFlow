@@ -52,11 +52,11 @@ public:
     bool isDirectionRadioBox(RadioBox*);
 private:
     // ----------------------------------------
-    RadioBox directionRadioBox{ "DIRECTION", C_MARTINA, DIRECTION_MODE };
-    RadioBox colorSelectRadioBox{ "SELECTED COLOR", C_ENERGOS, SELECTED_COLOR };
+    RadioBox directionRadioBox{ "DIRECTION", Colour::fromRGB(18, 203, 196), { "RANDOM", "FORWARD", "REVERSED" } };
+    RadioBox colorSelectRadioBox{ "SELECTED COLOR", Colour::fromRGB(196, 229, 56), { "RED", "GREEN", "BLUE" } };
     // ----------------------------------------
-    Knob rateKnob{ "RATE", C_SUNFLOWER, 0.1, 49, 0.01, 1, false };
-    Knob depthKnob{ "DEPTH", C_BILLS, 0, 1, 0.001, 0.5, false };
+    Knob rateKnob{ "RATE", Colour::fromRGB(255, 195, 18), 0.1, 49, 0.01, 1, false };
+    Knob depthKnob{ "DEPTH", Colour::fromRGB(238, 90, 36), 0, 1, 0.001, 0.5, false };
     // ----------------------------------------
     TextButton uploadButton{ "UPLOAD" };
     // ----------------------------------------

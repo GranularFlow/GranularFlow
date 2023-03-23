@@ -12,6 +12,7 @@ WavetableLfoSettings::WavetableLfoSettings()
         separators.add(new Separator());
         addAndMakeVisible(separators.getLast());
     }
+    setOpaque(true);
 }
 
 WavetableLfoSettings::~WavetableLfoSettings()
@@ -20,8 +21,9 @@ WavetableLfoSettings::~WavetableLfoSettings()
 
 void WavetableLfoSettings::paint(Graphics& g)
 {
-    g.setColour(L_GRAY);
-    g.fillRoundedRectangle(getLocalBounds().toFloat(), 30);
+    g.fillAll(Colour::fromRGB(33, 33, 33));
+    g.setColour(Colour::fromRGB(50, 50, 50));
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), 25);
 }
 
 void WavetableLfoSettings::resized()
@@ -46,10 +48,10 @@ void WavetableLfoSettings::resized()
     // White lines
     for (int i = 0; i < separators.size(); i++)
     {
-        Utils::addToFb(&fb, *separators[i], (i + 1) * 2, 2, getWidth());
+        Utils::addToFb(&fb, *separators[i], (i + 1) * 2, 1, 225);
     }
 
-    fb.performLayout(getLocalBounds());
+    fb.performLayout(getLocalBounds().withTrimmedLeft(15).withTrimmedRight(15));
 
 }
 

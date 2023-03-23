@@ -32,7 +32,7 @@ void AudioLoad::fillBuffer(AudioBuffer<float>& bufferToFill, int numSamplesToFil
     }
     else
     {
-        DBG("failed to load audio");
+       //// DBG("failed to load audio");
     }
 
 }

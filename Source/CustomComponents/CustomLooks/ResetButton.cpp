@@ -1,8 +1,11 @@
 #include "ResetButton.h"
 
-ResetButton::ResetButton()
+ResetButton::ResetButton(int width, int height, int centerX, int centerY)
 {
     addAndMakeVisible(reloadButton);    
+    setBounds(centerX - (width / 2.f), centerY - (height / 2.f), width, height);
+    setBufferedToImage(true);
+    setOpaque(true);
 }
 
 ResetButton::~ResetButton()
@@ -11,11 +14,8 @@ ResetButton::~ResetButton()
 
 void ResetButton::paint(Graphics& g)
 {
-    g.setColour(bgColor);
-    int x = getLocalBounds().reduced(getHeight() * 0.1f).getHeight();
-    g.fillRoundedRectangle(getLocalBounds().reduced(getHeight() * 0.1f).toFloat(), getHeight() * 0.1f);  
-
-    buttonImage = buttonImage.rescaled(x, x, Graphics::highResamplingQuality);
+    g.fillAll(Colour::fromRGB(50, 50, 50));
+    buttonImage = buttonImage.rescaled(getLocalBounds().reduced(getHeight() * 0.1f).getHeight(), getLocalBounds().reduced(getHeight() * 0.1f).getHeight(), Graphics::highResamplingQuality);
     g.drawImageAt(buttonImage, getHeight() * 0.1f, getHeight() * 0.1f);
 }
 
@@ -27,14 +27,7 @@ void ResetButton::mouseDown(const MouseEvent& e)
 {
     if (getLocalBounds().contains(e.getPosition()))
     {
-        bgColor = M_LIGHT;
-        repaint();
         resetPntr->reseted(this);
     }
 }
 
-void ResetButton::mouseUp(const MouseEvent& e)
-{
-    bgColor = L_GRAY;
-    repaint();
-}

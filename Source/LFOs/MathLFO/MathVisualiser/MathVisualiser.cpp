@@ -3,6 +3,7 @@
 MathVisualiser::MathVisualiser()
 {
     samples.clear();
+    setOpaque(true);
 }
 
 MathVisualiser::~MathVisualiser()
@@ -15,32 +16,25 @@ void MathVisualiser::initGui()
 
 void MathVisualiser::paint(Graphics& g)
 {
-    g.fillAll(L_GRAY);
-    g.setColour(C_WHITE);
+    g.fillAll(Colour::fromRGB(50, 50, 50));
+    g.setColour(Colours::white);
     if (samples.size() > 0)
     {
-        int sampleCount = samples.size();
-        float yOffset = getHeight() / 2;
-        float step = getWidth() / (float)sampleCount;
-        float index = 0;
-
         Path p;
-        p.startNewSubPath(0, yOffset);
+        p.startNewSubPath(0, getHeight());
 
-        for (int i = 0; i < sampleCount; i++) {
-            float y = yOffset - (yOffset * samples[i]);
-            p.lineTo(index, y);
-            index+=step;
+        for (int i = 0; i < samples.size(); i++) {
+            p.lineTo((getWidth() / (float)samples.size()) * i, (getHeight()) * (1 - samples[i]));
         }
         g.strokePath(p, PathStrokeType(PathStrokeType::curved), AffineTransform::identity);
     }
+    setBufferedToImage(true);
 }
 
 void MathVisualiser::setSamples(Array<float> samplesIn)
 {
     samples.clear();
     samples.addArray(samplesIn);
-
     repaint();
 }
 

@@ -12,10 +12,11 @@ NumberSelect::NumberSelect(String nameIn, Colour guiColorIn, int startRangeIn, i
     slider.setTextBoxStyle(Slider::TextBoxBelow, true, 60, 10);
     slider.setColour(Slider::ColourIds::trackColourId, guiColorIn);
     slider.setColour(Slider::ColourIds::thumbColourId, guiColorIn);
-    slider.setColour(Slider::ColourIds::textBoxOutlineColourId, C_TRANSPARENT); 
-    slider.setColour(Slider::ColourIds::textBoxTextColourId, C_WHITE);
+    slider.setColour(Slider::ColourIds::textBoxOutlineColourId, Colour::fromRGBA(0, 0, 0, 0));
+    slider.setColour(Slider::ColourIds::textBoxTextColourId, Colours::white);
     // Visibility
     addAndMakeVisible(slider);    
+    setOpaque(true);
 }
 
 NumberSelect::~NumberSelect() {
@@ -68,11 +69,12 @@ bool NumberSelect::isCurrentSlider(Slider* currentSlider)
 }
 
 void NumberSelect::paint(Graphics& g) {
+    g.fillAll(Colour::fromRGB(33, 33, 33));
     // Top colour
     g.setColour(guiColor);
     g.fillRect((getWidth() / 2) / 2, 0, (getWidth() / 2), 2);
     // Text
-    g.setColour(C_SMOKE);
+    g.setColour(Colours::white);
     g.drawText(name, getLocalBounds().withSize(getWidth() * 0.8, getHeight() * 1/3).withCentre(Point<int>(getWidth()/2, getHeight()* 1/6)), Justification::centred, 1);
     
 }

@@ -15,24 +15,23 @@ WavetableSynthSettings::WavetableSynthSettings()
         separators.add(new Separator());
         addAndMakeVisible(separators.getLast());
     }
+    setOpaque(true);
 }
 
 WavetableSynthSettings::~WavetableSynthSettings()
 {
-    separators.clear();
 }
 
 void WavetableSynthSettings::paint(Graphics& g)
 {
-    g.setColour(L_GRAY);
-    g.fillRoundedRectangle(getLocalBounds().toFloat(), 30);
+   // DBG("WavetableSynthSettings::paint");
+    g.fillAll(Colour::fromRGB(33, 33, 33));
+    g.setColour(Colour::fromRGB(50, 50, 50));
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), 25);
 }
 
 void WavetableSynthSettings::resized()
 {
-    //int sectionWidth = (getWidth() * 0.8) / 6; // 153
-    //int sectionHeight = getHeight(); // 225
-
     FlexBox fb{
             FlexBox::Direction::row,
             FlexBox::Wrap::noWrap,
@@ -55,7 +54,7 @@ void WavetableSynthSettings::resized()
         Utils::addToFb(&fb, *separators[i], (i + 1) * 2, 1, 225);        
     }
 
-    fb.performLayout(getLocalBounds());
+    fb.performLayout(getLocalBounds().withTrimmedLeft(15).withTrimmedRight(15));
 
 }
 

@@ -34,7 +34,6 @@ public:
     Array<float> waveTableSamples;
     // -----------------------
     int waveTableIndex = 0;
-    const int waveTableSampleCount = 100;
     float sampleDistance = 2.5;
     String text;
 private:

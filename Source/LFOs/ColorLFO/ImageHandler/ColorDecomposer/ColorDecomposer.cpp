@@ -8,6 +8,7 @@ ColorDecomposer::ColorDecomposer()
     addAndMakeVisible(greenTile);
     addAndMakeVisible(blueTile);
     setRGB(10, 10, 10);
+    setOpaque(true);
 }
 
 ColorDecomposer::~ColorDecomposer()

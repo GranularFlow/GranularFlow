@@ -15,6 +15,8 @@ AdditiveHarmonicSettings::AdditiveHarmonicSettings()
         separators.add(new Separator());
         addAndMakeVisible(separators.getLast());
     }
+
+    setOpaque(true);
 }
 
 AdditiveHarmonicSettings::~AdditiveHarmonicSettings()
@@ -23,7 +25,9 @@ AdditiveHarmonicSettings::~AdditiveHarmonicSettings()
 
 void AdditiveHarmonicSettings::paint(Graphics& g)
 {
-    g.setColour(L_GRAY);
+   // DBG("AdditiveHarmonicSettings::paint");
+    g.fillAll(Colour::fromRGB(33, 33, 33));
+    g.setColour(Colour::fromRGB(50, 50, 50));
     g.fillRoundedRectangle(getLocalBounds().toFloat(), 30);
 }
 
