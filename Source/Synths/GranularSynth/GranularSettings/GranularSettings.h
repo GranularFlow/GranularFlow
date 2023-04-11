@@ -34,6 +34,7 @@ public:
     // -----------------------
     // Get
     int getPlayerCount();
+    int getSampleLength();
     // -----------------------
     // Set
     void setPlayerNum(float);
@@ -42,6 +43,7 @@ public:
     void enablePlayers();
     bool isPlayerCountSlider(Slider*);
     bool isPlayerSelectSlider(Slider*);
+    bool isLengthSlider(Slider*);
     bool isOpenAudioButton(Button*);
     bool isOpenBufferButton(Button*);
     // -----------------------
@@ -53,8 +55,11 @@ private:
     TextButton openBufferButton{ "BUFFER" };
     TextButton openAudioButton{ "FILE" };
     // -----------------------
-    NumberSelect playerCountNum{ "Count", Colour::fromRGB(237, 76, 103), 0, 3, 1, 0 };
-    NumberSelect playerSelectNum{ "Select", Colour::fromRGB(0, 168, 255), 0, 3, 1, 0 };
+    NumberSelect playerCountNum{ "Count", C_BARA_RED, 0, 3, 1, 0 };
+    NumberSelect playerSelectNum{ "Select", C_PROTOSS_PYLON, 0, 3, 1, 0 };
+
+    NumberSelect lengthNum{ "LENGTH", C_BARA_RED, 1000, 144000, 1, 144000 };
+
     // -----------------------
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GranularSettings)
 };

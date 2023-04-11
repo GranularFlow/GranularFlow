@@ -59,10 +59,11 @@ void GranularSynth::handleMidi(MidiBuffer& midiMessages)
 void GranularSynth::loadAudioFromFile(File file)
 {   
     AudioLoad audioLoad;
-    // DOCS: The contents of the buffer will initially be undefined, so use clear() to set all the samples to zero.        
+    // DOCS: The contents of the buffer will initially be undefined, so use clear() to set all the samples to zero.     
+    audioSamples.setSize(2, topSettings.getSampleLength());
     audioSamples.clear();
    
-    audioLoad.fillBuffer(audioSamples, 144000, file);
+    audioLoad.fillBuffer(audioSamples, audioSamples.getNumSamples(), file);
     visualiser.setWaveForm(audioSamples);
     waveFormWasSet = true;
 

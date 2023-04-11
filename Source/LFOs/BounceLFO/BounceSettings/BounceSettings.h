@@ -48,12 +48,12 @@ public:
 private:
     // ----------------------------------------
     // Knobs
-    Knob ballSpeedKnob{ "BALL SPEED", Colour::fromRGB(18, 203, 196), 0, 33, 1, 50, false };
-    Knob rateKnob{ "RATE", Colour::fromRGB(255, 195, 18), 0.1, 49, 0.01, 1, false };
-    Knob depthKnob{ "DEPTH", Colour::fromRGB(238, 90, 36), 0, 1, 0.001, 0.5, false };
+    Knob ballSpeedKnob{ "BALL SPEED", C_BLUE_MARTINA, 0, 33, 1, 50, false };
+    Knob rateKnob{ "RATE", C_SUNFLOWER, 0.1, 49, 0.01, 1, false };
+    Knob depthKnob{ "DEPTH", C_PUFFINS_BILL, 0, 1, 0.001, 0.5, false };
     // ----------------------------------------
     // Buttons
-    RadioBox coordinateRadioBox{ "DIRECTION", Colour::fromRGB(196, 229, 56), { "X", "Y" } };
+    RadioBox coordinateRadioBox{ "DIRECTION", C_ENERGOS, { "X", "Y" } };
     TextButton clearButton{ "CLEAR" };
     TextButton startButton{ "START" };
     // ----------------------------------------

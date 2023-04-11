@@ -8,7 +8,7 @@ public:
     Separator() { setOpaque(true); }
     ~Separator() {}
     void paint(Graphics& g) override {
-        g.fillAll(Colour::fromRGB(40,40,40));
+        g.fillAll(C_DARKER_GRAY);
     };
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Separator);
 };

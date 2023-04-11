@@ -6,9 +6,9 @@ NumberSelect::NumberSelect(String nameIn, Colour guiColorIn, int startRangeIn, i
 
     guiColor = guiColorIn;
     name = nameIn;
-    // Number selector
-    slider.setValue(initialValue);
+    // Number selector    
     slider.setRange(startRangeIn, endRangeIn, stepIn);
+    slider.setValue(initialValue, sendNotification);
     slider.setTextBoxStyle(Slider::TextBoxBelow, true, 60, 10);
     slider.setColour(Slider::ColourIds::trackColourId, guiColorIn);
     slider.setColour(Slider::ColourIds::thumbColourId, guiColorIn);
@@ -69,7 +69,7 @@ bool NumberSelect::isCurrentSlider(Slider* currentSlider)
 }
 
 void NumberSelect::paint(Graphics& g) {
-    g.fillAll(Colour::fromRGB(33, 33, 33));
+    g.fillAll(C_DARK_GRAY);
     // Top colour
     g.setColour(guiColor);
     g.fillRect((getWidth() / 2) / 2, 0, (getWidth() / 2), 2);

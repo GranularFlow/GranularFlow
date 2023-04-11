@@ -106,24 +106,24 @@ private:
     std::unique_ptr<AdditiveSynth> additiveSynth = std::make_unique<AdditiveSynth>();
     // -------------------------------------
     // Synth
-    ResetButton wavetableSynthReset{ 40,40,190,110 };
-    ResetButton granularSynthReset{40,40,600,110};
-    ResetButton additiveSynthReset{ 40,40,1010,110 };
+    ResetButton wavetableSynthReset{ 40, 40, 190, 110 };
+    ResetButton granularSynthReset{ 40, 40, 600, 110 };
+    ResetButton additiveSynthReset{ 40, 40, 1010, 110 };
     // ----------------------
-    Component::SafePointer<Component> wavetableSynthBox = new CustomClickableBox(Colour::fromRGB(0, 168, 255), "WAVETABLE", false, 320, 180, 190, 180);
-    Component::SafePointer<Component> granularSynthBox = new CustomClickableBox(Colour::fromRGB(238, 90, 36), "GRANULAR", false, 320, 180, 600, 180);
-    Component::SafePointer<Component> additiveSynthBox = new CustomClickableBox(Colour::fromRGB(163, 203, 56), "ADDITIVE", false, 320, 180, 1010, 180);
+    Component::SafePointer<Component> wavetableSynthBox = new CustomClickableBox(C_PROTOSS_PYLON, "WAVETABLE", false, 320, 180, 190, 180);
+    Component::SafePointer<Component> granularSynthBox = new CustomClickableBox(C_PUFFINS_BILL, "GRANULAR", false, 320, 180, 600, 180);
+    Component::SafePointer<Component> additiveSynthBox = new CustomClickableBox(C_ANDROID_GREEN, "ADDITIVE", false, 320, 180, 1010, 180);
     // -------------------------------------
     // LFO
-    ResetButton colorLfoReset{ 30,30,292, 595 };
-    ResetButton bounceLfoReset{ 30,30,498, 595 };
-    ResetButton mathLfoReset{ 30,30,704, 595 };
-    ResetButton wavetableLfoReset{ 30,30,910, 595 };
+    ResetButton colorLfoReset{ 30, 30, 292, 595 };
+    ResetButton bounceLfoReset{ 30, 30, 498, 595 };
+    ResetButton mathLfoReset{ 30, 30, 704, 595 };
+    ResetButton wavetableLfoReset{ 30, 30, 910, 595 };
     // ----------------------
-    Component::SafePointer<Component> colorLfoBox = new CustomClickableBox(Colour::fromRGB(163, 203, 56).darker(0.15), "COLORLFO", false, 185, 105, 292, 630);
-    Component::SafePointer<Component> bounceLfoBox = new CustomClickableBox(Colour::fromRGB(255, 195, 18).darker(0.15), "BOUNCELFO", false, 185, 105, 498, 630);
-    Component::SafePointer<Component> mathLfoBox = new CustomClickableBox(Colour::fromRGB(52, 152, 219).brighter(0.15), "MATHLFO", false, 185, 105, 704, 630);
-    Component::SafePointer<Component> wavetableLfoBox = new CustomClickableBox(Colour::fromRGB(234, 32, 39).brighter(0.15), "WAVETABLELFO", false, 185, 105, 910, 630);
+    Component::SafePointer<Component> colorLfoBox = new CustomClickableBox(C_ANDROID_GREEN.darker(0.15), "COLORLFO", false, 185, 105, 292, 630);
+    Component::SafePointer<Component> bounceLfoBox = new CustomClickableBox(C_SUNFLOWER.darker(0.15), "BOUNCELFO", false, 185, 105, 498, 630);
+    Component::SafePointer<Component> mathLfoBox = new CustomClickableBox(C_VANADYL_BLUE.brighter(0.15), "MATHLFO", false, 185, 105, 704, 630);
+    Component::SafePointer<Component> wavetableLfoBox = new CustomClickableBox(C_RED_PIGMENT.brighter(0.15), "WAVETABLELFO", false, 185, 105, 910, 630);
     // -------------------------------------
     // Abstract non-visible windows that open synths
     Array<Component::SafePointer<CustomWindow>> synthWindows;

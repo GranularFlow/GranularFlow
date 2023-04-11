@@ -30,9 +30,4 @@ void AudioLoad::fillBuffer(AudioBuffer<float>& bufferToFill, int numSamplesToFil
             samplePosition += minFill;
         }
     }
-    else
-    {
-       //// DBG("failed to load audio");
-    }
-
 }

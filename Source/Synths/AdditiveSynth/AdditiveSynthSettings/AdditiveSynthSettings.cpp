@@ -22,7 +22,7 @@ AdditiveSynthSettings::~AdditiveSynthSettings()
 void AdditiveSynthSettings::paint(Graphics& g)
 {
    // DBG("AdditiveSynthSettings::paint");
-    g.fillAll(Colour::fromRGB(33, 33, 33));
+    g.fillAll(C_DARK_GRAY);
 }
 
 void AdditiveSynthSettings::resized()
@@ -32,13 +32,13 @@ void AdditiveSynthSettings::resized()
             FlexBox::Direction::row,
             FlexBox::Wrap::noWrap,
             FlexBox::AlignContent::center,
-            FlexBox::AlignItems::center,
+            FlexBox::AlignItems::flexStart,
             FlexBox::JustifyContent::flexEnd
     };
 
-    Utils::addToFb(&fb, harmonicCount, 0, 100, getHeight());
+    Utils::addToFb(&fb, harmonicCount, 0, 100, 48);
+    Utils::addToFb(&fb, harmonicSelect, 1, 100, 48);
 
-    Utils::addToFb(&fb, harmonicSelect, 1, 100, getHeight());
     fb.performLayout(getLocalBounds().withTrimmedLeft(250));    
 }
 

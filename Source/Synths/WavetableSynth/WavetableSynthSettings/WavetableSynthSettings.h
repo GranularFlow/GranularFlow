@@ -49,14 +49,14 @@ public:
 
 private:
     // ----------------------
-    RadioBox midiModeRadioBox { "MIDI", Colour::fromRGB(87, 88, 187), {"OFF", "ON"} };
-    RadioBox interpolationRadioBox{ "ITERPOLATION", Colour::fromRGB(18, 137, 167), { "LINEAR", "CUBIC"} };
+    RadioBox midiModeRadioBox { "MIDI", C_CIRCUMORBITAL_RING, {"OFF", "ON"} };
+    RadioBox interpolationRadioBox{ "ITERPOLATION", C_MEDITERRANEAN_SEA, { "LINEAR", "CUBIC"} };
     // ----------------------
-    Knob freqKnob { "FREQUENCY", Colour::fromRGB(247, 159, 31), 20, 8000, 0.001, 400, true };
-    Knob waveCountKnob { "WAVE COUNT", Colour::fromRGB(196, 229, 56), 2, 10, 2, 6 , false };
+    Knob freqKnob { "FREQUENCY", C_RADIANT_YELLOW, 20, 8000, 0.001, 400, true };
+    Knob waveCountKnob { "WAVE COUNT", C_ENERGOS, 2, 10, 2, 6 , false };
     // ----------------------    
-    Knob volumeKnob { "VOLUME", Colour::fromRGB(255, 195, 18), 0, 100, 0.01, 50, true };
-    Knob panKnob { "PAN", Colour::fromRGB(238, 90, 36), 0, 100, 0.5, 50, true };
+    Knob volumeKnob { "VOLUME", C_SUNFLOWER, 0, 100, 0.01, 50, true };
+    Knob panKnob { "PAN", C_PUFFINS_BILL, 0, 100, 0.5, 50, true };
     // ----------------------  
     Colour guiColour;
     OwnedArray<Separator> separators;

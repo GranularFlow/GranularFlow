@@ -40,7 +40,6 @@ public:
     void removeKnobsListener();
 
 private:
-    // TODO
     TextButton combineButton { "SYNTHESIZE" };
     // -----------------------
     Canvas canvas1 { "FIRST WAVE" };

@@ -4,12 +4,13 @@
 
 GranularSettings::GranularSettings()
 {
+    addAndMakeVisible(lengthNum);
     addAndMakeVisible(openBufferButton);
     addAndMakeVisible(openAudioButton);
     addChildComponent(playerSelectNum);
     addChildComponent(playerCountNum);
-
-    setBounds(0,0,1200,60);
+    
+    setBounds(0, 0, W_WIDTH, 60);
 }
 
 GranularSettings::~GranularSettings()
@@ -27,6 +28,7 @@ void GranularSettings::enablePlayers()
 
     playerSelectNum.setVisible(true);
     playerCountNum.setVisible(true);
+    lengthNum.setVisible(false);
 }
 
 bool GranularSettings::isPlayerCountSlider(Slider* slider)
@@ -37,6 +39,11 @@ bool GranularSettings::isPlayerCountSlider(Slider* slider)
 bool GranularSettings::isPlayerSelectSlider(Slider* slider)
 {
     return playerSelectNum.isCurrentSlider(slider);
+}
+
+bool GranularSettings::isLengthSlider(Slider* slider)
+{
+    return lengthNum.isCurrentSlider(slider);
 }
 
 bool GranularSettings::isOpenAudioButton(Button* button)
@@ -76,6 +83,7 @@ void GranularSettings::resized()
 
     Utils::addToFb(&fb, openBufferButton, 0, 100, 48);
     Utils::addToFb(&fb, openAudioButton, 1, 100, 48);
+    Utils::addToFb(&fb, lengthNum, 1, 100, 48);
     Utils::addToFb(&fb, playerCountNum, 2, 100, 48);
     Utils::addToFb(&fb, playerSelectNum, 3, 100, 48);
 
@@ -96,12 +104,14 @@ void GranularSettings::removeButtonListener(Button::Listener* listener)
 
 void GranularSettings::addSliderListener(Slider::Listener* listener)
 {
+    lengthNum.addListener(listener);
     playerSelectNum.addListener(listener);
     playerCountNum.addListener(listener);
 }
 
 void GranularSettings::removeSliderListener(Slider::Listener* listener)
 {
+    lengthNum.removeListener(listener);
     playerSelectNum.removeListener(listener);
     playerCountNum.removeListener(listener);
 }
@@ -109,6 +119,11 @@ void GranularSettings::removeSliderListener(Slider::Listener* listener)
 int GranularSettings::getPlayerCount()
 {
     return playerCountNum.getValue();
+}
+
+int GranularSettings::getSampleLength()
+{
+    return lengthNum.getValue();
 }
 
 void GranularSettings::setPlayerNum(float val)

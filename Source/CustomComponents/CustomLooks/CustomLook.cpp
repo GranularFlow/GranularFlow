@@ -6,7 +6,7 @@ CustomLook::~CustomLook() {}
 
 void CustomLook::drawPopupMenuItem(Graphics& g, const Rectangle<int>& area, const bool isSeparator, const bool isActive, const bool isHighlighted, const bool isTicked, const bool hasSubMenu, const String& text, const String& shortcutKeyText, const Drawable* icon, const Colour* textColourToUse)
 {
-    Colour backgroundColour = Colour::fromRGB(33,33,33);
+    Colour backgroundColour = C_DARK_GRAY;
     Colour textColour = Colours::white;
 
     if (isHighlighted)
@@ -44,7 +44,7 @@ void CustomLook::drawComboBox(Graphics& g, int width, int height, bool isButtonD
 
 void CustomLook::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, const float rotaryStartAngle, const float rotaryEndAngle, juce::Slider& slider)
 {
-    auto outline = Colour::fromRGB(40, 40, 40);
+    auto outline = C_DARKER_GRAY;
     auto fill = slider.findColour(Slider::rotarySliderFillColourId);
 
     auto bounds = Rectangle<int>(x, y, width, height).toFloat().reduced(10);
@@ -91,7 +91,7 @@ void CustomLook::drawRotarySlider(juce::Graphics& g, int x, int y, int width, in
     auto thumbLength = radius * 0.75f;
     auto thumbThickness = 5.0f;
 
-    g.setColour(Colour::fromRGB(40, 40, 40));
+    g.setColour(C_DARKER_GRAY);
     g.fillEllipse(Rectangle<float>(thumbLength * 2, thumbLength * 2).withCentre(Point<float>(bounds.getCentreX(), bounds.getCentreY())));
 
     thumb.addRoundedRectangle(Rectangle<float>(-thumbThickness / 2, -thumbLength, thumbThickness, thumbLength), 1);
@@ -199,7 +199,7 @@ void CustomLook::drawTickBox(Graphics& g, Component& component, float x, float y
     ignoreUnused(isEnabled, shouldDrawButtonAsHighlighted, shouldDrawButtonAsDown);
     Rectangle<float> tickBounds(x + (w * 0.25 / 2), y + (h * 0.25 / 2), w * 0.75, h * 0.75);
 
-    g.setColour(Colour::fromRGB(118, 118, 118));
+    g.setColour(C_LIGTHER_GRAY);
     g.drawEllipse(tickBounds, 1.5f);
 
     if (ticked)

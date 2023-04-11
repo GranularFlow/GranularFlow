@@ -12,7 +12,7 @@ ImageHandler::~ImageHandler()
 
 void ImageHandler::paint(Graphics& g)
 {
-    g.fillAll(Colour::fromRGB(33, 33, 33));
+    g.fillAll(C_DARK_GRAY);
     if (isImageSet())
     {
         g.drawImageWithin(image, 0, 10, (getWidth()/2) - 20, getHeight() - 20, juce::RectanglePlacement::centred);

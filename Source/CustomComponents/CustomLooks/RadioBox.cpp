@@ -36,7 +36,7 @@ RadioBox::~RadioBox() {
 }
 
 void RadioBox::paint(Graphics& g) {
-    g.fillAll(Colour::fromRGB(50, 50, 50));
+    g.fillAll(C_GRAY);
     g.setColour(guiColor);
     g.fillRect((getWidth() / 4), 0, (getWidth() / 2), 5);
 

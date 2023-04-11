@@ -14,7 +14,7 @@ ResetButton::~ResetButton()
 
 void ResetButton::paint(Graphics& g)
 {
-    g.fillAll(Colour::fromRGB(50, 50, 50));
+    g.fillAll(C_GRAY);
     buttonImage = buttonImage.rescaled(getLocalBounds().reduced(getHeight() * 0.1f).getHeight(), getLocalBounds().reduced(getHeight() * 0.1f).getHeight(), Graphics::highResamplingQuality);
     g.drawImageAt(buttonImage, getHeight() * 0.1f, getHeight() * 0.1f);
 }

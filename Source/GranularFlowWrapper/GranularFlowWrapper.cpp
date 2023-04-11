@@ -3,9 +3,7 @@
 GranularFlowWrapper::GranularFlowWrapper() :
     Component("GranularFlowWrapper")
 {
-   //// DBG("GranularFlowWrapper::GranularFlowWrapper()");
-
-    setSize(1200, 700);
+    setSize(W_WIDTH, W_HEIGHT);
     initGui();
     addAllListeners();
     makeWindowsIgnoreClicks();
@@ -55,7 +53,7 @@ void GranularFlowWrapper::paintJacks(Graphics& g)
     Path pathR;
     pathR.addRectangle(rectR.toFloat());
     pathR.applyTransform(AffineTransform::rotation(0.52359879016876221, 673, 470));
-    g.setColour(Colour::fromRGB(118, 118, 118));
+    g.setColour(C_LIGTHER_GRAY);
     g.fillPath(pathL);
     g.fillPath(pathR);
     g.fillRect(588, 349, 25, 40);
@@ -63,32 +61,32 @@ void GranularFlowWrapper::paintJacks(Graphics& g)
 
 void GranularFlowWrapper::paintCables(Graphics& g)
 {
-    if (processWavetable) { g.setColour(Colour::fromRGB(163, 203, 56)); }
-    else { g.setColour(Colour::fromRGB(40, 40, 40)); }
+    if (processWavetable) { g.setColour(C_ANDROID_GREEN); }
+    else { g.setColour(C_DARKER_GRAY); }
     g.fillPath(cableWavetable);
 
-    if (processGranular) { g.setColour(Colour::fromRGB(163, 203, 56)); }
-    else { g.setColour(Colour::fromRGB(40, 40, 40)); }
+    if (processGranular) { g.setColour(C_ANDROID_GREEN); }
+    else { g.setColour(C_DARKER_GRAY); }
     g.fillPath(cableGranular);
 
-    if (processAdditive) { g.setColour(Colour::fromRGB(163, 203, 56)); }
-    else { g.setColour(Colour::fromRGB(40, 40, 40)); }
+    if (processAdditive) { g.setColour(C_ANDROID_GREEN); }
+    else { g.setColour(C_DARKER_GRAY); }
     g.fillPath(cableAdditive);
 
-    if (processColorLfo) { g.setColour(Colour::fromRGB(163, 203, 56)); }
-    else { g.setColour(Colour::fromRGB(40, 40, 40)); }
+    if (processColorLfo) { g.setColour(C_ANDROID_GREEN); }
+    else { g.setColour(C_DARKER_GRAY); }
     g.fillRoundedRectangle(cableColorLfo, 15);
 
-    if (processBounceLfo) { g.setColour(Colour::fromRGB(163, 203, 56)); }
-    else { g.setColour(Colour::fromRGB(40, 40, 40)); }
+    if (processBounceLfo) { g.setColour(C_ANDROID_GREEN); }
+    else { g.setColour(C_DARKER_GRAY); }
     g.fillRoundedRectangle(cableBounceLfo, 15);
 
-    if (processMathLfo) { g.setColour(Colour::fromRGB(163, 203, 56)); }
-    else { g.setColour(Colour::fromRGB(40, 40, 40)); }
+    if (processMathLfo) { g.setColour(C_ANDROID_GREEN); }
+    else { g.setColour(C_DARKER_GRAY); }
     g.fillRoundedRectangle(cableMathLfo, 15);
 
-    if (processWavetableLfo) { g.setColour(Colour::fromRGB(163, 203, 56)); }
-    else { g.setColour(Colour::fromRGB(40, 40, 40)); }
+    if (processWavetableLfo) { g.setColour(C_ANDROID_GREEN); }
+    else { g.setColour(C_DARKER_GRAY); }
     g.fillRoundedRectangle(cableWavetableLfo, 15);
 }
 
@@ -140,6 +138,7 @@ void GranularFlowWrapper::processBlock(AudioBuffer<float>& buffer, MidiBuffer& m
     {
         additiveSynth->processBlock(buffer, midiMessages);
     }
+    
 }
 
 void GranularFlowWrapper::sliderValueChanged(Slider* slider)

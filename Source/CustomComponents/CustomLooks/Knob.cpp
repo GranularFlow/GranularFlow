@@ -42,7 +42,7 @@ Knob::~Knob()
 
 void Knob::paint(Graphics& g)
 {
-    g.fillAll(Colour::fromRGB(50, 50, 50));
+    g.fillAll(C_GRAY);
     g.setColour(guiColor);
     g.fillRect(Rectangle<float>(50, 10).withCentre(Point<float>(getWidth() / (float)2.0, 0)));
     g.setColour(Colours::white);

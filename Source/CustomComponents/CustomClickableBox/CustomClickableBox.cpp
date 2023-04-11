@@ -30,7 +30,7 @@ CustomClickableBox::~CustomClickableBox()
 void CustomClickableBox::paint(Graphics& g)
 {
    // DBG("CustomClickableBox::paint");
-    g.setColour(Colour::fromRGB(50, 50, 50));    
+    g.setColour(C_GRAY);
     g.fillRoundedRectangle(getLocalBounds().withSizeKeepingCentre(getWidth(), getHeight()).toFloat(), (getHeight() * 0.1f));
     g.setColour(color);
     g.fillPath(path);

@@ -47,11 +47,11 @@ public:
 private:
     // ----------------------
     // Parameters
-    RadioBox midiModeRadioBox{ "MIDI", Colour::fromRGB(87, 88, 187), {"OFF", "ON"} };
-    Knob phaseKnob{ "PHASE", Colour::fromRGB(237, 76, 103), 0, 360, 1, 0, true };
-    Knob freqKnob{ "FREQUENCY", Colour::fromRGB(18, 203, 196), 10, 1000, 0.001, 440, true };
-    Knob volumeKnob{ "VOLUME", Colour::fromRGB(247, 159, 31), 0, 100, 0.01, 50, true };
-    Knob panKnob{ "PAN", Colour::fromRGB(196, 229, 56), 0, 100, 1, 50 , true };
+    RadioBox midiModeRadioBox{ "MIDI", C_CIRCUMORBITAL_RING, {"OFF", "ON"} };
+    Knob phaseKnob{ "PHASE", C_BARA_RED, 0, 360, 1, 0, true };
+    Knob freqKnob{ "FREQUENCY", C_BLUE_MARTINA, 10, 1000, 0.001, 440, true };
+    Knob volumeKnob{ "VOLUME", C_RADIANT_YELLOW, 0, 100, 0.01, 50, true };
+    Knob panKnob{ "PAN", C_ENERGOS, 0, 100, 1, 50 , true };
     // ----------------------
     OwnedArray<Separator> separators;
 };

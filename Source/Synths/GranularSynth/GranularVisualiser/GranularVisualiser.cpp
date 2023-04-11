@@ -2,7 +2,7 @@
 
 GranularVisualiser::GranularVisualiser()
 {
-    setBounds(0, 60, 1200, 340);
+    setBounds(0, 60, W_WIDTH, 340);
 }
 
 GranularVisualiser::~GranularVisualiser()

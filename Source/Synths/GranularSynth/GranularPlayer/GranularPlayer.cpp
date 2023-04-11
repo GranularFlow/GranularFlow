@@ -13,7 +13,7 @@ GranularPlayer::GranularPlayer(int totalSamplesIn, int sampleRateIn)
         grains.add(new Grain());
     }
 
-    setBounds(0, 60, 1200, 640);
+    setBounds(0, 60, W_WIDTH, W_HEIGHT - 60);
 }
 
 GranularPlayer::~GranularPlayer() {
@@ -21,13 +21,13 @@ GranularPlayer::~GranularPlayer() {
 
 void GranularPlayer::paint(Graphics& g) {
   // DBG("GranularPlayer::paint");
-   g.setColour(Colour::fromRGB(196, 229, 56));
-   g.fillRect((int)((cursorPosition / (float)totalSamples) * 1200) - 1.0, 0, 2.0, 340);
+   g.setColour(C_ENERGOS);
+   g.fillRect((int)((cursorPosition / (float)totalSamples) * W_WIDTH) - 1.0, 0, 2.0, 340);
 }
 
 void GranularPlayer::resized()
 {
-    settings.setBounds(SETTINGS_SIZE.withCentre(Point<int>(SETTINGS_SIZE.getCentreX(), SETTINGS_SIZE.getCentreY() - 60 - 10)).withSizeKeepingCentre(SETTINGS_SIZE.getWidth(), SETTINGS_SIZE.getHeight()+25));
+    settings.setBounds(GRANULAR_PLAYER_SETTINGS_SIZE);
 }
 
 void GranularPlayer::mouseDown(const MouseEvent& event)
@@ -36,8 +36,8 @@ void GranularPlayer::mouseDown(const MouseEvent& event)
     {
         if (mouseMovable)
         {
-            cursorPosition = (event.x/1200.f) * totalSamples;
-            repaint(0,0,1200,340);
+            cursorPosition = (event.x/(float)W_WIDTH) * totalSamples;
+            repaint(0, 0, W_WIDTH, 340);
 
         }
     }

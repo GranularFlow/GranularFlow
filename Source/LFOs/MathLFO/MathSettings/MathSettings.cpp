@@ -16,8 +16,8 @@ MathSettings::~MathSettings()
 
 void MathSettings::paint(Graphics& g)
 {
-    g.fillAll(Colour::fromRGB(33, 33, 33));
-    g.setColour(Colour::fromRGB(50, 50, 50));
+    g.fillAll(C_DARK_GRAY);
+    g.setColour(C_GRAY);
     g.fillRoundedRectangle(getLocalBounds().toFloat(), 25);
 }
 

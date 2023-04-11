@@ -1,35 +1,15 @@
 #include "Utils.h"
 
 
-Utils::Utils()
-{
-}
-
-Utils::~Utils()
-{
-}
-
 void Utils::paintLogo(Graphics& g)
 {
-    //const Image logo = ImageFileFormat::loadFrom(BinaryData::logo250_png, BinaryData::logo250_pngSize);
-    //g.drawImageAt(logo, 7, 7, false);
-}
-
-void Utils::paintLogoWithUnderline(Graphics& g)
-{
-    /*paintLogo(g);
-    g.setColour(Colour::fromRGB(40, 40, 40));
-    g.fillRect(0, 60 - 2, W_WIDTH, 1);*/
+    const Image logo = ImageFileFormat::loadFrom(BinaryData::logo250_png, BinaryData::logo250_pngSize);
+    g.drawImageAt(logo, 7, 7, false);
 }
 
 int Utils::msToSamples(float timeInMs, int sampleRate) {
 
     return Utils::secToSamples((timeInMs /(float) 1000), sampleRate);
-}
-
-float Utils::samplesToMs(int samplesCount, int sampleRate) {
-
-    return (samplesCount /(float)sampleRate) * 1000;
 }
 
 int Utils::secToSamples(float timeInSec, int sampleRate) {
@@ -56,16 +36,6 @@ double Utils::degToRad(double phase)
     return ((phase * PI) / (double)180);
 }
 
-float Utils::percentToFloat(int percent)
-{
-    return (float)percent / 100;
-}
-
-float Utils::samplesToPercent(int samplePosition, int totalSamples)
-{
-    return (samplePosition / (float)totalSamples) * 100.0;
-}
-
 void Utils::addToFb(FlexBox* fb, Component& c, int order, int minWidth,int minHeight) {
     Utils::addToFb(fb, FlexItem(c), order, minWidth, minHeight);
 }
@@ -82,7 +52,6 @@ void Utils::addToFb(FlexBox* fb, FlexItem i, int order, int minWidth, int minHei
 double Utils::interpolateLinear(double x, double x1, double x2, double y1, double y2)
 {
     if (x2 - x1 == 0) {
-        //DBG("division handle");
         return 0;
     }
     return y1 + ( (x - x1) * ( (y2 - y1) / (x2 - x1)));
@@ -105,12 +74,4 @@ double Utils::interpolateCubic(double x, double y0, double y1, double y2, double
             + y1;*/
     // fastest method
     return y1 + x *(-y0 + y2 + x *(2 * y0 - 2 *y1 + y2 - y3 + x *(-y0 + y1 - y2 + y3)));
-}
-
-double Utils::snapToStep(double min, double max, double step, double value)
-{
-    double diff = value - min;
-    double steps = round(diff / step);
-    double snappedValue = min + steps * step;
-    return std::min(max, std::max(min, snappedValue));
 }
