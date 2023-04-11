@@ -19,21 +19,19 @@ void Canvas::paintPath(Graphics& g)
     {
         path.lineTo(xPos[i], yPos[i]);
     }
-    g.setColour(Colours::white);
+    g.setColour(C_WHITE);
     g.strokePath(path, PathStrokeType(2.0f, PathStrokeType::JointStyle::curved, PathStrokeType::rounded));
 }
 
 void Canvas::paint(Graphics& g)
 {
-   // DBG("Canvas::paint");
-    g.fillAll(Colour::fromRGB(50, 50, 50));
-
-    g.setColour(Colours::white);
+    g.fillAll(C_GRAY);
+    g.setColour(C_WHITE);
     g.drawText(text, getLocalBounds(), Justification::centredTop);
 
     paintPath(g);
 
-    g.setColour(Colour::fromRGB(60, 60, 60));
+    g.setColour(C_LIGTHER_GRAY);
     g.drawRect(getWidth()/2, 10, 1, getHeight());
     g.drawRect(0, getHeight()/2, getWidth(), 1);
 }
@@ -49,7 +47,7 @@ float Canvas::snapToClosestXPoint(float xValue)
     float absMin = fabs(xValue - (sampleDistance * 0));
     int closestPointIndex = 0;
 
-    for (int i = 1; i < 100; i++)
+    for (int i = 1; i < CANVAS_SAMPLES; i++)
     {
         float tmpAbs = fabs(xValue - (sampleDistance * i));
         if (tmpAbs < absMin) {
@@ -69,7 +67,7 @@ void Canvas::addPoint(float newX, float newY)
         newX < 0 ||
         newY > getHeight() ||
         newY < 0 ||
-        xPos.size() == 100) 
+        xPos.size() == CANVAS_SAMPLES) 
     {
         return;
     }
@@ -141,11 +139,11 @@ float Canvas::interpolateY(float x, float x1, float y1, float x2, float y2)
 void Canvas::mouseUp(const MouseEvent& e)
 {    
     // Interpolate wavetable
-    if (xPos.size() != 100)
+    if (xPos.size() != CANVAS_SAMPLES)
     {
         //Has to be defined, because each loop xPos size is larger thus infinite loop
         int size = xPos.size();
-        for (int i = 1; i <= (100 - size); i++)
+        for (int i = 1; i <= (CANVAS_SAMPLES - size); i++)
         {
             addPoint(xPos.getLast() + sampleDistance,
                 Utils::interpolateLinear(xPos.getLast() + sampleDistance, xPos.getLast(), getWidth(), yPos.getLast(), yPos.getLast()));

@@ -199,7 +199,7 @@ void CustomLook::drawTickBox(Graphics& g, Component& component, float x, float y
     ignoreUnused(isEnabled, shouldDrawButtonAsHighlighted, shouldDrawButtonAsDown);
     Rectangle<float> tickBounds(x + (w * 0.25 / 2), y + (h * 0.25 / 2), w * 0.75, h * 0.75);
 
-    g.setColour(C_LIGTHER_GRAY);
+    g.setColour(C_LIGTH_GRAY);
     g.drawEllipse(tickBounds, 1.5f);
 
     if (ticked)

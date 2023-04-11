@@ -15,12 +15,12 @@ BounceLFO::~BounceLFO()
 
 void BounceLFO::paint(Graphics& g)
 {
-    g.fillAll(Colour::fromRGB(33,33,33));
+    g.fillAll(C_DARK_GRAY);
 }
 
 void BounceLFO::resized()
 {
-    settings.setBounds(SETTINGS_SIZE.withSizeKeepingCentre(750, 200));
+    settings.setBounds(BOUNCE_LFO_SETINGSS_SIZE);
     canvas.setBounds(getLocalBounds().withTrimmedTop(60 + 10).withTrimmedBottom(SETTINGS_SIZE.getHeight() + 20).withTrimmedLeft(100).withTrimmedRight(100));
 }
 

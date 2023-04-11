@@ -21,14 +21,20 @@ const int TIMER_MS = 8;
 const int W_WIDTH = 1200;
 const int W_HEIGHT = 700;
 
+
+const int CANVAS_SAMPLES = 100;
+
 const juce::Rectangle<int> SETTINGS_SIZE = juce::Rectangle<int>().withSize(1150, 225).withCentre(Point<int>(600, 550));
 const juce::Rectangle<int> GRANULAR_PLAYER_SETTINGS_SIZE = SETTINGS_SIZE.withSize(SETTINGS_SIZE.getWidth(), SETTINGS_SIZE.getHeight() + 25).withCentre(Point<int>(SETTINGS_SIZE.getCentreX(), SETTINGS_SIZE.getCentreY() - 70));
-
+const juce::Rectangle<int> BOUNCE_LFO_SETINGSS_SIZE = SETTINGS_SIZE.withSizeKeepingCentre(750, 200);
 // COLOR
+const juce::Colour C_WHITE = Colours::white;
 const juce::Colour C_DARK_GRAY = Colour::fromRGB(33, 33, 33);
-const juce::Colour C_GRAY = Colour::fromRGB(50, 50, 50);
 const juce::Colour C_DARKER_GRAY = Colour::fromRGB(40, 40, 40);
-const juce::Colour C_LIGTHER_GRAY = Colour::fromRGB(118, 118, 118);
+const juce::Colour C_GRAY = Colour::fromRGB(50, 50, 50);
+
+const juce::Colour C_LIGTHER_GRAY = Colour::fromRGB(60, 60, 60);
+const juce::Colour C_LIGTH_GRAY = Colour::fromRGB(118, 118, 118);
 
 // Palette
 const juce::Colour C_SUNFLOWER = Colour::fromRGB(255, 195, 18);

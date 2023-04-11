@@ -65,8 +65,8 @@ private:
     // ----------------------
     CustomLook customLook;
     // ----------------------
-    String name;
-    Colour guiColor;
+    juce::String name;
+    juce::Colour guiColor;
     int lastSelectedLFO = 0;
     float defaultValue = 0;
     std::unique_ptr<ComboBox> comboBox;

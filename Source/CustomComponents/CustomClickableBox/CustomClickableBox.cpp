@@ -9,7 +9,6 @@ CustomClickableBox::CustomClickableBox(Colour colorIn, String textIn, bool fullS
 
     setBounds(centerX - width / 2.f, centerY - height / 2.f, width, height);
 
-
     path.startNewSubPath(boxSize.getTopLeft().x, boxSize.getTopLeft().y);
     path.lineTo(boxSize.getTopRight().x, boxSize.getTopRight().y);
     path.lineTo(boxSize.getTopRight().x, boxSize.getTopRight().y);
@@ -34,7 +33,7 @@ void CustomClickableBox::paint(Graphics& g)
     g.fillRoundedRectangle(getLocalBounds().withSizeKeepingCentre(getWidth(), getHeight()).toFloat(), (getHeight() * 0.1f));
     g.setColour(color);
     g.fillPath(path);
-    g.setColour(Colours::white);
+    g.setColour(C_WHITE);
     g.setFont(Font("Oswald", boxSize.getHeight(), 0));
     g.drawText(text, boxSize, Justification::centred, false);
 }

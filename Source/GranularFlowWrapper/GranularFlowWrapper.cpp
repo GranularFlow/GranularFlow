@@ -53,7 +53,7 @@ void GranularFlowWrapper::paintJacks(Graphics& g)
     Path pathR;
     pathR.addRectangle(rectR.toFloat());
     pathR.applyTransform(AffineTransform::rotation(0.52359879016876221, 673, 470));
-    g.setColour(C_LIGTHER_GRAY);
+    g.setColour(C_LIGTH_GRAY);
     g.fillPath(pathL);
     g.fillPath(pathR);
     g.fillRect(588, 349, 25, 40);

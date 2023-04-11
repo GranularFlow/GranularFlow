@@ -120,10 +120,10 @@ private:
     ResetButton mathLfoReset{ 30, 30, 704, 595 };
     ResetButton wavetableLfoReset{ 30, 30, 910, 595 };
     // ----------------------
-    Component::SafePointer<Component> colorLfoBox = new CustomClickableBox(C_ANDROID_GREEN.darker(0.15), "COLORLFO", false, 185, 105, 292, 630);
-    Component::SafePointer<Component> bounceLfoBox = new CustomClickableBox(C_SUNFLOWER.darker(0.15), "BOUNCELFO", false, 185, 105, 498, 630);
-    Component::SafePointer<Component> mathLfoBox = new CustomClickableBox(C_VANADYL_BLUE.brighter(0.15), "MATHLFO", false, 185, 105, 704, 630);
-    Component::SafePointer<Component> wavetableLfoBox = new CustomClickableBox(C_RED_PIGMENT.brighter(0.15), "WAVETABLELFO", false, 185, 105, 910, 630);
+    Component::SafePointer<Component> colorLfoBox = new CustomClickableBox(C_ANDROID_GREEN.darker(0.15), "COLOR LFO", false, 185, 105, 292, 630);
+    Component::SafePointer<Component> bounceLfoBox = new CustomClickableBox(C_SUNFLOWER.darker(0.15), "BOUNCE LFO", false, 185, 105, 498, 630);
+    Component::SafePointer<Component> mathLfoBox = new CustomClickableBox(C_VANADYL_BLUE.brighter(0.15), "MATHL FO", false, 185, 105, 704, 630);
+    Component::SafePointer<Component> wavetableLfoBox = new CustomClickableBox(C_RED_PIGMENT.brighter(0.15), "WAVETABLEL FO", false, 185, 105, 910, 630);
     // -------------------------------------
     // Abstract non-visible windows that open synths
     Array<Component::SafePointer<CustomWindow>> synthWindows;
