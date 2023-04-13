@@ -36,12 +36,6 @@ void MathSettings::resized()
     Utils::addToFb(&fb, textEditor, 5, 300, 60);
     Utils::addToFb(&fb, enterButton, 7, 80, 60);
 
-    for (int i = 0; i < 2; i++)
-    {
-        separators.add(new Separator());
-        addAndMakeVisible(separators.getLast());
-    }
-
     // White lines
     for (int i = 0; i < separators.size(); i++)
     {
