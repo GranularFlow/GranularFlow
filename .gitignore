@@ -4,3 +4,7 @@
 !GranularFlow.jucer
 !Source/
 !.gitignore
+!Output/
+!readme.md
+!readmeCZ.md
+!readmeEN.md
